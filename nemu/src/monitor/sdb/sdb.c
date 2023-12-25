@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/paddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -55,6 +56,55 @@ static int cmd_q(char *args)
 {
   nemu_state.state = NEMU_QUIT;
   return -1;
+}
+
+// 单步执行
+__attribute__((unused)) static int cmd_si(char *args)
+{
+  int step = 0;
+  if (args == NULL)
+  {
+    step = 1;
+  }
+  else
+  {
+    // 固定字符输入源 args -> step 格式为%d
+    sscanf(args, "%d", &step);
+  }
+  cpu_exec(step);
+  return 0;
+}
+
+// 打印寄存器的值
+__attribute__((unused)) static int cmd_info(char *args)
+{
+  if (args == NULL)
+  {
+    printf("No commands\n");
+  }
+  // 当输入字符是r时表示读取 strcmp是字符串比较函数 相同时输出0
+  else if (strcmp(args, "r") == 0)
+  {
+    isa_reg_display();
+  }
+  return 0;
+}
+
+// 扫描内存
+__attribute__((unused)) static int cmd_x(char *args)
+{
+  char *first_str = strtok(args, " "); // 分割的第一个字符串
+  char *after_str = strtok(NULL, " "); // 输入NULL是因为 用分割完第一个字符串的args继续分割
+  int length = 0;
+  paddr_t addr = 0;
+  sscanf(first_str, "%d", &length);
+  sscanf(after_str, "%x", &addr);
+  for (int i = 0; i < length; i++)
+  {
+    printf("%x\n", paddr_read(addr, 4)); // 打印出结果
+    addr = addr + 4;                     //+4是因为32位指令集 四个字节(PC)
+  }
+  return 0;
 }
 
 static int cmd_help(char *args);

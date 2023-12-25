@@ -107,6 +107,19 @@ __attribute__((used)) static int cmd_x(char *args)
   return 0;
 }
 
+//表达式求值
+__attribute__((used)) static int cmd_p(char *args)
+{
+  if (args == NULL)
+  {
+    printf("No args\n");
+    return 0;
+  }
+  bool flag = false;
+  expr(args, &flag);
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct
@@ -121,6 +134,7 @@ static struct
     {"si", "单步打印", cmd_si},
     {"info", "打印寄存器", cmd_info},
     {"x", "扫描内存", cmd_x},
+    {"p", "表达式求值", cmd_p},
 
     /* TODO: Add more commands */
 

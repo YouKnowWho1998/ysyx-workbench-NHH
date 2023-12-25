@@ -219,6 +219,157 @@ static bool make_token(char *e)
   return true;
 }
 
+bool check_parentheses(int p, int q)
+{
+  if (tokens[p].type != '(' || tokens[q].type != ')')
+    return false;
+
+  int l = p, r = q;
+  while (l < r)
+  {
+    if (tokens[l].type == '(')
+    {
+      if (tokens[r].type == ')')
+      {
+        l++, r--;
+        continue;
+      }
+      else
+        r--;
+    }
+    else if (tokens[l].type == ')')
+      return false;
+    else
+      l++;
+  }
+
+  return true;
+}
+
+int max(int a, int b)
+{
+  return (a > b) ? a : b;
+}
+
+uint32_t eval(int p, int q)
+{
+  if (p > q)
+  {
+    /* Bad expression */
+    assert(0);
+    return -1;
+  }
+  else if (p == q)
+  {
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+    return atoi(tokens[p].str);
+  }
+  else if (check_parentheses(p, q) == true)
+  {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1);
+  }
+  else
+  {
+    int op = -1; // op = the position of 主运算符 in the token
+    bool flag = false;
+    for (int i = p; i <= q; i++)
+    {
+      if (tokens[i].type == '(')
+      {
+        while (tokens[i].type != ')')
+        {
+          i++;
+        }
+      }
+
+      if (!flag && tokens[i].type == 6)
+      {
+        flag = true;
+        op = max(op, i);
+      }
+
+      if (!flag && tokens[i].type == 7)
+      {
+        flag = true;
+        op = max(op, i);
+      }
+
+      if (!flag && tokens[i].type == 5)
+      {
+        flag = true;
+        op = max(op, i);
+      }
+
+      if (!flag && tokens[i].type == 4)
+      {
+        flag = true;
+        op = max(op, i);
+      }
+      if (!flag && tokens[i].type == 10)
+      {
+        flag = true;
+        op = max(op, i);
+      }
+      if (!flag && (tokens[i].type == '+' || tokens[i].type == '-'))
+      {
+        flag = true;
+        op = max(op, i);
+      }
+      if (!flag && (tokens[i].type == '*' || tokens[i].type == '/'))
+      {
+        op = max(op, i);
+      }
+    }
+
+    int op_type = tokens[op].type;
+
+    // 剩余的部分
+    uint32_t val1 = eval(p, op - 1);
+    uint32_t val2 = eval(op + 1, q);
+
+    switch (op_type)
+    {
+    case '+':
+      return val1 + val2;
+
+    case '-':
+      return val1 - val2;
+
+    case '*':
+      return val1 * val2;
+
+    case '/':
+      if (val2 == 0)
+      {
+        return 0;
+      }
+      return val1 / val2;
+
+    case 4:
+      return val1 == val2;
+
+    case 5:
+      return val1 != val2;
+
+    case 6:
+      return val1 || val2;
+
+    case 7:
+      return val1 && val2;
+
+    default:
+      printf("No Op type.");
+      assert(0);
+    }
+  }
+}
+
 word_t expr(char *e, bool *success)
 {
   if (!make_token(e))
@@ -228,7 +379,6 @@ word_t expr(char *e, bool *success)
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
 
   return 0;
 }

@@ -59,7 +59,7 @@ static int cmd_q(char *args)
 }
 
 // 单步执行
-__attribute__((unused)) static int cmd_si(char *args)
+__attribute__((used)) static int cmd_si(char *args)
 {
   int step = 0;
   if (args == NULL)
@@ -76,7 +76,7 @@ __attribute__((unused)) static int cmd_si(char *args)
 }
 
 // 打印寄存器的值
-__attribute__((unused)) static int cmd_info(char *args)
+__attribute__((used)) static int cmd_info(char *args)
 {
   if (args == NULL)
   {
@@ -91,7 +91,7 @@ __attribute__((unused)) static int cmd_info(char *args)
 }
 
 // 扫描内存
-__attribute__((unused)) static int cmd_x(char *args)
+__attribute__((used)) static int cmd_x(char *args)
 {
   char *first_str = strtok(args, " "); // 分割的第一个字符串
   char *after_str = strtok(NULL, " "); // 输入NULL是因为 用分割完第一个字符串的args继续分割

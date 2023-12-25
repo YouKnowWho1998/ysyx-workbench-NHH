@@ -128,13 +128,83 @@ static bool make_token(char *e)
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
+        Token tmp_token;
         switch (rules[i].token_type)
         {
+        case '+':
+          tmp_token.type = '+';
+          tokens[nr_token++] = tmp_token;
+          break;
+        case '-':
+          tmp_token.type = '-';
+          tokens[nr_token++] = tmp_token;
+          break;
+        case '*':
+          tmp_token.type = '*';
+          tokens[nr_token++] = tmp_token;
+          break;
+        case '/':
+          tmp_token.type = '/';
+          tokens[nr_token++] = tmp_token;
+          break;
+        case 256:
+          break;
+        case '!':
+          tmp_token.type = '!';
+          tokens[nr_token++] = tmp_token;
+          break;
+        case 9:
+          tmp_token.type = ')';
+          tokens[nr_token++] = tmp_token;
+          break;
+        case 8:
+          tmp_token.type = '(';
+          tokens[nr_token++] = tmp_token;
+          break;
+        case 1:
+          tmp_token.type = 1;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
+        case 2:
+          tmp_token.type = 2;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
+        case 3:
+          tmp_token.type = 3;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
+        case 4:
+          tmp_token.type = 4;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
+        case 5:
+          tmp_token.type = 5;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
+        case 6:
+          tmp_token.type = 6;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
+        case 7:
+          tmp_token.type = 7;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
+        case 10:
+          tmp_token.type = 10;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          nr_token++;
+          break;
         default:
-          TODO();
+          printf("i = %d and No rules is com.\n", i);
+          break;
         }
-
         break;
       }
     }

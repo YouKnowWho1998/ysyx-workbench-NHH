@@ -118,6 +118,9 @@ static struct
     {"help", "Display information about all supported commands", cmd_help},
     {"c", "Continue the execution of the program", cmd_c},
     {"q", "Exit NEMU", cmd_q},
+    {"si", "单步打印", cmd_si},
+    {"info", "打印寄存器", cmd_info},
+    {"x", "扫描内存", cmd_x},
 
     /* TODO: Add more commands */
 

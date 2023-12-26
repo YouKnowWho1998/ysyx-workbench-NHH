@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
+#include <memory/vaddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -81,9 +82,10 @@ __attribute__((used)) static int cmd_info(char *args)
   if (args == NULL)
   {
     printf("No commands\n");
+    return 0;
   }
   // 当输入字符是r时表示读取 strcmp是字符串比较函数 相同时输出0
-  else if (strcmp(args, "r") == 0)
+  if (strcmp(args, "r") == 0)
   {
     isa_reg_display();
   }
@@ -93,6 +95,11 @@ __attribute__((used)) static int cmd_info(char *args)
 // 扫描内存
 __attribute__((used)) static int cmd_x(char *args)
 {
+  if (args == NULL)
+  {
+    return 0;
+  }
+
   char *first_str = strtok(args, " "); // 分割的第一个字符串
   char *after_str = strtok(NULL, " "); // 输入NULL是因为 用分割完第一个字符串的args继续分割
   int length = 0;
@@ -107,7 +114,7 @@ __attribute__((used)) static int cmd_x(char *args)
   return 0;
 }
 
-//表达式求值
+// 表达式求值
 __attribute__((used)) static int cmd_p(char *args)
 {
   if (args == NULL)
@@ -115,8 +122,18 @@ __attribute__((used)) static int cmd_p(char *args)
     printf("No args\n");
     return 0;
   }
-  bool flag = false;
-  expr(args, &flag);
+
+  bool success = true;
+  uint64_t ret = expr(args, &success);
+
+  if (success)
+  {
+    printf("%s = %lx(%lu)\n", args, ret, ret);
+  }
+  else
+  {
+    printf("%s: Syntax Error.\n", args);
+  }
   return 0;
 }
 

@@ -60,7 +60,7 @@ static int cmd_q(char *args)
 }
 
 // 单步执行
-__attribute__((used)) static int cmd_si(char *args)
+__attribute__((unused)) static int cmd_si(char *args)
 {
   int step = 0;
   if (args == NULL)
@@ -77,7 +77,7 @@ __attribute__((used)) static int cmd_si(char *args)
 }
 
 // 打印寄存器的值
-__attribute__((used)) static int cmd_info(char *args)
+__attribute__((unused)) static int cmd_info(char *args)
 {
   if (args == NULL)
   {
@@ -93,7 +93,7 @@ __attribute__((used)) static int cmd_info(char *args)
 }
 
 // 扫描内存
-__attribute__((used)) static int cmd_x(char *args)
+__attribute__((unused)) static int cmd_x(char *args)
 {
   if (args == NULL)
   {
@@ -115,25 +115,16 @@ __attribute__((used)) static int cmd_x(char *args)
 }
 
 // 表达式求值
-__attribute__((used)) static int cmd_p(char *args)
+static int cmd_p(char *args)
 {
-  if (args == NULL)
-  {
-    printf("No args\n");
-    return 0;
-  }
-
   bool success = true;
+  
   uint64_t ret = expr(args, &success);
-
+  
   if (success)
-  {
     printf("%s = %lx(%lu)\n", args, ret, ret);
-  }
   else
-  {
     printf("%s: Syntax Error.\n", args);
-  }
   return 0;
 }
 

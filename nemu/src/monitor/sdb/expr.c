@@ -61,7 +61,7 @@ static struct rule
     {"&&", TK_AND},                 // and
     {"\\$[a-zA-Z]+[0-9]*", TK_REG}, // 寄存器
     {"0[xX][0-9a-fA-F]+", TK_HEX},  // 十六进制
-    {"[0-9]+", TK_NUM},             // 数字
+    {"[0-9]+", TK_NUM}             // 数字
 };
 
 #define NR_REGEX ARRLEN(rules)

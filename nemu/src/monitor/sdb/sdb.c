@@ -115,18 +115,7 @@ __attribute__((unused)) static int cmd_x(char *args)
 }
 
 // 表达式求值
-static int cmd_p(char *args)
-{
-  bool success = true;
-  
-  uint64_t ret = expr(args, &success);
-  
-  if (success)
-    printf("%s = %lx(%lu)\n", args, ret, ret);
-  else
-    printf("%s: Syntax Error.\n", args);
-  return 0;
-}
+
 
 static int cmd_help(char *args);
 
@@ -142,7 +131,7 @@ static struct
     {"si", "单步打印", cmd_si},
     {"info", "打印寄存器", cmd_info},
     {"x", "扫描内存", cmd_x},
-    {"p", "表达式求值", cmd_p},
+    // {"p", "表达式求值", cmd_p},
 
     /* TODO: Add more commands */
 

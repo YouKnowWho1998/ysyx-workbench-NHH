@@ -31,7 +31,7 @@ enum
   TK_REG,   // 寄存器
   TK_HEX,   // 十六进制
   TK_NUM,   // 数字（十进制）
-  TK_REF    // 解引用(指针)
+  // TK_REF    // 解引用(指针)
   /* TODO: Add more token types */
 };
 
@@ -47,15 +47,15 @@ static struct rule
      */
     {" +", TK_NOTYPE},              // spaces
     {"\\+", '+'},                   // plus
-    {"==", TK_EQ},                  // equal
+    {"\\=\\=", TK_EQ},              // equal
     {"\\-", '-'},                   // sub
     {"\\*", '*'},                   // mulx
     {"\\/", '/'},                   // divid
     {"\\(", '('},                   // (
     {"\\)", ')'},                   // )
-    {"!=", TK_NOTEQ},               // not_equal
-    {"||", TK_OR},                  // or
-    {"&&", TK_AND},                 // and
+    {"\\!\\=", TK_NOTEQ},           // not_equal
+    {"\\|\\|", TK_OR},              // or
+    {"\\&\\&", TK_AND},             // and
     {"\\$[a-zA-Z]+[0-9]*", TK_REG}, // 寄存器
     {"0[xX][0-9a-fA-F]+", TK_HEX},  // 十六进制
     {"[0-9]+", TK_NUM}              // 数字
@@ -123,53 +123,53 @@ static bool make_token(char *e)
 
         switch (rules[i].token_type)
         {
-          case TK_NOTYPE: 
-            break;
-          case '+':
-            tokens[nr_token].type = rules[i].token_type;
-            break;
-          case TK_EQ:
-            tokens[nr_token].type = rules[i].token_type;
-            break;
-          case '-':
-            tokens[nr_token].type = rules[i].token_type;
-            break;
-          case '*':
-            tokens[nr_token].type = rules[i].token_type;
-            break;
-          case '/':
-            tokens[nr_token].type = rules[i].token_type;
-            break;
-          case '(':
-            tokens[nr_token].type = rules[i].token_type;
-            break;
-          case ')':
-            tokens[nr_token].type = rules[i].token_type;
-            break;
-          case TK_NOTEQ:
-            tokens[nr_token].type = rules[i].token_type;
-            strcpy(tokens[nr_token].str, "!=");
-            break;
-          case TK_OR:
-            tokens[nr_token].type = rules[i].token_type;
-            strcpy(tokens[nr_token].str, "||");
-            break;
-          case TK_AND:
-            tokens[nr_token].type = rules[i].token_type;
-            strcpy(tokens[nr_token].str, "&&");
-            break;
-          case TK_HEX:
-          case TK_NUM:
-          case TK_REG:
-            tokens[nr_token].type = rules[i].token_type;
-            strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
-            break;
-          default:
-            printf("i = %d and No rules is com.\n", i);
-            break;
-          }
-          ++nr_token;
+        case TK_NOTYPE:
           break;
+        case '+':
+          tokens[nr_token].type = rules[i].token_type;
+          break;
+        case TK_EQ:
+          tokens[nr_token].type = rules[i].token_type;
+          break;
+        case '-':
+          tokens[nr_token].type = rules[i].token_type;
+          break;
+        case '*':
+          tokens[nr_token].type = rules[i].token_type;
+          break;
+        case '/':
+          tokens[nr_token].type = rules[i].token_type;
+          break;
+        case '(':
+          tokens[nr_token].type = rules[i].token_type;
+          break;
+        case ')':
+          tokens[nr_token].type = rules[i].token_type;
+          break;
+        case TK_NOTEQ:
+          tokens[nr_token].type = rules[i].token_type;
+          strcpy(tokens[nr_token].str, "!=");
+          break;
+        case TK_OR:
+          tokens[nr_token].type = rules[i].token_type;
+          strcpy(tokens[nr_token].str, "||");
+          break;
+        case TK_AND:
+          tokens[nr_token].type = rules[i].token_type;
+          strcpy(tokens[nr_token].str, "&&");
+          break;
+        case TK_HEX:
+        case TK_NUM:
+        case TK_REG:
+          tokens[nr_token].type = rules[i].token_type;
+          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+          break;
+        default:
+          printf("i = %d and No rules is com.\n", i);
+          break;
+        }
+        ++nr_token;
+        break;
       }
     }
 
@@ -179,7 +179,6 @@ static bool make_token(char *e)
       return false;
     }
   }
-
   return true;
 }
 

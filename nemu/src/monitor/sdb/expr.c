@@ -301,7 +301,6 @@ uint32_t eval(int p, int q)
     }
     printf("主运算符位置是：%d.\n", op);
     int op_type = tokens[op].type; // 主运算符属性
-    printf("主运算符是：%d.\n", op_type);
 
     // 递归处理剩余的部分
     uint32_t val1 = eval(p, op - 1);

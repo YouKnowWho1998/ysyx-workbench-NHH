@@ -99,7 +99,6 @@ static bool make_token(char *e)
   int position = 0;
   int i;
   regmatch_t pmatch;
-
   nr_token = 0;
 
   while (e[position] != '\0')
@@ -110,32 +109,31 @@ static bool make_token(char *e)
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0)
       {
         char *substr_start = e + position;
-        int substr_len = pmatch.rm_eo; // 结束位置
+        int substr_len = pmatch.rm_eo;
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
+
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-        // 排除空格
         if (rules[i].token_type == TK_NOTYPE)
         {
           break;
         }
-        // 保存其他的token
         tokens[nr_token].type = rules[i].token_type;
-        // 对于以下三种情况 需要把token值保存下来
+
         switch (rules[i].token_type)
         {
-        case TK_HEX:
         case TK_NUM:
+        case TK_HEX:
         case TK_REG:
-          assert(substr_len <= 32);                                      // 必须小于32
-          memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str)); // 初始化内存块(tokens[nr_token].str)
-          memcpy(tokens[nr_token].str, substr_start, substr_len);        // 写入数据到内存块中(tokens[nr_token].str)
+          assert(substr_len <= 32);
+          memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));
+          memcpy(tokens[nr_token].str, substr_start, substr_len);
           break;
         default:
           TODO();

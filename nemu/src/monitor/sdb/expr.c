@@ -120,27 +120,56 @@ static bool make_token(char *e)
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-        if (rules[i].token_type == TK_NOTYPE)
-        {
-          break;
-        }
-        tokens[nr_token].type = rules[i].token_type;
 
         switch (rules[i].token_type)
         {
-        case TK_NUM:
-        case TK_HEX:
-        case TK_REG:
-          assert(substr_len <= 32);
-          memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));
-          memcpy(tokens[nr_token].str, substr_start, substr_len);
+          case TK_NOTYPE: 
+            break;
+          case '+':
+            tokens[nr_token].type = rules[i].token_type;
+            break;
+          case TK_EQ:
+            tokens[nr_token].type = rules[i].token_type;
+            break;
+          case '-':
+            tokens[nr_token].type = rules[i].token_type;
+            break;
+          case '*':
+            tokens[nr_token].type = rules[i].token_type;
+            break;
+          case '/':
+            tokens[nr_token].type = rules[i].token_type;
+            break;
+          case '(':
+            tokens[nr_token].type = rules[i].token_type;
+            break;
+          case ')':
+            tokens[nr_token].type = rules[i].token_type;
+            break;
+          case TK_NOTEQ:
+            tokens[nr_token].type = rules[i].token_type;
+            strcpy(tokens[nr_token].str, "!=");
+            break;
+          case TK_OR:
+            tokens[nr_token].type = rules[i].token_type;
+            strcpy(tokens[nr_token].str, "||");
+            break;
+          case TK_AND:
+            tokens[nr_token].type = rules[i].token_type;
+            strcpy(tokens[nr_token].str, "&&");
+            break;
+          case TK_HEX:
+          case TK_NUM:
+          case TK_REG:
+            tokens[nr_token].type = rules[i].token_type;
+            strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+            break;
+          default:
+            printf("i = %d and No rules is com.\n", i);
+            break;
+          }
+          ++nr_token;
           break;
-        default:
-          TODO();
-          break;
-        }
-        ++nr_token;
-        break;
       }
     }
 

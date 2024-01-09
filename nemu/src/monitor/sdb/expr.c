@@ -24,16 +24,15 @@
 enum
 {
   TK_NOTYPE = 256,
-  TK_NUM,   // 数字（十进制）
-  TK_REG,   // 寄存器
-  TK_HEX,   // 十六进制
   TK_EQ,    // ==
   TK_NOTEQ, // !=
-  TK_OR,    // |
+  TK_OR,    // ||
   TK_AND,   // &&
+  TK_REG,   // 寄存器
+  TK_HEX,   // 十六进制
+  TK_NUM,   // 数字（十进制）
   TK_REF    // 解引用(指针)
   /* TODO: Add more token types */
-
 };
 
 // static int token_rank[512];
@@ -43,11 +42,9 @@ static struct rule
   const char *regex;
   int token_type;
 } rules[] = {
-
     /* TODO: Add more rules.
      * Pay attention to the precedence level of different rules.
      */
-
     {" +", TK_NOTYPE},              // spaces
     {"\\+", '+'},                   // plus
     {"==", TK_EQ},                  // equal
@@ -114,8 +111,10 @@ static bool make_token(char *e)
       {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo; // 结束位置
+
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
+
         position += substr_len;
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
@@ -139,6 +138,7 @@ static bool make_token(char *e)
           memcpy(tokens[nr_token].str, substr_start, substr_len);        // 写入数据到内存块中(tokens[nr_token].str)
           break;
         default:
+          TODO();
           break;
         }
         ++nr_token;

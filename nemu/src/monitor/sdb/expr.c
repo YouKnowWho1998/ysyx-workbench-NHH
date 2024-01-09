@@ -299,7 +299,7 @@ uint32_t eval(int p, int q)
         op = max(op, i);
       }
     }
-    printf("主运算符位置是：%d.\n", op);
+    
     int op_type = tokens[op].type; // 主运算符属性
 
     // 递归处理剩余的部分

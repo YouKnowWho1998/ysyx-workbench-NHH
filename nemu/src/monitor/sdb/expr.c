@@ -35,7 +35,16 @@ enum
   /* TODO: Add more token types */
 };
 
-static int token_rank[512];
+// 运算优先级指示符
+enum
+{
+  top4,
+  top3,
+  top2,
+  top1,
+  top0,
+};
+
 
 static struct rule
 {
@@ -217,6 +226,76 @@ static uint64_t str2int(char *s, unsigned base)
   return ret;
 }
 
+static uint32_t get_main_op(int p, int q, bool *success)
+{
+  if (*success == false)
+  {
+    return 0;
+  }
+
+  int op = -1;
+  int cnt = 0;
+  int top_prior = top0;
+  int prior = top0;
+  for (int i = p; i < q; i++)
+  {
+    // 主运算符不能在括号中间
+    if (tokens[i].type == '(')
+    {
+      cnt++;
+    }
+    else if (tokens[i].type == ')')
+    {
+      cnt--;
+    }
+    if (cnt != 0)
+    {
+      continue;
+    }
+
+    // 根据优先级判断主运算符
+    if (tokens[i].type == TK_AND || tokens[i].type == TK_OR)
+    {
+      prior = top4;
+    }
+    else if (tokens[i].type == TK_EQ || tokens[i].type == TK_NOTEQ)
+    {
+      prior = top3;
+    }
+    else if (tokens[i].type == '+' || tokens[i].type == '-')
+    {
+      prior = top2;
+    }
+    else if (tokens[i].type == '*' || tokens[i].type == '/')
+    {
+      prior = top1;
+    }
+    else
+    {
+      prior = top0;
+    }
+
+    if (prior < top_prior)
+    {
+      top_prior = prior;
+      op = i;
+    }
+    else if (prior == top_prior)
+    {
+      // 单运算符从右向左
+      op = (top_prior == top0) ? op : i;
+    }
+  }
+
+  if (top_prior == top0)
+  {
+    *success = false;
+    return 0;
+  }
+  *success = true;
+  return op;
+}
+
 static uint32_t eval(int p, int q, bool *success)
 {
   if (p > q)
@@ -255,39 +334,9 @@ static uint32_t eval(int p, int q, bool *success)
   else
   {
     /* We should do more things here. */
-    int op = -1;  // 主运算符
-    int pare = 0; // 括号
-    for (int i = p; i <= q; i++)
-    {
-      if (tokens[i].type == '(')
-      {
-        pare++;
-      }
-      if (tokens[i].type == ')')
-      {
-        pare--;
-      }
-      if (pare == 0)
-      {
-        if (token_rank[tokens[i].type] == 0)
-        {
-          continue;
-        }
-        if (op == -1 || token_rank[tokens[i].type] >= token_rank[tokens[op].type])
-        {
-          op = i;
-        }
-      }
-    }
 
-    printf("Eval(%d, %d): main operator at %d.\n", p, q, op);
-    if (op == -1)
-    {
-      *success = false;
-      printf("cannot find main operator at eval(%d, %d).\n", p, q);
-      return 0;
-    }
-
+    // 获得主运算符
+    uint32_t op = get_main_op(p, q, success);
     // 递归处理剩余的部分
     uint32_t val1 = eval(p, op - 1, success);
     uint32_t val2 = eval(op + 1, q, success);

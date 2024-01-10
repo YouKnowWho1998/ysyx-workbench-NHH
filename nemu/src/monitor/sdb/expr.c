@@ -35,7 +35,7 @@ enum
   /* TODO: Add more token types */
 };
 
-// static int token_rank[512];
+static int token_rank[512];
 
 static struct rule
 {
@@ -184,55 +184,46 @@ static bool make_token(char *e)
 
 static bool check_parentheses(int p, int q)
 {
+  // 没有括号包围
   if (tokens[p].type != '(' || tokens[q].type != ')')
-  {
     return false;
-  }
-
-  int l = p;
-  int r = q;
-  while (l < r)
+  // 括号不匹配
+  int pare = 1;
+  for (int i = p + 1; i < q; ++i)
   {
-    if (tokens[l].type == '(')
-    {
-      if (tokens[l].type == '(')
-      {
-        l++;
-        r--;
-        continue;
-      }
-      else
-      {
-        r--;
-      }
-    }
-    else if (tokens[l].type == ')')
-    {
+    if (tokens[i].type == '(')
+      ++pare;
+    if (tokens[i].type == ')')
+      --pare;
+    if (pare == 0)
       return false;
-    }
-    else
+    if (pare < 0)
     {
-      l++;
+      printf("Unclosed parentheses before %d.\n", i);
+      return false;
     }
   }
   return true;
 }
 
-int max(int a, int b)
+static uint64_t str2int(char *s, unsigned base)
 {
-  if (a > b)
-    return a;
-  else
-    return b;
+  int len = strlen(s);
+  uint64_t ret = 0;
+  for (int i = 0; i < len; ++i)
+  {
+    ret = ret * base + s[i] - '0';
+  }
+  return ret;
 }
 
-uint32_t eval(int p, int q)
+static uint32_t eval(int p, int q, bool *success)
 {
   if (p > q)
   {
     /* Bad expression */
-    assert(0);
-    return -1;
+    printf("表达式有误，位置在(%d %d).\n", p, q);
+    return 0;
   }
   else if (p == q)
   {
@@ -240,73 +231,67 @@ uint32_t eval(int p, int q)
      * For now this token should be a number.
      * Return the value of the number.
      */
-    return atoi(tokens[p].str); // 将字符串转换成整数
+    switch (tokens[p].type)
+    {
+    case TK_HEX:
+      return str2int(tokens[p].str, 16u);
+    case TK_NUM:
+      return str2int(tokens[p].str, 10u);
+    case TK_REG:
+      return (uint32_t)isa_reg_str2val(tokens[p].str + 1, success);
+    default:
+      printf("Wrong expression.\n");
+      return 0;
+    }
   }
   else if (check_parentheses(p, q) == true)
   {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    return eval(p + 1, q - 1);
+    return eval(p + 1, q - 1, success);
   }
   else
   {
     /* We should do more things here. */
-    int op = -1; // op是主运算符
-    bool flag = false;
+    int op = -1;  // 主运算符
+    int pare = 0; // 括号
     for (int i = p; i <= q; i++)
     {
       if (tokens[i].type == '(')
       {
-        while (tokens[i].type != ')')
+        pare++;
+      }
+      if (tokens[i].type == ')')
+      {
+        pare--;
+      }
+      if (pare == 0)
+      {
+        if (token_rank[tokens[i].type] == 0)
         {
-          i++;
+          continue;
+        }
+        if (op == -1 || token_rank[tokens[i].type] >= token_rank[tokens[op].type])
+        {
+          op = i;
         }
       }
-
-      if (!flag && tokens[i].type == TK_OR)
-      {
-        flag = true;
-        op = max(op, i);
-      }
-
-      if (!flag && tokens[i].type == TK_AND)
-      {
-        flag = true;
-        op = max(op, i);
-      }
-
-      if (!flag && tokens[i].type == TK_NOTEQ)
-      {
-        flag = true;
-        op = max(op, i);
-      }
-
-      if (!flag && tokens[i].type == TK_EQ)
-      {
-        flag = true;
-        op = max(op, i);
-      }
-
-      if (!flag && (tokens[i].type == '+' || tokens[i].type == '-'))
-      {
-        flag = true;
-        op = max(op, i);
-      }
-
-      if (!flag && (tokens[i].type == '*' || tokens[i].type == '/'))
-      {
-        op = max(op, i);
-      }
     }
-    
-    int op_type = tokens[op].type; // 主运算符属性
+
+    printf("Eval(%d, %d): main operator at %d.\n", p, q, op);
+    if (op == -1)
+    {
+      printf("cannot find main operator at eval(%d, %d).\n", p, q);
+      return 0;
+    }
 
     // 递归处理剩余的部分
-    uint32_t val1 = eval(p, op - 1);
-    uint32_t val2 = eval(op + 1, q);
+    uint32_t val1 = eval(p, op - 1, success);
+    uint32_t val2 = eval(op + 1, q, success);
 
-    switch (op_type)
+    // 计算
+    switch (tokens[op].type)
     {
     case '+':
       return val1 + val2;
@@ -317,8 +302,8 @@ uint32_t eval(int p, int q)
     case '/':
       if (val2 == 0)
       {
-        printf("val2被除数不可以是0");
-        break;
+        printf("the divisior can not be 0.\n");
+        return 0;
       }
       return val1 / val2;
     case TK_EQ:
@@ -330,11 +315,10 @@ uint32_t eval(int p, int q)
     case TK_AND:
       return val1 && val2;
     default:
-      printf("没有主运算符.");
-      assert(0);
+      printf("there is unknown token type at %d.\n", op);
+      return 0;
     }
   }
-  return 0;
 }
 
 word_t expr(char *e, bool *success)
@@ -345,5 +329,5 @@ word_t expr(char *e, bool *success)
     return 0;
   }
   /* TODO: Insert codes to evaluate the expression. */
-  return eval(0, *e);
+  return eval(0, nr_token - 1, success);
 }

@@ -222,6 +222,7 @@ static uint32_t eval(int p, int q, bool *success)
   if (p > q)
   {
     /* Bad expression */
+    *success = false;
     printf("表达式有误，位置在(%d %d).\n", p, q);
     return 0;
   }
@@ -282,6 +283,7 @@ static uint32_t eval(int p, int q, bool *success)
     printf("Eval(%d, %d): main operator at %d.\n", p, q, op);
     if (op == -1)
     {
+      *success = false;
       printf("cannot find main operator at eval(%d, %d).\n", p, q);
       return 0;
     }

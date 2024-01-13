@@ -39,6 +39,7 @@ enum
 // 运算优先级指示符
 enum
 {
+  top5,
   top4,
   top3,
   top2,
@@ -256,17 +257,21 @@ static uint32_t get_main_op(int p, int q, bool *success)
     // 根据优先级判断主运算符
     if (tokens[i].type == TK_AND || tokens[i].type == TK_OR)
     {
-      prior = top4;
+      prior = top5;
     }
     else if (tokens[i].type == TK_EQ || tokens[i].type == TK_NOTEQ)
     {
-      prior = top3;
+      prior = top4;
     }
     else if (tokens[i].type == '+' || tokens[i].type == '-')
     {
-      prior = top2;
+      prior = top3;
     }
     else if (tokens[i].type == '*' || tokens[i].type == '/')
+    {
+      prior = top2;
+    }
+    else if(tokens[i].type == TK_POINTER || tokens[i].type == TK_NEG)
     {
       prior = top1;
     }

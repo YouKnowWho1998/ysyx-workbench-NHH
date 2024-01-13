@@ -19,7 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
-#include <memory/vaddr.h>
+#include <memory/paddr.h>
 
 enum
 {
@@ -142,9 +142,11 @@ static bool make_token(char *e)
           tokens[nr_token].type = rules[i].token_type;
           break;
         case '-':
+        case TK_NEG:
           tokens[nr_token].type = rules[i].token_type;
           break;
         case '*':
+        case TK_POINTER:
           tokens[nr_token].type = rules[i].token_type;
           break;
         case '/':
@@ -374,7 +376,7 @@ static uint32_t eval(int p, int q, bool *success)
     case TK_NEG:
       return -val2;
     case TK_POINTER:
-      return vaddr_read(val2, 4);
+      return paddr_read(val2, 4);
     default:
       printf("there is unknown token type at %d.\n", op);
       *success = false;

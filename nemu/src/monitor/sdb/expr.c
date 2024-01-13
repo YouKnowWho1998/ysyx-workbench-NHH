@@ -24,14 +24,15 @@
 enum
 {
   TK_NOTYPE = 256,
-  TK_EQ,    // ==
-  TK_NOTEQ, // !=
-  TK_OR,    // ||
-  TK_AND,   // &&
-  TK_REG,   // 寄存器
-  TK_HEX,   // 十六进制
-  TK_NUM,   // 数字（十进制）
-  // TK_REF    // 解引用(指针)
+  TK_EQ,     // ==
+  TK_NOTEQ,  // !=
+  TK_OR,     // ||
+  TK_AND,    // &&
+  TK_REG,    // 寄存器
+  TK_HEX,    // 十六进制
+  TK_NUM,    // 数字（十进制）
+  TK_NEG,    // 负数
+  TK_POINTER // 解引用(指针)
   /* TODO: Add more token types */
 };
 
@@ -44,7 +45,6 @@ enum
   top1,
   top0,
 };
-
 
 static struct rule
 {
@@ -318,7 +318,7 @@ static uint32_t eval(int p, int q, bool *success)
     case TK_NUM:
       return str2int(tokens[p].str, 10u);
     case TK_REG:
-      return (uint32_t)isa_reg_str2val(tokens[p].str + 1, success);
+      return (uint32_t)isa_reg_str2val(tokens[p].str + 1, success); // 返回寄存器的值
     default:
       printf("Wrong expression.\n");
       return 0;
@@ -365,6 +365,10 @@ static uint32_t eval(int p, int q, bool *success)
       return val1 || val2;
     case TK_AND:
       return val1 && val2;
+    case TK_NEG:
+      return -val2;
+    case TK_POINTER:
+      return paddr_read(val2, 4);
     default:
       printf("there is unknown token type at %d.\n", op);
       return 0;
@@ -372,6 +376,19 @@ static uint32_t eval(int p, int q, bool *success)
   }
 }
 
+// 对应负数和指针解引用情况的综合
+#define ALL tokens[i - 1].type == (TK_NOTYPE || tokens[i - 1].type == '+' || \
+                                   tokens[i - 1].type == '-' ||              \
+                                   tokens[i - 1].type == '*' ||              \
+                                   tokens[i - 1].type == '/' ||              \
+                                   tokens[i - 1].type == '(' ||              \
+                                   tokens[i - 1].type == ')' ||              \
+                                   tokens[i - 1].type == TK_AND ||           \
+                                   tokens[i - 1].type == TK_OR ||            \
+                                   tokens[i - 1].type == TK_NEG ||           \
+                                   tokens[i - 1].type == TK_POINTER)
+
+// 执行函数
 word_t expr(char *e, bool *success)
 {
   if (!make_token(e))
@@ -380,5 +397,20 @@ word_t expr(char *e, bool *success)
     return 0;
   }
   /* TODO: Insert codes to evaluate the expression. */
+  for (int i = 0; i < nr_token; i++)
+  {
+    // 指针解引用识别
+    if (tokens[i].type == '*' && (i == 0 || ALL))
+    {
+      tokens[i].type = TK_POINTER;
+    }
+
+    // 负数识别
+    if (tokens[i].type == '-' && (i == 0 || ALL))
+    {
+      tokens[i].type = TK_NEG;
+    }
+  }
+
   return eval(0, nr_token - 1, success);
 }

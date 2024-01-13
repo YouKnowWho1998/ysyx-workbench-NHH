@@ -58,7 +58,7 @@ static struct rule
     {" +", TK_NOTYPE},              // spaces
     {"\\+", '+'},                   // plus
     {"\\=\\=", TK_EQ},              // equal
-    {"\\-", '-'},                   // sub
+    {"-", '-'},                     // minus 负数和减
     {"\\*", '*'},                   // mulx
     {"\\/", '/'},                   // divid
     {"\\(", '('},                   // (
@@ -130,60 +130,74 @@ static bool make_token(char *e)
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
         switch (rules[i].token_type)
         {
         case TK_NOTYPE:
           break;
-        case '+':
-          tokens[nr_token].type = rules[i].token_type;
-          break;
-        case TK_EQ:
-          tokens[nr_token].type = rules[i].token_type;
-          break;
-        case '-':
-        case TK_NEG:
-          tokens[nr_token].type = rules[i].token_type;
-          break;
-        case '*':
-        case TK_POINTER:
-          tokens[nr_token].type = rules[i].token_type;
-          break;
-        case '/':
-          tokens[nr_token].type = rules[i].token_type;
-          break;
-        case '(':
-          tokens[nr_token].type = rules[i].token_type;
-          break;
-        case ')':
-          tokens[nr_token].type = rules[i].token_type;
-          break;
-        case TK_NOTEQ:
-          tokens[nr_token].type = rules[i].token_type;
-          strcpy(tokens[nr_token].str, "!=");
-          break;
-        case TK_OR:
-          tokens[nr_token].type = rules[i].token_type;
-          strcpy(tokens[nr_token].str, "||");
-          break;
-        case TK_AND:
-          tokens[nr_token].type = rules[i].token_type;
-          strcpy(tokens[nr_token].str, "&&");
-          break;
-        case TK_HEX:
-        case TK_NUM:
-        case TK_REG:
-          tokens[nr_token].type = rules[i].token_type;
-          strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
-          break;
         default:
-          printf("i = %d and No rules is com.\n", i);
+          tokens[nr_token].type = rules[i].token_type;
+          memcpy(tokens[nr_token].str, substr_start, substr_len);
+          tokens[nr_token].str[substr_len] = '\0'; // 字符串结尾别忘了加\0
           break;
         }
-        ++nr_token;
+        nr_token++;
         break;
       }
     }
+
+    //     switch (rules[i].token_type)
+    //     {
+    //     case TK_NOTYPE:
+    //       break;
+    //     case '+':
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       break;
+    //     case TK_EQ:
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       break;
+    //     case '-':
+    //     case TK_NEG:
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       break;
+    //     case '*':
+    //     case TK_POINTER:
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       break;
+    //     case '/':
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       break;
+    //     case '(':
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       break;
+    //     case ')':
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       break;
+    //     case TK_NOTEQ:
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       strcpy(tokens[nr_token].str, "!=");
+    //       break;
+    //     case TK_OR:
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       strcpy(tokens[nr_token].str, "||");
+    //       break;
+    //     case TK_AND:
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       strcpy(tokens[nr_token].str, "&&");
+    //       break;
+    //     case TK_HEX:
+    //     case TK_NUM:
+    //     case TK_REG:
+    //       tokens[nr_token].type = rules[i].token_type;
+    //       strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
+    //       break;
+    //     default:
+    //       printf("i = %d and No rules is com.\n", i);
+    //       break;
+    //     }
+    //     ++nr_token;
+    //     break;
+    //   }
+    // }
 
     if (i == NR_REGEX)
     {
@@ -273,7 +287,7 @@ static uint32_t get_main_op(int p, int q, bool *success)
     {
       prior = top2;
     }
-    else if(tokens[i].type == TK_POINTER || tokens[i].type == TK_NEG)
+    else if (tokens[i].type == TK_POINTER || tokens[i].type == TK_NEG)
     {
       prior = top1;
     }

@@ -326,6 +326,7 @@ static uint32_t eval(int p, int q, bool *success)
       return (uint32_t)isa_reg_str2val(tokens[p].str + 1, success); // 返回寄存器的值
     default:
       printf("Wrong expression.\n");
+      *success = false;
       return 0;
     }
   }
@@ -376,6 +377,7 @@ static uint32_t eval(int p, int q, bool *success)
       return paddr_read(val2, 4);
     default:
       printf("there is unknown token type at %d.\n", op);
+      *success = false;
       return 0;
     }
   }
@@ -416,6 +418,7 @@ word_t expr(char *e, bool *success)
       tokens[i].type = TK_NEG;
     }
   }
-
+  *success = true;
+  
   return eval(0, nr_token - 1, success);
 }

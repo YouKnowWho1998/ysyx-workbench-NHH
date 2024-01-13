@@ -341,7 +341,6 @@ static uint32_t eval(int p, int q, bool *success)
     case TK_REG:
       return (uint32_t)isa_reg_str2val(tokens[p].str + 1, success); // 返回寄存器的值
     default:
-      printf("Wrong expression.\n");
       *success = false;
       return 0;
     }
@@ -359,9 +358,19 @@ static uint32_t eval(int p, int q, bool *success)
 
     // 获得主运算符
     uint32_t op = get_main_op(p, q, success);
+
     // 递归处理剩余的部分
-    uint32_t val1 = eval(p, op - 1, success);
-    uint32_t val2 = eval(op + 1, q, success);
+    uint32_t val1 = 0;
+    uint32_t val2 = 0;
+    if (op >= p + 1)
+    {
+      val1 = eval(p, op - 1, success);
+    }
+
+    if (q >= op + 1)
+    {
+      val2 = eval(op + 1, q, success);
+    }
 
     // 计算
     switch (tokens[op].type)

@@ -222,7 +222,7 @@ static bool check_parentheses(int p, int q)
   {
     if (tokens[i].type == '(')
     {
-      ++l;
+      l++;
     }
     else if (tokens[i].type == ')')
     {
@@ -247,7 +247,8 @@ static bool check_parentheses(int p, int q)
   }
 }
 
-static uint32_t get_main_op(int p, int q, bool *success)
+// 获取主运算符函数
+static uint32_t get_op(int p, int q, bool *success)
 {
   if (*success == false)
   {
@@ -366,7 +367,7 @@ static uint32_t eval(int p, int q, bool *success)
     /* We should do more things here. */
 
     // 获得主运算符
-    uint32_t op = get_main_op(p, q, success);
+    uint32_t op = get_op(p, q, success);
 
     // 递归处理剩余的部分
     uint32_t val1 = 0;

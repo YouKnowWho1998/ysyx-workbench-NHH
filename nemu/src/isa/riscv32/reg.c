@@ -39,6 +39,8 @@ word_t isa_reg_str2val(const char *s, bool *success)
     *success = false;
     return 0;
   }
+
+  // 32个寄存器
   for (int i = 0; i < 32; ++i)
   {
     if (s[0] == regs[i][0] && s[1] == regs[i][1])
@@ -46,10 +48,13 @@ word_t isa_reg_str2val(const char *s, bool *success)
       return gpr(i);
     }
   }
+
+  // 如果是PC寄存器
   if (s[0] == 'p' && s[1] == 'c')
   {
     return cpu.pc;
   }
+
   *success = false;
   return 0;
 }

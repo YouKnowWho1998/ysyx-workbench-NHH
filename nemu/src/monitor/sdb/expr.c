@@ -316,12 +316,18 @@ static uint32_t get_main_op(int p, int q, bool *success)
     *success = false;
     return 0;
   }
+
   *success = true;
   return op;
 }
 
 static uint32_t eval(int p, int q, bool *success)
 {
+  if (*success == false)
+  {
+    return 0;
+  }
+
   if (p > q)
   {
     /* Bad expression */
@@ -390,7 +396,10 @@ static uint32_t eval(int p, int q, bool *success)
         printf("the divisior can not be 0.\n");
         return 0;
       }
-      return val1 / val2;
+      else
+      {
+        return val1 / val2;
+      }
     case TK_EQ:
       return val1 == val2;
     case TK_NOTEQ:

@@ -212,35 +212,39 @@ static bool check_parentheses(int p, int q)
 {
   // 没有括号包围
   if (tokens[p].type != '(' || tokens[q].type != ')')
+  {
     return false;
-  // 括号不匹配
-  int pare = 1;
+  }
+
+  int l = 0; // 左括号
+  int r = 0; // 右括号
   for (int i = p + 1; i < q; ++i)
   {
     if (tokens[i].type == '(')
-      ++pare;
-    if (tokens[i].type == ')')
-      --pare;
-    if (pare == 0)
-      return false;
-    if (pare < 0)
     {
-      printf("Unclosed parentheses before %d.\n", i);
+      ++l;
+    }
+    else if (tokens[i].type == ')')
+    {
+      r++;
+    }
+
+    // 括号不匹配
+    if (r > l)
+    {
       return false;
     }
   }
-  return true;
-}
 
-static uint64_t str2int(char *s, unsigned base)
-{
-  int len = strlen(s);
-  uint64_t ret = 0;
-  for (int i = 0; i < len; ++i)
+  // 括号匹配
+  if (tokens[p].type == '(' || tokens[q].type == ')')
   {
-    ret = ret * base + s[i] - '0';
+    return true;
   }
-  return ret;
+  else
+  {
+    return false;
+  }
 }
 
 static uint32_t get_main_op(int p, int q, bool *success)
@@ -250,7 +254,7 @@ static uint32_t get_main_op(int p, int q, bool *success)
     return 0;
   }
 
-  int op = -1;
+  int op = 0;
   int cnt = 0;
   int top_prior = top0;
   int prior = top0;
@@ -303,8 +307,7 @@ static uint32_t get_main_op(int p, int q, bool *success)
     }
     else if (prior == top_prior)
     {
-      // 单运算符从右向左
-      op = (top_prior == top0) ? op : i;
+      op = (top_prior == top1) ? op : i;
     }
   }
 
@@ -335,11 +338,11 @@ static uint32_t eval(int p, int q, bool *success)
     switch (tokens[p].type)
     {
     case TK_HEX:
-      return str2int(tokens[p].str, 16u);
+      return strtol(tokens[p].str, NULL, 16);
     case TK_NUM:
-      return str2int(tokens[p].str, 10u);
+      return strtol(tokens[p].str, NULL, 10);
     case TK_REG:
-      return (uint32_t)isa_reg_str2val(tokens[p].str + 1, success); // 返回寄存器的值
+      return isa_reg_str2val(tokens[p].str + 1, success); // 返回寄存器的值
     default:
       *success = false;
       return 0;
@@ -409,16 +412,16 @@ static uint32_t eval(int p, int q, bool *success)
 }
 
 // 对应负数和指针解引用情况的综合
-#define ALL tokens[i - 1].type == (TK_NOTYPE || tokens[i - 1].type == '+' || \
-                                   tokens[i - 1].type == '-' ||              \
-                                   tokens[i - 1].type == '*' ||              \
-                                   tokens[i - 1].type == '/' ||              \
-                                   tokens[i - 1].type == '(' ||              \
-                                   tokens[i - 1].type == ')' ||              \
-                                   tokens[i - 1].type == TK_AND ||           \
-                                   tokens[i - 1].type == TK_OR ||            \
-                                   tokens[i - 1].type == TK_NEG ||           \
-                                   tokens[i - 1].type == TK_POINTER)
+#define CERTAIN_TYPE tokens[i - 1].type == (TK_NOTYPE || tokens[i - 1].type == '+' || \
+                                            tokens[i - 1].type == '-' ||              \
+                                            tokens[i - 1].type == '*' ||              \
+                                            tokens[i - 1].type == '/' ||              \
+                                            tokens[i - 1].type == '(' ||              \
+                                            tokens[i - 1].type == ')' ||              \
+                                            tokens[i - 1].type == TK_AND ||           \
+                                            tokens[i - 1].type == TK_OR ||            \
+                                            tokens[i - 1].type == TK_NEG ||           \
+                                            tokens[i - 1].type == TK_POINTER)
 
 // 执行函数
 word_t expr(char *e, bool *success)
@@ -432,13 +435,13 @@ word_t expr(char *e, bool *success)
   for (int i = 0; i < nr_token; i++)
   {
     // 指针解引用识别
-    if (tokens[i].type == '*' && (i == 0 || ALL))
+    if (tokens[i].type == '*' && (i == 0 || CERTAIN_TYPE))
     {
       tokens[i].type = TK_POINTER;
     }
 
     // 负数识别
-    if (tokens[i].type == '-' && (i == 0 || ALL))
+    if (tokens[i].type == '-' && (i == 0 || CERTAIN_TYPE))
     {
       tokens[i].type = TK_NEG;
     }

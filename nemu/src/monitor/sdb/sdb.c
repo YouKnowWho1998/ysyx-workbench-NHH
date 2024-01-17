@@ -23,8 +23,12 @@
 
 static int is_batch_mode = false;
 
+//别忘了声明
 void init_regex();
 void init_wp_pool();
+void watchpoint_display();
+void wp_add(char *e);
+void wp_delete(int n);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char *rl_gets()
@@ -53,15 +57,14 @@ static int cmd_c(char *args)
   return 0;
 }
 
-
 static int cmd_q(char *args)
 {
-  nemu_state.state = NEMU_QUIT; //直接赋值NEMU_QUIT
+  nemu_state.state = NEMU_QUIT; // 直接赋值NEMU_QUIT
   return -1;
 }
 
 // 单步执行
-__attribute__((unused)) static int cmd_si(char *args)
+static int cmd_si(char *args)
 {
   int step = 0;
   if (args == NULL)
@@ -78,23 +81,32 @@ __attribute__((unused)) static int cmd_si(char *args)
 }
 
 // 打印寄存器的值
-__attribute__((unused)) static int cmd_info(char *args)
+static int cmd_info(char *args)
 {
   if (args == NULL)
   {
     printf("No commands\n");
     return 0;
   }
+
   // 当输入字符是r时表示读取 strcmp是字符串比较函数 相同时输出0
   if (strcmp(args, "r") == 0)
   {
     isa_reg_display();
+    return 0;
   }
+
+  if (strcmp(args, "w") == 0)
+  {
+    watchpoint_display();
+    return 0;
+  }
+
   return 0;
 }
 
 // 扫描内存
-__attribute__((unused)) static int cmd_x(char *args)
+static int cmd_x(char *args)
 {
   if (args == NULL)
   {
@@ -131,6 +143,19 @@ static int cmd_p(char *args)
   return 0;
 }
 
+// 增加监视点
+static int cmd_w(char *args)
+{
+  wp_add(args);
+  return 0;
+}
+
+//删除监视点
+static int cmd_d(char *args){
+  wp_delete(atoi(args)); //注意输入的参数是int型
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct
@@ -146,9 +171,9 @@ static struct
     {"info", "打印寄存器", cmd_info},
     {"x", "扫描内存", cmd_x},
     {"p", "表达式求值", cmd_p},
-
+    {"w","增加监视点",cmd_w},
+    {"d","删除监视点",cmd_d},
     /* TODO: Add more commands */
-
 };
 
 #define NR_CMD ARRLEN(cmd_table)

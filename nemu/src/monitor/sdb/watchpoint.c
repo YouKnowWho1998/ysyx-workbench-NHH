@@ -56,52 +56,72 @@ WP *new_wp()
 
 void free_wp(WP *wp)
 {
-  wp->next = free_;
-  free_ = wp;
+  // 如果是头节点
+  if (head == wp)
+  {
+    WP *p = head;
+    head = head->next;
+    p->next = free_;
+    free_ = p;
+  }
+  else
+  {
+    WP *p = head;
+
+    // 如果p没有指向wp位置则不断遍历
+    while (p != NULL && p->next != wp)
+    {
+      p = p->next;
+    }
+
+    // 如果没有找到wp位置
+    if (p == NULL)
+    {
+      printf("No watchpoinnts number %d.\n", wp->NO);
+      return;
+    }
+
+    WP *q = p->next;
+    p->next = q->next;
+    q->next = free_;
+    memset(q->expr, 0, sizeof(q->expr)); // 填充0归还到free_空闲链表中
+    free_ = q;
+  }
 }
 
 void wp_add(char *e)
 {
-  WP *wp = NULL;
-  bool success;
+  bool success = true;
   int val = expr(e, &success); // 表达式计算后的值
 
-  if (success == false)
+  if (success)
   {
-    return;
+    WP *p = new_wp();
+    memcpy(p->expr, e, strlen(e)); // 存储表达式
+    p->value = val;                // 存储表达式的值
   }
-
-  strcpy(wp->expr, e); // 表达式赋值给节点
-  wp->value = val;     // 表达式计算后的值赋值给节点
+  else
+  {
+    printf("%s:expr error.\n", e);
+  }
 }
 
 void wp_delete(int n)
 {
-  WP *wp = NULL;
-  WP *p = NULL;
-
-  for (wp = head; wp != NULL; wp = wp->next) // 遍历链表
+  WP *p = head;
+  while (p != NULL)
   {
-    if (wp->NO == n) // 要删除的节点
+    if (p->NO != n)
     {
-      break;
+      p = p->next;
     }
-    p = wp;
+    else
+    {
+      free_wp(p);
+      return;
+    }
   }
-
-  if (wp == NULL)
-  {
-    return;
-  }
-
-  if (p == NULL)
-  {
-    head = wp->next;
-  }
-  else
-  {
-    p->next = wp->next;
-  }
+  printf("No watchpoints NO.%d.\n", n);
 }
 
 int check_watchpoint()

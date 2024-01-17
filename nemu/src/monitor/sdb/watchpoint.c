@@ -22,7 +22,7 @@ typedef struct watchpoint
   int NO;
   struct watchpoint *next;
   char expr[32];
-  int value;
+  uint32_t value;
   /* TODO: Add more members if necessary */
 
 } WP;
@@ -124,47 +124,48 @@ void wp_delete(int n)
   printf("No watchpoints NO.%d.\n", n);
 }
 
-int check_watchpoint()
+bool check_watchpoint()
 {
-  WP *wp = NULL;
-  int cnt = 0;
-  for (wp = head; wp != NULL; wp = wp->next)
-  {
-    bool success;
-    int val = expr(wp->expr, &success);
+  WP *p = head;
+  bool changed = false;
 
-    // 如果表达式计算的值与结构体中的原值不符
-    if (val != wp->value)
+  while (p != NULL)
+  {
+    bool success = true;
+    uint32_t val = expr(p->expr, &success);
+    assert(success);
+
+    //如果与实际值不符
+    if (val != p->value)
     {
-      printf("this NO.%d watchpoint is %s.\n", wp->NO, wp->expr);
-      printf("the old value is 0x%x.\n", wp->value);
-      wp->value = val; // 重新赋值
-      printf("the new value is 0x%x.\n", wp->value);
-      cnt++;
+      changed = true;
+      printf("Watchpoint %d: %s\n\n", p->NO, p->expr);
+      printf("The Old value = %x\n", p->value);
+      printf("The New value = %x\n\n", val);
+      p->value = val;
     }
+    p = p->next;
   }
 
-  if (cnt == 0)
-  {
-    return 0;
-  }
-
-  return 1;
+  return changed;
 }
+
 
 void watchpoint_display()
 {
-  WP *wp = NULL;
+  WP *p = head;
 
-  if (head == NULL)
+  if (p == NULL)
   {
     printf("No watchpoints.\n");
   }
   else
   {
-    for (wp = head; wp != NULL; wp = wp->next)
+    printf("watchpoints list.\n");
+    while (p != NULL)
     {
-      printf("NUM = %d.\t expr = %s.\n", wp->NO, wp->expr);
+      printf("No.%d:%s.\n", p->NO, p->expr);
+      p = p->next; // 遍历链表
     }
   }
 }

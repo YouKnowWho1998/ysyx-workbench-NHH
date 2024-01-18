@@ -140,8 +140,8 @@ bool check_watchpoint()
     {
       changed = true;
       printf("Watchpoint %d: %s\n\n", p->NO, p->expr);
-      printf("The Old value = %x\n", p->value);
-      printf("The New value = %x\n\n", val);
+      printf("The Old Value = %x\n", p->value);
+      printf("The New Value = %x\n\n", val);
       p->value = val;
     }
     p = p->next;

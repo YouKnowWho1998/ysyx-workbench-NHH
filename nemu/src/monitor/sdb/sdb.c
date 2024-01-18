@@ -136,10 +136,6 @@ static int cmd_p(char *args)
   {
     printf("%s = %lx(%lu).\n", args, ret, ret);
   }
-  else
-  {
-    printf("%s: Syntax Error.\n", args);
-  }
   return 0;
 }
 

@@ -23,7 +23,7 @@
 
 static int is_batch_mode = false;
 
-//别忘了声明
+//别忘了声明函数 
 void init_regex();
 void init_wp_pool();
 void watchpoint_display();

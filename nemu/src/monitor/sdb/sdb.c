@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-01-07 12:13:15
+ * @LastEditTime : 2024-01-19 19:07:15
+ * @FilePath     : \ysyx\ysyx-workbench\nemu\src\monitor\sdb\sdb.c
+ * @Description  : sdb.c
+ *
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
+ */
 /***************************************************************************************
  * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
  *
@@ -23,7 +32,7 @@
 
 static int is_batch_mode = false;
 
-//别忘了声明函数 
+// 别忘了声明函数
 void init_regex();
 void init_wp_pool();
 void watchpoint_display();
@@ -122,7 +131,7 @@ static int cmd_x(char *args)
   for (int i = 0; i < length; i++)
   {
     printf("%x\n", paddr_read(addr, 4)); // 打印出结果
-    addr = addr + 4;                     //+4是因为32位指令集 四个字节(PC)
+    addr = addr + 4;                     // +4是因为32位指令集 四个字节(PC)
   }
   return 0;
 }
@@ -146,9 +155,10 @@ static int cmd_w(char *args)
   return 0;
 }
 
-//删除监视点
-static int cmd_d(char *args){
-  wp_delete(atoi(args)); //注意输入的参数是int型
+// 删除监视点
+static int cmd_d(char *args)
+{
+  wp_delete(atoi(args)); // 注意输入的参数是int型
   return 0;
 }
 
@@ -167,8 +177,8 @@ static struct
     {"info", "打印寄存器", cmd_info},
     {"x", "扫描内存", cmd_x},
     {"p", "表达式求值", cmd_p},
-    {"w","增加监视点",cmd_w},
-    {"d","删除监视点",cmd_d},
+    {"w", "增加监视点", cmd_w},
+    {"d", "删除监视点", cmd_d},
     /* TODO: Add more commands */
 };
 

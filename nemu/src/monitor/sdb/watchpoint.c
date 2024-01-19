@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-01-07 12:13:15
+ * @LastEditTime : 2024-01-19 20:08:23
+ * @FilePath     : \ysyx\ysyx-workbench\nemu\src\monitor\sdb\watchpoint.c
+ * @Description  : 监视点
+ *
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
+ */
 /***************************************************************************************
  * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
  *
@@ -59,10 +68,10 @@ void free_wp(WP *wp)
   // 如果是头节点
   if (head == wp)
   {
-    WP *p = head;
-    head = head->next;
-    p->next = free_;
-    free_ = p;
+    WP *p = head;      // 指针p指向使用链表第一个节点
+    head = head->next; // 指向使用链表第二个节点
+    p->next = free_;   // 指向空闲链表
+    free_ = p;         // 将这个节点返回到空闲链表中
   }
   else
   {
@@ -81,9 +90,9 @@ void free_wp(WP *wp)
       return;
     }
 
-    WP *q = p->next;
-    p->next = q->next;
-    q->next = free_;
+    WP *q = p->next;//q指向p指向的下一个元素（wp）
+    p->next = q->next;//p指向下一个元素
+    q->next = free_;//p->next指向空闲链表
     memset(q->expr, 0, sizeof(q->expr)); // 填充0归还到free_空闲链表中
     free_ = q;
   }
@@ -111,13 +120,13 @@ void wp_delete(int n)
   WP *p = head;
   while (p != NULL)
   {
-    if (p->NO != n)
+    if (p->NO != n)//如果不是要删除的监视点则不断遍历
     {
       p = p->next;
     }
     else
     {
-      free_wp(p);
+      free_wp(p);//调用free_wp函数清除监视点
       return;
     }
   }
@@ -135,7 +144,7 @@ bool check_watchpoint()
     uint32_t val = expr(p->expr, &success);
     assert(success);
 
-    //如果与实际值不符
+    // 如果与实际值不符
     if (val != p->value)
     {
       changed = true;
@@ -149,7 +158,6 @@ bool check_watchpoint()
 
   return changed;
 }
-
 
 void watchpoint_display()
 {

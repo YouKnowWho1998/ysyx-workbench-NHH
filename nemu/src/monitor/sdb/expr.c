@@ -1,9 +1,12 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-01-07 12:13:15
- * @LastEditTime : 2024-01-19 19:07:43
+ * @LastEditTime : 2024-01-19 22:36:19
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\monitor\sdb\expr.c
  * @Description  : 表达式求值
+ * 
+ * 
+ * 
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
@@ -312,7 +315,7 @@ static uint32_t get_op(int p, int q, bool *success)
 
     if (prior < top_prior)
     {
-      top_prior = prior;
+      top_prior = prior;//给主运算符优先级重新赋值 
       op = i;
     }
     else if (prior == top_prior)
@@ -354,7 +357,7 @@ static uint32_t eval(int p, int q, bool *success)
     switch (tokens[p].type)
     {
     case TK_HEX:
-      return strtol(tokens[p].str, NULL, 16);
+      return strtol(tokens[p].str, NULL, 16); //strtol 字符->整数转换函数
     case TK_NUM:
       return strtol(tokens[p].str, NULL, 10);
     case TK_REG:
@@ -443,7 +446,7 @@ static uint32_t eval(int p, int q, bool *success)
                                             tokens[i - 1].type == TK_POINTER)
 
 // 执行函数
-word_t expr(char *e, bool *success)
+word_t expr(char *e, bool *success) 
 {
   if (!make_token(e))
   {

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-03-08 17:19:42
- * @LastEditTime : 2024-05-04 20:52:42
+ * @LastEditTime : 2024-05-04 21:10:13
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\isa\riscv32\inst.c
  * @Description  :
  *
@@ -74,7 +74,7 @@ enum
   do                                                                                                                                \
   {                                                                                                                                 \
     *imm = (SEXT(BITS(i, 31, 31), 1) << 20 | (BITS(i, 19, 12), 8) << 12 | (BITS(i, 20, 20), 1) << 11 | (BITS(i, 30, 21), 10) << 1); \
-  } while (0) //J型立即数需要多往左移动一位
+  } while (0) // J型立即数需要多往左移动一位
 
 // 进行译码，获取立即数、寄存器源操作数、rd、rs等
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
@@ -126,7 +126,9 @@ static int decode_exec(Decode *s)
   // addi指令
   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi, I, R(rd) = src1 + imm);
   // jal指令
-  //  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J, R(rd) = s->pc + 4,s->pc += imm);
+  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J, R(rd) = s->pc + 4; s->dnpc = s->pc + imm);
+  // jalr指令
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr, I, R(rd) = s->pc + 4; s->dnpc = src1 + imm);
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));

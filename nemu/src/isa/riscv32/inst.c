@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-03-08 17:19:42
- * @LastEditTime : 2024-05-05 18:52:42
+ * @LastEditTime : 2024-05-05 20:00:37
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\isa\riscv32\inst.c
  * @Description  :
  *
@@ -38,7 +38,7 @@ enum
   TYPE_S,
   TYPE_N, // none
   TYPE_J,
-  TYPE_RR,
+  TYPE_R,
   TYPE_B,
 };
 
@@ -78,15 +78,15 @@ enum
     *imm = (SEXT(BITS(i, 31, 31), 1) << 20 | (BITS(i, 19, 12)) << 12 | (BITS(i, 20, 20)) << 11 | (BITS(i, 30, 21)) << 1); \
   } while (0) // J型立即数需要左移乘2
 
-#define immB()
-do
-{
-  *imm = (SEXT(BITS(i, 31, 31), 1) << 12 | (BITS(i, 7, 7) << 11) | (BITS(i, 30, 25) << 5) | (BITS(i, 11, 8) << 1));
-} while (0) // B型分支指令立即数需要左移乘2
+#define immB()                                                                                                        \
+  do                                                                                                                  \
+  {                                                                                                                   \
+    *imm = (SEXT(BITS(i, 31, 31), 1) << 12 | (BITS(i, 7, 7) << 11) | (BITS(i, 30, 25) << 5) | (BITS(i, 11, 8) << 1)); \
+  } while (0) // B型分支指令立即数需要左移乘2
 
-    // 进行译码，获取立即数、寄存器源操作数、rd、rs等
-    static void
-    decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
+// 进行译码，获取立即数、寄存器源操作数、rd、rs等
+static void
+decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
 {
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
@@ -109,7 +109,7 @@ do
   case TYPE_J:
     immJ();
     break;
-  case TYPE_RR:
+  case TYPE_R:
     src1R();
     src2R();
     break;
@@ -152,10 +152,19 @@ static int decode_exec(Decode *s)
   // lw指令
   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw, I, R(rd) = Mr(src1 + imm, 4));
   // sub指令
-  INSTPAT("0100000 ????? ????? 000 ????? 01100 11", sub, RR, R(rd) = src1 - src2);
+  INSTPAT("0100000 ????? ????? 000 ????? 01100 11", sub, R, R(rd) = src1 - src2);
   // beq指令
-  INSTPAT(
-      "??????? ????? ????? 000 ????? 11000 11", beq, B, if (src1 == src2) s->dnpc = s->pc + imm;);
+  INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq, B, if (src1 == src2) s->dnpc = s->pc + imm);
+  // bne指令
+  INSTPAT("??????? ????? ????? 001 ????? 11000 11", beq, B, if (src1 != src2) s->dnpc = s->pc + imm);
+  // sltiu指令
+  INSTPAT("??????? ????? ????? 011 ????? 00100 11", sltiu, I, R(rd) = (src1 < imm) ? 1 : 0);
+  // add指令
+  INSTPAT("0000000 ????? ????? 000 ????? 01100 11", add, R, R(rd) = src1 + src2);
+  // xor指令
+  INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor, R, R(rd) = src1 ^ src2);
+  // or指令
+  INSTPAT("0000000 ????? ????? 110 ????? 01100 11", xor, R, R(rd) = src1 | src2);
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));

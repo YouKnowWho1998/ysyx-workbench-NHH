@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-03-08 17:19:42
- * @LastEditTime : 2024-05-05 20:00:37
+ * @LastEditTime : 2024-05-05 20:05:34
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\isa\riscv32\inst.c
  * @Description  :
  *
@@ -165,6 +165,8 @@ static int decode_exec(Decode *s)
   INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor, R, R(rd) = src1 ^ src2);
   // or指令
   INSTPAT("0000000 ????? ????? 110 ????? 01100 11", xor, R, R(rd) = src1 | src2);
+  //sltu指令
+  INSTPAT("0000000 ????? ????? 011 ????? 01100 11", sltu, R, R(rd) = (src1 < src2) ? 1 : 0);
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));

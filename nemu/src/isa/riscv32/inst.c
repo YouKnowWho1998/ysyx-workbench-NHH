@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-03-08 17:19:42
- * @LastEditTime : 2024-05-04 16:39:28
+ * @LastEditTime : 2024-05-05 15:33:41
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\isa\riscv32\inst.c
  * @Description  :
  *
@@ -37,6 +37,7 @@ enum
   TYPE_U,
   TYPE_S,
   TYPE_N, // none
+  TYPE_J,
 };
 
 #define src1R()     \
@@ -44,27 +45,38 @@ enum
   {                 \
     *src1 = R(rs1); \
   } while (0)
+
 #define src2R()     \
   do                \
   {                 \
     *src2 = R(rs2); \
   } while (0)
+
 #define immI()                        \
   do                                  \
   {                                   \
     *imm = SEXT(BITS(i, 31, 20), 12); \
   } while (0)
+
 #define immU()                              \
   do                                        \
   {                                         \
     *imm = SEXT(BITS(i, 31, 12), 20) << 12; \
   } while (0)
+
 #define immS()                                               \
   do                                                         \
   {                                                          \
     *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); \
   } while (0)
 
+#define immJ()                                                                                                            \
+  do                                                                                                                      \
+  {                                                                                                                       \
+    *imm = (SEXT(BITS(i, 31, 31), 1) << 20 | (BITS(i, 19, 12)) << 12 | (BITS(i, 20, 20)) << 11 | (BITS(i, 30, 21)) << 1); \
+  } while (0) // J型立即数需要多往左移动一位
+
+// 进行译码，获取立即数、寄存器源操作数、rd、rs等
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type)
 {
   uint32_t i = s->isa.inst.val;
@@ -85,9 +97,13 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     src2R();
     immS();
     break;
+  case TYPE_J:
+    immJ();
+    break;
   }
 }
 
+// 指令模式匹配 指令执行
 static int decode_exec(Decode *s)
 {
   int rd = 0;
@@ -105,16 +121,19 @@ static int decode_exec(Decode *s)
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc, U, R(rd) = s->pc + imm);
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu, I, R(rd) = Mr(src1 + imm, 1));
   INSTPAT("??????? ????? ????? 000 ????? 01000 11", sb, S, Mw(src1 + imm, 1, src2));
-
-  INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
-  INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
-
   // lui指令
-  INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui, U, R(rd) = imm << 12);
+  INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui, U, R(rd) = imm);
   // addi指令
   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi, I, R(rd) = src1 + imm);
   // jal指令
-  // INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J, R(rd) = s->pc + 4, s->pc += imm);
+  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J, R(rd) = s->pc + 4; s->dnpc = s->pc + imm);
+  // jalr指令
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr, I, R(rd) = s->pc + 4; s->dnpc = src1 + imm);
+  // sw指令
+  INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw, S, Mw(src1 + imm, 4, src2));
+
+  INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
+  INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
 
   INSTPAT_END();
 

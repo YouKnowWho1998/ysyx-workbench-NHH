@@ -23,7 +23,7 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 # project source
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-CSRCS += $(SRC_AUTO_BIND)
+# CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
 include $(NVBOARD_HOME)/scripts/nvboard.mk
@@ -44,6 +44,9 @@ all: default
 run: $(BIN)
 	@$^
 
+sim: $(VSRCS) $(CSRCS)
+	$(VERILATOR) --cc --exe --build --trace --top-module $(TOPNAME) --Mdir $(OBJ_DIR) $^ 
+	
 clean:
 	rm -rf $(BUILD_DIR)
 

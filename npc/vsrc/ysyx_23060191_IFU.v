@@ -3,10 +3,8 @@ module ysyx_23060191_IFU (
     input clk,
     input rstn,
 
-    output [`CPU_WIDTH-1:0] inst  //输出从内存中取出的指令
+    output reg [`CPU_WIDTH-1:0] pc  //输出pc值
 );
-
-  reg [`CPU_WIDTH-1:0] pc;  //PC计数器
 
 
   always @(posedge clk) begin
@@ -17,13 +15,6 @@ module ysyx_23060191_IFU (
     end
   end
 
-
-  //连接存储器 内部储存了写好的addi指令 
-  ysyx_23060191_mem mem_inst (
-      .addr(pc),  //地址(PC)
-
-      .data(inst)  //输出指令
-  );
 
 
 endmodule  //ysyx_23060191_IFU

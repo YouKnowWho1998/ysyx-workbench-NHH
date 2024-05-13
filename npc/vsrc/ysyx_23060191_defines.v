@@ -41,3 +41,12 @@
 `define X29 5'b11101 //X29 临时寄存器
 `define X30 5'b11110 //X30 临时寄存器
 `define X31 5'b11111 //X31 临时寄存器
+
+
+//ALU控制码
+`define ALU_LUI 3'b001 //imm
+`define ALU_AUIPC 3'b010 // pc+imm
+`define ALU_ADD 3'b011 // rs1+rs2
+`define ALU_SUB 3'b100 // rs1-rs2
+`define ALU_SLL 3'b101 
+`define ALU_SLT 3'b110 

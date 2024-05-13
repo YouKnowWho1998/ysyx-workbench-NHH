@@ -3,7 +3,8 @@ NXDC_FILES = constr/top.nxdc
 INC_PATH ?=
 
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD --build -cc -O3 --x-assign fast --x-initial fast --noassert
+VERILATOR_CFLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert
+CFLAGS_WARNING = --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
 
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
@@ -45,7 +46,7 @@ run: $(BIN)
 	@$^
 
 sim: $(VSRCS) $(CSRCS)
-	$(VERILATOR) --cc --exe --build --trace --top-module $(TOPNAME) --Mdir $(OBJ_DIR) $^ 
+	$(VERILATOR) $(CFLAGS_WARNING) --cc --exe --build --trace --top-module $(TOPNAME) --Mdir $(OBJ_DIR) $^ 
 	
 clean:
 	rm -rf $(BUILD_DIR)

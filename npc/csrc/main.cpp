@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-05-07 10:21:21
- * @LastEditTime : 2024-05-08 17:41:55
+ * @LastEditTime : 2024-05-23 20:46:26
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  : NPC仿真testbench
  *
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     for (int i = 1; i < MAX_SIM_TIME; i++)
     {
         tb->clk ^= 1;
-        if (i > 2)
+        if (i > 3)
         {
             tb->rstn = 1;
         }

@@ -7,6 +7,8 @@
 //funct3:
 `define FUNC3_ADDI 3'b000 //addi的func3
 
+//固定指令
+`define EBREAK 32'b000000000001_00000_000_00000_1110011
 
 //32个GPR寄存器组:
 `define X0 5'b00000 //X0 其值永远为0

@@ -10,7 +10,7 @@ module ysyx_23060191_MEM (
     {12'b0000_0000_0010, `X0, `FUNC3_ADDI, `X19, `TYPE_I},  //2+0= 2(X19)
     {12'b0000_0000_0100, `X0, `FUNC3_ADDI, `X20, `TYPE_I},  //4+0= 4(X20)
     {12'b0000_0000_1000, `X0, `FUNC3_ADDI, `X21, `TYPE_I},  //8+0= 8(X21)
-    {12'b0000_0000_0100, `X18, `FUNC3_ADDI, `X22, `TYPE_I}  //1+4= 5(X22)
+    `EBREAK
   };
 
   always @(*) begin

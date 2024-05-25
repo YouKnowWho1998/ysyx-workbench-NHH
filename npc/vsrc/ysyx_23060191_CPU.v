@@ -74,6 +74,14 @@ module ysyx_23060191_cpu (
       .rd_addr_to_gpr(rd_addr_to_gpr)
   );
 
+import "DPI-C" function bit ebreak(input int inst_in);
+always @(*) begin
+    if (ebreak(inst)) begin
+        $display("---ebreak---");
+        $finish;
+    end
+end
+
 
 
 endmodule  //ysyx_23060191_npc

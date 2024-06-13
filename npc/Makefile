@@ -3,7 +3,8 @@ NXDC_FILES = constr/top.nxdc
 INC_PATH ?=
 
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD --build -cc -O3 --x-assign fast --x-initial fast --noassert
+VERILATOR_CFLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert
+CFLAGS_WARNING = --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
 
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
@@ -23,7 +24,7 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 # project source
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-CSRCS += $(SRC_AUTO_BIND)
+# CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
 include $(NVBOARD_HOME)/scripts/nvboard.mk
@@ -44,6 +45,9 @@ all: default
 run: $(BIN)
 	@$^
 
+sim: $(VSRCS) $(CSRCS)
+	$(VERILATOR) $(CFLAGS_WARNING) --cc --exe --build --trace --top-module $(TOPNAME) --Mdir $(OBJ_DIR) $^ 
+	
 clean:
 	rm -rf $(BUILD_DIR)
 

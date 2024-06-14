@@ -29,6 +29,7 @@ size_t symbol_tables_size; // 全局变量
 void parse_elf(const char *elf_file)
 {
     printf("elf=%s\n", elf_file);
+
     if (elf_file == NULL)
     {
         return;

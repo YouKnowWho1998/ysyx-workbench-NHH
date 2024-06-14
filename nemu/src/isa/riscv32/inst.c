@@ -31,6 +31,9 @@
 #define Mr vaddr_read
 #define Mw vaddr_write
 
+void call_trace(word_t pc, word_t func_addr);
+void ret_trace(word_t pc);
+
 enum
 {
   TYPE_I,

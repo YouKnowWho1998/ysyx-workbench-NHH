@@ -144,6 +144,8 @@ void cpu_exec(uint64_t n)
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
+  display_inst();
+
   switch (nemu_state.state)
   {
   case NEMU_RUNNING:

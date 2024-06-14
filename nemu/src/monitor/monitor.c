@@ -24,7 +24,6 @@ void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
 void parse_elf(const char *elf_file);
-void display_inst();
 
 static void welcome()
 {
@@ -130,8 +129,6 @@ void init_monitor(int argc, char *argv[])
   parse_args(argc, argv);
 
   parse_elf(elf_file);
-
-  display_inst();
 
   /* Set random seed. */
   init_rand();

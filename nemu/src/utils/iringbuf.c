@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-11 10:51:35
- * @LastEditTime : 2024-06-14 15:07:13
+ * @LastEditTime : 2024-06-14 15:11:27
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\iringbuf.c
  * @Description  :
  *
@@ -34,7 +34,6 @@ void trace_inst(word_t pc, uint32_t inst)
 
 void display_inst()
 {
-    /*** 注意出错的是前一条指令，当前指令可能由于出错已经无法正常译码 ***/
     int end = cur_inst;
     char buf[128];
     char *p;

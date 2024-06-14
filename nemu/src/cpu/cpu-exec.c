@@ -32,7 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 bool check_watchpoint();
-
+void display_inst();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
 {
@@ -119,6 +119,7 @@ static void statistic()
 void assert_fail_msg()
 {
   isa_reg_display();
+  display_inst();
   statistic();
 }
 
@@ -142,6 +143,8 @@ void cpu_exec(uint64_t n)
 
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
+
+  display_inst();
 
   switch (nemu_state.state)
   {

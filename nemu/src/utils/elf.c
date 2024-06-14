@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-11 13:03:47
- * @LastEditTime : 2024-06-14 12:46:26
+ * @LastEditTime : 2024-06-14 14:36:09
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\elf.c
  * @Description  : 解析elf文件 存入符号表中
  *
@@ -141,7 +141,7 @@ void call_trace(word_t pc, word_t func_addr)
             break;
         }
     }
-    printf("0x%08x:", pc);
+    printf("[FTRACE] 0x%08x:", pc);
 
     for (int k = 0; k < rec_depth; k++)
     {
@@ -164,7 +164,7 @@ void ret_trace(word_t pc)
         }
     }
 
-    printf("0x%08x:", pc);
+    printf("[FTRACE] 0x%08x:", pc);
 
     rec_depth--;
 

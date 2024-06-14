@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-11 13:03:47
- * @LastEditTime : 2024-06-14 12:09:08
+ * @LastEditTime : 2024-06-14 12:17:05
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\elf.c
  * @Description  : 解析elf文件 存入符号表中
  *
@@ -28,6 +28,7 @@ size_t symbol_tables_size; // 全局变量
 
 void parse_elf(const char *elf_file)
 {
+    printf("%s\n", elf_file);
     if (elf_file == NULL)
     {
         return;
@@ -36,7 +37,6 @@ void parse_elf(const char *elf_file)
     FILE *fp = fopen(elf_file, "rb");
     Assert(fp, "Can not open '%s'", elf_file);
 
-    printf("%s\n", elf_file);
     // 读取ELF header
     Elf32_Ehdr elf_header;
     if (fread(&elf_header, sizeof(Elf32_Ehdr), 1, fp) <= 0)

@@ -123,6 +123,8 @@ void parse_elf(const char *elf_file)
         }
         symbol_tables_size = num_symbols;
     }
+    
+    printf("执行了parse_elf函数");
 
     // 关闭文件并释放内存
     fclose(fp);

@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-06-11 10:51:35
+ * @LastEditTime : 2024-06-13 20:23:14
+ * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\iringbuf.c
+ * @Description  :
+ *
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
+ */
 #include <common.h>
 #include <utils.h>
 

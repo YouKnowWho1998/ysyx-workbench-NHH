@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-11 13:03:47
- * @LastEditTime : 2024-06-13 20:22:42
+ * @LastEditTime : 2024-06-14 11:55:01
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\elf.c
  * @Description  : 解析elf文件 存入符号表中
  *
@@ -123,8 +123,6 @@ void parse_elf(const char *elf_file)
         }
         symbol_tables_size = num_symbols;
     }
-    
-    printf("执行了parse_elf函数");
 
     // 关闭文件并释放内存
     fclose(fp);

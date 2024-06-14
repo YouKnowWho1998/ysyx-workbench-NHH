@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-11 10:51:35
- * @LastEditTime : 2024-06-14 15:11:27
+ * @LastEditTime : 2024-06-14 15:31:07
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\iringbuf.c
  * @Description  :
  *
@@ -11,7 +11,7 @@
 #include <elf.h>
 #include <device/map.h>
 
-#define INST_NUM 32
+#define INST_NUM 64
 
 // iringbuf
 typedef struct

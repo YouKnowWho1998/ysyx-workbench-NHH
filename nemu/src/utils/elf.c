@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-11 13:03:47
- * @LastEditTime : 2024-06-14 14:36:09
+ * @LastEditTime : 2024-06-14 14:39:28
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\elf.c
  * @Description  : 解析elf文件 存入符号表中
  *
@@ -150,7 +150,7 @@ void call_trace(word_t pc, word_t func_addr)
 
     rec_depth++;
 
-    printf("call [%s@0x%08x]\n", symbol_table[i].name, func_addr);
+    printf("call [%s @0x%08x]\n", symbol_table[i].name, func_addr);
 }
 
 void ret_trace(word_t pc)

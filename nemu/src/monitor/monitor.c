@@ -23,6 +23,7 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
+void parse_elf(const char *elf_file);
 
 static void welcome()
 {
@@ -43,6 +44,7 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
+static char *elf_file = NULL;
 static int difftest_port = 1234;
 
 static long load_img()
@@ -77,11 +79,12 @@ static int parse_args(int argc, char *argv[])
       {"diff", required_argument, NULL, 'd'},
       {"port", required_argument, NULL, 'p'},
       {"help", no_argument, NULL, 'h'},
+      {"elf", required_argument, NULL, 'e'},
       {0, 0, NULL, 0},
   };
   int o;
   // 解析完所有字符没有找到（一般是输入命令参数格式错误，eg： 连斜杠都没有加的选项），返回“-1”
-  while ((o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1)
+  while ((o = getopt_long(argc, argv, "-bhl:d:p:e:", table, NULL)) != -1)
   {
     switch (o)
     {
@@ -89,7 +92,7 @@ static int parse_args(int argc, char *argv[])
       sdb_set_batch_mode();
       break;
     case 'p':
-      //optarg是getopt_long函数设置的全局变量指针 指向选项参数的字符串
+      // optarg是getopt_long函数设置的全局变量指针 指向选项参数的字符串
       sscanf(optarg, "%d", &difftest_port);
       break;
     case 'l':
@@ -97,6 +100,9 @@ static int parse_args(int argc, char *argv[])
       break;
     case 'd':
       diff_so_file = optarg;
+      break;
+    case 'e':
+      elf_file = optarg;
       break;
     case 1:
       img_file = optarg;
@@ -107,6 +113,7 @@ static int parse_args(int argc, char *argv[])
       printf("\t-l,--log=FILE           output log to FILE\n");
       printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
       printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+      printf("\t-e,--elf=FILE           parse the elf file\n");
       printf("\n");
       exit(0);
     }
@@ -120,6 +127,8 @@ void init_monitor(int argc, char *argv[])
 
   /* Parse arguments. */
   parse_args(argc, argv);
+
+  parse_elf(elf_file);
 
   /* Set random seed. */
   init_rand();

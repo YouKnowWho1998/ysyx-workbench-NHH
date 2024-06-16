@@ -1,65 +1,56 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-11 10:51:35
- * @LastEditTime : 2024-06-13 20:23:14
+ * @LastEditTime : 2024-06-14 15:31:07
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\utils\iringbuf.c
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
 #include <common.h>
-#include <utils.h>
+#include <elf.h>
+#include <device/map.h>
 
-typedef struct iringbuf
+#define INST_NUM 64
+
+// iringbuf
+typedef struct
 {
-    vaddr_t pcs[20];
-    uint32_t insts[20];
-    uint32_t iring_rf;
-    uint32_t iring_wf;
-} iringbuf;
+    word_t pc;
+    uint32_t inst;
+} InstBuf;
 
-iringbuf irb;
+InstBuf iringbuf[INST_NUM];
 
-void iringbuf_write_inst(vaddr_t pc, uint32_t inst)
+int cur_inst = 0;
+int func_num = 0;
+
+void trace_inst(word_t pc, uint32_t inst)
 {
-    irb.pcs[irb.iring_wf] = pc;
-    irb.insts[irb.iring_wf] = inst;
-    irb.iring_wf = (irb.iring_wf + 1) % 20;
-    if (irb.iring_wf == irb.iring_rf)
-        irb.iring_rf = (irb.iring_rf + 1) % 20;
+    iringbuf[cur_inst].pc = pc;
+    iringbuf[cur_inst].inst = inst;
+    cur_inst = (cur_inst + 1) % INST_NUM;
 }
 
-void iringbuf_display()
+void display_inst()
 {
-#ifdef CONFIG_ITRACE
-    char logbuf[64];
-    while (irb.iring_rf != irb.iring_wf)
+    int end = cur_inst;
+    char buf[128];
+    char *p;
+    int i = cur_inst;
+
+    if (iringbuf[i + 1].pc == 0)
+        i = 0;
+
+    do
     {
-        // 存储pc和指令内容到缓冲区
-        char *p = logbuf;
-        if (irb.iring_rf + 1 == irb.iring_wf)
-        {
-            p += snprintf(p, 8, "--->");
-        }
-        else
-        {
-            memset(p, ' ', 4);
-            p += 4;
-        }
-        p += snprintf(p, sizeof(logbuf), FMT_WORD ":", irb.pcs[irb.iring_rf]);
-        uint8_t *inst = (uint8_t *)&irb.insts[irb.iring_rf];
-        for (int j = 3; j >= 0; j--)
-        {
-            p += snprintf(p, 4, " %02x", inst[j]);
-        }
-        memset(p, ' ', 4);
-        p += 4;
-        // 解析指令对应的汇编语句
+        p = buf;
+        p += sprintf(buf, "[IRINGBUF] %s" FMT_WORD ":  %08x\t", (i + 1) % INST_NUM == end ? "-->" : "   ", iringbuf[i].pc, iringbuf[i].inst);
+
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-        disassemble(p, logbuf + sizeof(logbuf) - p,
-                    irb.pcs[irb.iring_rf], (uint8_t *)&irb.insts[irb.iring_rf], 4);
-        Log("%s\n", logbuf);
-        irb.iring_rf = (irb.iring_rf + 1) % 20;
-    }
-#endif
+        disassemble(p, buf + sizeof(buf) - p, iringbuf[i].pc, (uint8_t *)&iringbuf[i].inst, 4);
+
+        puts(buf);
+        i = (i + 1) % INST_NUM;
+    } while (i != end);
 }

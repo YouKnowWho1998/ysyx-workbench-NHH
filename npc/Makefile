@@ -1,20 +1,21 @@
-TOPNAME = top
+TOPNAME = ysyx_23060191_top
 NXDC_FILES = constr/top.nxdc
 INC_PATH ?=
 
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert
-CFLAGS_WARNING = --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
+VERILATOR_FLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert -j 4
+# VERILATOR_FLAGS += --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
+VERILATOR_FLAGS += --cc --exe --build --trace 
 
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
 
-default: $(BIN)
-	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-
-
-$(shell mkdir -p $(BUILD_DIR))
+# color
+COLOR_RED   		= \033[1;31m
+COLOR_GREEN 		= \033[1;32m
+COLOR_YELLOW 		= \033[33m
+COLOR_NONE  		= \033[0m
 
 # constraint file
 SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
@@ -33,23 +34,23 @@ include $(NVBOARD_HOME)/scripts/nvboard.mk
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 
-$(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
+
+$(BIN): $(VSRCS) $(CSRCS)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(notdir $(BUILD_DIR))/$(notdir $(BIN))"
 	@rm -rf $(OBJ_DIR)
-	$(VERILATOR) $(VERILATOR_CFLAGS) \
+	@mkdir -p $(BUILD_DIR)
+	@$(VERILATOR) $(VERILATOR_FLAGS) \
 		--top-module $(TOPNAME) $^ \
-		$(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
 
-all: default
-
 run: $(BIN)
-	@$^
+	@echo "$(COLOR_YELLOW)[Run CPU]$(COLOR_NONE)"
+	$(BIN) $(IMG)
 
-sim: $(VSRCS) $(CSRCS)
-	$(VERILATOR) $(CFLAGS_WARNING) --cc --exe --build --trace --top-module $(TOPNAME) --Mdir $(OBJ_DIR) $^ 
-	
+
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: default all clean run
+.PHONY: default  clean run
 include ../Makefile

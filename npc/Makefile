@@ -1,55 +1,52 @@
-TOPNAME = top
-NXDC_FILES = constr/top.nxdc
-INC_PATH ?=
+TOPNAME = ysyx_23060191_TOP
 
-VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert
-CFLAGS_WARNING = --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
-
+#build path
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
-BIN = $(BUILD_DIR)/$(TOPNAME)
+LOG_DIR = ./log
 
-default: $(BIN)
-	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+#verilator
+VERILATOR = verilator
+VERILATOR_FLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert -j 4
+# VERILATOR_FLAGS += --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
+VERILATOR_FLAGS += --cc --exe --build --trace
 
+#cflags
+WORK_PATH = $(shell pwd)
+INC_PATH = $(WORK_PATH)/csrc/include
+CFLAGS += -CFLAGS -I$(INC_PATH) 
+CFLAGS += -CFLAGS "-D__GUEST_ISA__=riscv32"
 
-$(shell mkdir -p $(BUILD_DIR))
-
-# constraint file
-SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
-$(SRC_AUTO_BIND): $(NXDC_FILES)
-	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
-
-# project source
+#npc_args
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-# CSRCS += $(SRC_AUTO_BIND)
+NPC_ARGS := --img $(IMG) --log $(LOG_DIR)/cpu_run.log
 
-# rules for NVBoard
-include $(NVBOARD_HOME)/scripts/nvboard.mk
 
-# rules for verilator
-INCFLAGS = $(addprefix -I, $(INC_PATH))
-CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
+# color
+COLOR_RED   		= \033[1;31m
+COLOR_GREEN 		= \033[1;32m
+COLOR_YELLOW 		= \033[33m
+COLOR_NONE  		= \033[0m
 
-$(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
-	@rm -rf $(OBJ_DIR)
-	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module $(TOPNAME) $^ \
-		$(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-		--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
 
-all: default
+build: $(CSRC) $(VSRC)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
+	@mkdir -p $(BUILD_DIR)
+	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) \
+	--top-module $(TOPNAME) $^ \
+	--Mdir $(OBJ_DIR) 
 
-run: $(BIN)
-	@$^
 
-sim: $(VSRCS) $(CSRCS)
-	$(VERILATOR) $(CFLAGS_WARNING) --cc --exe --build --trace --top-module $(TOPNAME) --Mdir $(OBJ_DIR) $^ 
-	
+
+run: build
+	@echo "$(COLOR_YELLOW)[CPU RUNNING FOR TEST MODULE]$(COLOR_NONE)"
+	$(OBJ_DIR)/V$(TOPNAME) $(NPC_ARGS)
+
+
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: default all clean run
+.PHONY: default  clean run
 include ../Makefile

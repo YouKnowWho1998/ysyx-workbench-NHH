@@ -1,4 +1,4 @@
-`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_defines.v"
+`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 
 module top (
     input clk,

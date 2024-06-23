@@ -1,5 +1,5 @@
 `include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
-module ysyx_23060191_CPU (
+module ysyx_23060171_CPU (
     input clk,
     input rstn
 );

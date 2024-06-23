@@ -1,4 +1,4 @@
-TOPNAME = ysyx_23060191_CPU
+TOPNAME = TOP
 
 #build path
 BUILD_DIR = ./build

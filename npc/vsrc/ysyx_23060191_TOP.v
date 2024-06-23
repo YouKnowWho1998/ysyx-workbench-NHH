@@ -1,11 +1,11 @@
 `include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 
-module top (
+module  ysyx_23060191_TOP(
     input clk,
     input rstn
 );
 
-  ysyx_23060191_cpu CPU (
+  ysyx_23060191_CPU cpu (
       .clk (clk),
       .rstn(rstn)
   );

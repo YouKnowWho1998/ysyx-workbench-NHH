@@ -4,7 +4,6 @@ TOPNAME = ysyx_23060191_CPU
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
-LOG_DIR = ./log
 
 #verilator
 VERILATOR = verilator
@@ -20,7 +19,7 @@ CFLAGS += -CFLAGS "-D__GUEST_ISA__=riscv32"
 #npc_args
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-NPC_ARGS := --img $(IMG) --log $(LOG_DIR)/cpu_run.log
+NPC_ARGS := $(IMG) --log $(BUILD_DIR)/cpu_run.txt
 
 
 # color

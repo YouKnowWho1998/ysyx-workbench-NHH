@@ -12,8 +12,6 @@
 #include "verilated_vcd_c.h"
 #include <common.h>
 
-CPU_state cpu = {};
-
 void init_monitor(int, char *[]);
 
 void dump_waves(VerilatedContext *contextp, VerilatedVcdC *tfp, Vysyx_23060191_CPU *top)

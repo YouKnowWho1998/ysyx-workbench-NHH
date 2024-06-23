@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-23 23:14:07
- * @LastEditTime : 2024-06-23 23:55:38
+ * @LastEditTime : 2024-06-23 23:56:48
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.c
  * @Description  : 修改自NEMU monitor
  *
@@ -73,7 +73,7 @@ static int parse_args(int argc, char *argv[])
         switch (o)
         {
         case 'b':
-            sdb_set_batch_mode();
+            // sdb_set_batch_mode();
             break;
         case 'l':
             log_file = optarg;

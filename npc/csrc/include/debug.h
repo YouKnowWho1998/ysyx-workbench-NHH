@@ -14,8 +14,6 @@
     if (!(cond)) { \
       printf(ANSI_FMT(format, ANSI_FG_RED) "\n", ## __VA_ARGS__); \
       extern FILE* log_fp; \
-      extern void assert_fail_msg(); \
-      assert_fail_msg(); \
       assert(cond); \
     } \
   } while (0)

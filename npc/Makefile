@@ -37,7 +37,7 @@ build: $(CSRC) $(VSRC)
 	@mkdir -p $(BUILD_DIR)
 	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) \
 	--top-module $(TOPNAME) $^ \
-	--Mdir $(OBJ_DIR) -o $(abspath ($(BUILD_DIR)/$(TOPNAME)))
+	--Mdir $(OBJ_DIR) -o $(abspath $(BUILD_DIR)/$(TOPNAME))
 
 
 

@@ -8,7 +8,7 @@
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
 #include <verilated.h>
-#include "/mnt/ysyx/ysyx-workbench/npc/build/obj_dir/Vtop.h"
+#include "/mnt/ysyx/ysyx-workbench/npc/build/obj_dir/Vysyx_23060191_CPU.h"
 #include "verilated_vcd_c.h" // 引入波形头文件
 #include <iostream>
 

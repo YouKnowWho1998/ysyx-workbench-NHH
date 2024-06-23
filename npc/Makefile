@@ -33,10 +33,11 @@ COLOR_NONE  		= \033[0m
 build: $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
+	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
 	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) \
 	--top-module $(TOPNAME) $^ \
-	--Mdir $(OBJ_DIR) 
+	--Mdir $(OBJ_DIR) -o $(BUILD_DIR)/$(TOPNAME)
 
 
 

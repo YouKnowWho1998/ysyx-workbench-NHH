@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-23 23:14:07
- * @LastEditTime : 2024-06-23 23:56:48
+ * @LastEditTime : 2024-06-24 00:00:03
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.c
  * @Description  : 修改自NEMU monitor
  *
@@ -104,7 +104,7 @@ void init_monitor(int argc, char *argv[])
 {
     parse_args(argc, argv);
 
-    init_log(log_file); //初始化日志
+    // init_log(log_file); //初始化日志
 
     init_mem(0x7ffffff);//初始化内存
 

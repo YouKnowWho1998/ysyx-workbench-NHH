@@ -1,4 +1,4 @@
-TOPNAME = TOP
+TOPNAME = ysyx_23060191_CPU
 
 #build path
 BUILD_DIR = ./build
@@ -35,7 +35,8 @@ $(BIN): $(VSRCS) $(CSRCS)
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
 	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
-	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) $^
+	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) --top-module $(TOPNAME) \
+	--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) $^
 	
 
 

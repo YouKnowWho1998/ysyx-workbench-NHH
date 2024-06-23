@@ -10,7 +10,7 @@ module ysyx_23060191_MEM (
   import "DPI-C" function int pmem_read(input int raddr);
   always @(*) begin
     if (rd_en) begin
-      inst = npc_pmem_read(pc);
+      inst = pmem_read(pc);
     end
     else begin
       inst = 0;

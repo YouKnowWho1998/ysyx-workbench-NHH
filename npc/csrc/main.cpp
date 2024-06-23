@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-05-07 10:21:21
- * @LastEditTime : 2024-06-23 22:13:30
+ * @LastEditTime : 2024-06-23 23:08:53
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\sim\sim.cpp
  * @Description  : NPC仿真testbench
  *
@@ -54,38 +54,3 @@ int main(int argc, char **argv)
     delete contextp;
     return 0;
 }
-
-// #define MAX_SIM_TIME 500
-
-// int main(int argc, char **argv)
-// {
-//     Verilated::commandArgs(argc, argv);
-//     Vysyx_23060191_CPU *tb = new Vysyx_23060191_CPU;
-//     // 启用波形追踪
-//     Verilated::traceEverOn(true);
-//     VerilatedVcdC *tfp = new VerilatedVcdC;
-//     tb->trace(tfp, 99);
-//     tfp->open("waves.vcd");
-//     // 仿真输入
-//     tb->clk = 0;
-//     tb->rstn = 0;
-//     tb->eval();
-//     tfp->dump(0);
-
-//     for (int i = 1; i < MAX_SIM_TIME; i++)
-//     {
-//         tb->clk ^= 1;
-//         if (i > 3)
-//         {
-//             tb->rstn = 1;
-//         }
-//         tb->eval();
-//         tfp->dump(i);
-//     }
-
-//     tfp->close();
-//     delete tfp;
-//     tb->final();
-//     delete tb;
-//     return 0;
-// }

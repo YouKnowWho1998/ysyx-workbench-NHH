@@ -8,19 +8,6 @@
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
 #include "verilated_dpi.h"
-#include <paddr.h>
-
-// 内存读取
-extern "C" int npc_pmem_read(int raddr)
-{
-    int inst = 0;
-    if (raddr >= PMEM_LEFT && raddr <= PMEM_RIGHT)
-    {
-        inst = paddr_read(raddr, 4);
-    }
-    return inst;
-}
-
 
 
 

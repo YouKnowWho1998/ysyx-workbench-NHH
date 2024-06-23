@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-23 23:14:07
- * @LastEditTime : 2024-06-23 23:20:35
+ * @LastEditTime : 2024-06-23 23:55:38
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.c
  * @Description  : 修改自NEMU monitor
  *
@@ -14,6 +14,8 @@
 
 static char *img_file = NULL;
 static char *log_file = NULL;
+static char *diff_so_file = NULL;
+char *elf_file = NULL;
 
 void init_log(const char *log_file);
 

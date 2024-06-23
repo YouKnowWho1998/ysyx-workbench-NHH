@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-05-07 10:21:21
- * @LastEditTime : 2024-06-23 23:08:53
- * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\sim\sim.cpp
+ * @LastEditTime : 2024-06-23 23:54:21
+ * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  : NPC仿真testbench
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -10,7 +10,6 @@
 #include <verilated.h>
 #include "/mnt/ysyx/ysyx-workbench/npc/build/obj_dir/Vysyx_23060191_CPU.h"
 #include "verilated_vcd_c.h"
-#include <isa.h>
 #include <common.h>
 
 CPU_state cpu = {};

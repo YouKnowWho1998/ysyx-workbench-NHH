@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-21 14:16:50
- * @LastEditTime : 2024-06-23 22:28:24
+ * @LastEditTime : 2024-06-23 22:46:55
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.c
  * @Description  : 修改自NEMU
  *
@@ -135,7 +135,7 @@ void init_monitor(int argc, char *argv[])
     long img_size = load_img();
 
     /* Initialize differential testing. */
-    init_difftest(diff_so_file, img_size, difftest_port);
+    // init_difftest(diff_so_file, img_size, difftest_port);
 
     /* Display welcome message. */
     welcome();

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-23 23:14:07
- * @LastEditTime : 2024-06-24 00:00:03
+ * @LastEditTime : 2024-06-24 00:01:42
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.c
  * @Description  : 修改自NEMU monitor
  *
@@ -17,7 +17,7 @@ static char *log_file = NULL;
 static char *diff_so_file = NULL;
 char *elf_file = NULL;
 
-void init_log(const char *log_file);
+// void init_log(const char *log_file);
 
 static void welcome()
 {
@@ -35,7 +35,7 @@ static long load_img()
 {
     if (img_file == NULL)
     {
-        Log("No image is given. Use the default build-in image.");
+        // Log("No image is given. Use the default build-in image.");
         return 72; // built-in image size
     }
 

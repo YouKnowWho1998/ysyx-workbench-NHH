@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-21 11:39:22
- * @LastEditTime : 2024-06-22 20:47:28
+ * @LastEditTime : 2024-06-23 22:27:36
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\memory\paddr.c
  * @Description  : 修改自NEMU
  *
@@ -55,7 +55,6 @@ void init_mem()
     p[i] = rand();
   }
 #endif
-  Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
 }
 
 

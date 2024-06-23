@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-21 14:16:50
- * @LastEditTime : 2024-06-22 21:59:56
+ * @LastEditTime : 2024-06-23 22:28:24
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.c
  * @Description  : 修改自NEMU
  *
@@ -10,6 +10,8 @@
 #include <isa.h>
 #include <paddr.h>
 #include <common.h>
+#include <debug.h>
+#include <utils.h>
 
 void init_rand();
 void init_log(const char *log_file);

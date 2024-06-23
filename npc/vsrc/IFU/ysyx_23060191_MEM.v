@@ -12,6 +12,9 @@ module ysyx_23060191_MEM (
     if (rd_en) begin
       inst = npc_pmem_read(pc);
     end
+    else begin
+      inst = 0;
+    end
   end
 
 

@@ -18,7 +18,7 @@ wire [`CPU_WIDTH-1:0] pc_add_after;
 MuxTemplate #(2,1,`CPU_WIDTH) mux1(chosen_pc,jump_en_from_IDU,{
     1'b1,jump_addr_from_EXU,
     1'b0,pc
-})
+});
 
 //PC寄存器
 ysyx_23060191_PC pc_reg(

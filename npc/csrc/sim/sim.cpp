@@ -26,7 +26,8 @@ void dump_waves(VerilatedContext *contextp, VerilatedVcdC *tfp, Vysyx_23060191_C
 
 int main(int argc, char **argv)
 {
-    VerilatedContext * contextp->traceEverOn(true);
+    VerilatedContext *contextp;
+    contextp->traceEverOn(true);
     contextp->commandArgs(argc, argv);
     VerilatedVcdC *tfp = new VerilatedVcdC;
     Vysyx_23060191_CPU *top = new Vysyx_23060191_CPU{contextp};
@@ -43,7 +44,7 @@ int main(int argc, char **argv)
         top->clk = !top->clk;
         dump_waves(contextp, tfp, top);
     }
-    
+
     dump_waves(contextp, tfp, top);
 
     top->final();

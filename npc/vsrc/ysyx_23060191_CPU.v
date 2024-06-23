@@ -7,6 +7,7 @@ module ysyx_23060191_CPU (
 wire [`CPU_WIDTH-1:0] inst;
 
 
+//IFU模块
 ysyx_23060191_IFU IFU(
     .clk(clk),
     .rstn(rstn),
@@ -17,14 +18,15 @@ ysyx_23060191_IFU IFU(
 );
 
 
-
-// import "DPI-C" function bit ebreak(input int inst_in);
-// always @(*) begin
-//     if (ebreak(inst)) begin
-//         $display("---ebreak---");
-//         $finish;
-//     end
-// end
+//出现ebreak指令终止仿真
+import "DPI-C" function bit ebreak(input int inst);
+always @(*) begin
+    if (ebreak(inst)) begin
+        $display("--EBREAK--");
+        $display("CPU STOP RUNNING");
+        $finish;
+    end
+end
 
 
 

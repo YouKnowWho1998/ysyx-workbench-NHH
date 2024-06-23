@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-21 14:20:59
- * @LastEditTime : 2024-06-21 14:21:23
+ * @LastEditTime : 2024-06-23 21:52:12
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\isa\init.c
  * @Description  : 修改自NEMU
  *
@@ -10,8 +10,8 @@
 #include <isa.h>
 #include <paddr.h>
 
-//内建镜像
-static const uint32_t img[] = { 
+// 内建镜像
+static const uint32_t img[] = {
     0x800002b7, // lui t0,0x80000
     0x0002a023, // sw  zero,0(t0)
     0x0002a503, // lw  a0,0(t0)

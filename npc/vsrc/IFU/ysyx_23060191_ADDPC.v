@@ -5,6 +5,6 @@ module ysyx_23060191_ADDPC (
     output [`CPU_WIDTH-1:0] pc_out_add_after
 );
 
-  assign pc_out = pc_in + 4;
+  assign pc_out_add_after = pc_in_add_before + 4;
 
 endmodule  //ysyx_23060191_ADDPC

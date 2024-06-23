@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <common.h>
+#include <utils.h>
+#include <debug.h>
 
 static char *img_file = NULL;
 static char *log_file = NULL;
@@ -27,7 +29,6 @@ static void welcome()
         "If it is not necessary, you can disable it in menuconfig");
     Log("Build time: %s, %s", __TIME__, __DATE__);
     printf("Welcome to %s-NPC!\n", ANSI_FMT("riscv32e", ANSI_FG_YELLOW ANSI_BG_RED));
-    printf("For help, type \"help\"\n");
 }
 
 //读取外部镜像

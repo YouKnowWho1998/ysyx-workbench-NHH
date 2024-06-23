@@ -1,5 +1,6 @@
 #include <common.h>
 #include <utils.h>
+#include <debug.h>
 
 FILE *log_fp = NULL;
 

@@ -37,7 +37,7 @@ $(BIN): $(CSRC) $(VSRC)
 	@mkdir -p $(BUILD_DIR)
 	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) \
 	--top-module $(TOPNAME) $^ \
-	--Mdir $(OBJ_DIR) -exe -o $(abspath $(BIN))
+	--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
 
 
 

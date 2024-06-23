@@ -1,15 +1,15 @@
-TOPNAME = ysyx_23060191_TOP
+TOPNAME = ysyx_23060191_CPU
 
 #build path
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
+BIN = $(BUILD_DIR)/$(TOPNAME)
 LOG_DIR = ./log
 
 #verilator
 VERILATOR = verilator
 VERILATOR_FLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert -j 4
-# VERILATOR_FLAGS += --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
-VERILATOR_FLAGS += --cc --exe --build --trace
+VERILATOR_FLAGS += --build --trace
 
 #cflags
 WORK_PATH = $(shell pwd)
@@ -30,20 +30,20 @@ COLOR_YELLOW 		= \033[33m
 COLOR_NONE  		= \033[0m
 
 
-build: $(CSRC) $(VSRC)
+$(BIN): $(CSRC) $(VSRC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
-	@rm -rf $(BUILD_DIR)
+	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
 	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) \
 	--top-module $(TOPNAME) $^ \
-	--Mdir $(OBJ_DIR) -o $(abspath $(BUILD_DIR)/$(TOPNAME))
+	--Mdir $(OBJ_DIR) -exe -o $(abspath $(BIN))
 
 
 
-run: build
+run: $(BIN)
 	@echo "$(COLOR_YELLOW)[CPU RUNNING FOR TEST MODULE]$(COLOR_NONE)"
-	$(OBJ_DIR)/V$(TOPNAME) $(NPC_ARGS)
+	$(BIN) $(NPC_ARGS)
 
 
 clean:

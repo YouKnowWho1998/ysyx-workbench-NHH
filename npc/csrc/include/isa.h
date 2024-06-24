@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-06-24 12:03:56
+ * @LastEditTime : 2024-06-24 12:08:10
+ * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\include\isa.h
+ * @Description  : 
+ * 
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
+ */
 /***************************************************************************************
 * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
 *
@@ -17,7 +26,7 @@
 #define __ISA_H__
 
 // Located at src/isa/$(GUEST_ISA)/include/isa-def.h
-#include <isa-def.h>
+#include <include/isa-def.h>
 
 // The macro `__GUEST_ISA__` is defined in $(CFLAGS).
 // It will be expanded as "x86" or "mips32" ...

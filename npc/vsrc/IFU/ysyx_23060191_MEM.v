@@ -7,7 +7,7 @@ module ysyx_23060191_MEM (
 );
 
   //调用DPIC机制 读取软件模拟的内存
-  import "DPI-C" function int pmem_read(input int raddr);
+  import "DPI-C" function int npc_pmem_read(input int raddr);
   always @(*) begin
     if (rd_en) begin
       inst = pmem_read(pc);

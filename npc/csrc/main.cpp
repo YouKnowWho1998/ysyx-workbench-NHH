@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     Vtop *top = new Vtop;
     contextp->traceEverOn(true);
     top->trace(tfp, 99);
-    tfp->open("waves.vcd");
+    tfp->open("build/waves.vcd");
 
     top->rstn = !0;
     top->clk = 0;

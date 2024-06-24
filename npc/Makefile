@@ -1,4 +1,4 @@
-TOPNAME = ysyx_23060191_CPU
+TOPNAME = top
 
 #build path
 BUILD_DIR = ./build
@@ -7,21 +7,20 @@ BIN = $(BUILD_DIR)/$(TOPNAME)
 
 #verilator
 VERILATOR = verilator
-VERILATOR_FLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert -j 4
-VERILATOR_FLAGS += --build --trace
+VERILATOR_FLAGS += -Wall --trace --cc --build
 
-#cflags
-WORK_PATH = $(shell pwd)
-INC_PATH = $(WORK_PATH)/csrc/include
-CFLAGS += -CFLAGS -I$(INC_PATH) 
-CFLAGS += -CFLAGS "-D__GUEST_ISA__=riscv32"
+#ldflags
+LDFLAGS := -LDFLAGS -ldl 
 
 #srcs
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 
+
 #npc_args
-NPC_ARGS := --img $(IMG) --log $(BUILD_DIR)/cpu_run.txt
+#默认加载dummy镜像
+IMG ?= ../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
+NPC_ARGS := --img $(IMG) 
 
 
 # color
@@ -36,17 +35,19 @@ $(BIN): $(VSRCS) $(CSRCS)
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
 	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
-	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^
+	$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ $(LDFLAGS)
 	
-
 
 run: $(BIN)
 	@echo "$(COLOR_YELLOW)[CPU RUNNING FOR TEST MODULE]$(COLOR_NONE)"
 	$(OBJ_DIR)/V$(TOPNAME) $(NPC_ARGS)
 
+wave:
+	gtkwave $(OBJ_DIR)/waves.vcd
+
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: default  clean run
+.PHONY:  clean run  wave
 include ../Makefile

@@ -19,9 +19,9 @@ ysyx_23060191_IFU IFU(
 
 
 //出现ebreak指令终止仿真
-import "DPI-C" function bit ebreak(input int inst);
+import "DPI-C" function bit check_finish(input int inst);
 always @(*) begin
-    if (ebreak(inst)) begin
+    if (check_finish(inst)) begin
         $display("--EBREAK--");
         $display("CPU STOP RUNNING");
         $finish;

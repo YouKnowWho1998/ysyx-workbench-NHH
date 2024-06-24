@@ -1,9 +1,9 @@
 #include "include/include.h"
 #include "verilated_dpi.h"
 
-extern "C" svBit check_finsih(int ins)
+extern "C" svBit check_finish(int inst)
 {
-    if (ins == 0x100073) // ebreak;
+    if (inst == 0x100073) // ebreak;
         return 1;
     else
         return 0;

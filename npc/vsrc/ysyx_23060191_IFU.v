@@ -17,7 +17,7 @@ wire [`CPU_WIDTH-1:0] pc_add_after;
 //IFU里的二选一选择器，负责选通跳转指令和正常顺序指令
 MuxTemplate #(2,1,`CPU_WIDTH) mux1(chosen_pc,jump_en_from_IDU,{
     1'b1,jump_addr_from_EXU,
-    1'b0,pc
+    1'b0,pc_add_after
 });
 
 //PC寄存器
@@ -38,7 +38,7 @@ ysyx_23060191_ADDPC addPC(
 
 //内存读取指令
 ysyx_23060191_MEM mem(
-    .pc(pc_add_after),
+    .pc(pc),
     .rd_en(rstn),  //内存读使能
     
     .inst(inst)

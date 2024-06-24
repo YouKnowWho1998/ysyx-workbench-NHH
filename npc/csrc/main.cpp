@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-06-24 22:58:31
+ * @LastEditTime : 2024-06-24 23:12:44
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  :
  *
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     VerilatedVcdC *tfp = new VerilatedVcdC;
     Vtop *top = new Vtop;
     contextp->traceEverOn(true);
-    top->trace(tfp, 99);
+    top->trace(tfp, 0);
     tfp->open("build/waves.vcd");
 
     top->rstn = !0;

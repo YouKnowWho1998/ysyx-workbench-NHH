@@ -22,8 +22,7 @@ ysyx_23060191_IFU IFU(
 import "DPI-C" function bit check_finish(input int inst);
 always @(*) begin
     if (check_finish(inst)) begin
-        $display("--EBREAK--");
-        $display("CPU STOP RUNNING");
+        $display("[EBREAK] CPU STOP RUNNING");
         $finish;
     end
 end

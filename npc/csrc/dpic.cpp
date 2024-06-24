@@ -30,4 +30,5 @@ extern "C" int npc_pmem_read(int raddr)
     {
         inst = paddr_read(raddr, 4);
     }
+    return inst;
 }

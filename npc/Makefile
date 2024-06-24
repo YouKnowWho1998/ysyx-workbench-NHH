@@ -19,7 +19,7 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*
 
 #npc_args
 #默认加载dummy镜像
-IMG ?= ../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
+IMG ?= mnt/ysyx/ysyx-workbench/am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
 NPC_ARGS := --img $(IMG) 
 
 

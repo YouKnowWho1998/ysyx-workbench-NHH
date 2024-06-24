@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     VerilatedVcdC *tfp = new VerilatedVcdC;
     Vtop *top = new Vtop;
     contextp->traceEverOn(true);
-    top->trace(tfp, 0);
+    top->trace(tfp, 99);
     tfp->open("obj_dir/waves.vcd");
 
     top->rstn = !0;

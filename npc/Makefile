@@ -7,7 +7,7 @@ BIN = $(BUILD_DIR)/$(TOPNAME)
 
 #verilator
 VERILATOR = verilator
-VERILATOR_FLAGS += -Wall --trace --cc --build
+VERILATOR_FLAGS +=  --trace --cc --build
 
 #ldflags
 LDFLAGS := -LDFLAGS -ldl 

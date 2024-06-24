@@ -21,8 +21,8 @@
 // } regfile;
 
 uint8_t *guest_to_host(uint32_t paddr);
-uint64_t host_to_guest(uint8_t *haddr);
-uint64_t pmem_read(uint32_t addr, int len);
+uint32_t host_to_guest(uint8_t *haddr);
+uint32_t pmem_read(uint32_t addr, int len);
 void pmem_write(uint32_t addr, uint32_t data, int len);
 void npc_init(int argc, char *argv[]);
 // void print_regs();

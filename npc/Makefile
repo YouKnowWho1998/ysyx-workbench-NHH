@@ -43,7 +43,7 @@ run: $(BIN)
 	$(OBJ_DIR)/V$(TOPNAME) $(NPC_ARGS)
 
 wave:
-	gtkwave $(OBJ_DIR)/waves.vcd
+	gtkwave waves.vcd
 
 
 clean:

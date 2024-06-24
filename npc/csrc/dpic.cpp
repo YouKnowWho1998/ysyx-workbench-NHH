@@ -3,7 +3,7 @@
 
 extern "C" svBit check_finish(int inst)
 {
-    if (inst == 0x100073) // ebreak;
+    if (inst == 0x100073 || inst == 0x00006f) // ebreak;
         return 1;
     else
         return 0;

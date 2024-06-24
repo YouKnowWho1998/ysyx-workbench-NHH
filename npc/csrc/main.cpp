@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-06-24 22:22:32
+ * @LastEditTime : 2024-06-24 22:58:31
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  :
  *
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     Vtop *top = new Vtop;
     contextp->traceEverOn(true);
     top->trace(tfp, 99);
-    tfp->open("obj_dir/waves.vcd");
+    tfp->open("waves.vcd");
 
     top->rstn = !0;
     top->clk = 0;

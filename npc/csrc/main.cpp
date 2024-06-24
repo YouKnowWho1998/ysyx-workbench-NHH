@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-06-24 20:13:08
+ * @LastEditTime : 2024-06-24 22:22:32
+ * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
+ * @Description  :
+ *
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
+ */
 #include "include/include.h"
 #include "Vtop__Dpi.h"
 #include "verilated.h"
@@ -16,7 +25,7 @@ int main(int argc, char *argv[])
     VerilatedVcdC *tfp = new VerilatedVcdC;
     Vtop *top = new Vtop;
     contextp->traceEverOn(true);
-    top->trace(tfp, 0); 
+    top->trace(tfp, 0);
     tfp->open("obj_dir/waves.vcd");
 
     top->rstn = !0;
@@ -25,12 +34,12 @@ int main(int argc, char *argv[])
 
     npc_init(argc, argv);
 
-    while (!contextp->gotFinidh())
+    while (!contextp->gotFinish())
     {
         top->clk = !top->clk;
         step_and_dump_wave(contextp, tfp, top);
     }
-    
+
     step_and_dump_wave(contextp, tfp, top);
     tfp->close();
     delete tfp;
@@ -38,4 +47,4 @@ int main(int argc, char *argv[])
     delete contextp;
 
     return 0;
-}    
+}

@@ -1,4 +1,4 @@
-TOPNAME = ysyx_23060171_cpu
+TOPNAME = ysyx_23060191_CPU
 
 #build path
 BUILD_DIR = ./build
@@ -16,10 +16,12 @@ INC_PATH = $(WORK_PATH)/csrc/include
 CFLAGS += -CFLAGS -I$(INC_PATH) 
 CFLAGS += -CFLAGS "-D__GUEST_ISA__=riscv32"
 
-#npc_args
+#srcs
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-NPC_ARGS := $(IMG) --log $(BUILD_DIR)/cpu_run.txt
+
+#npc_args
+NPC_ARGS := --img $(IMG) --log $(BUILD_DIR)/cpu_run.txt
 
 
 # color
@@ -34,15 +36,13 @@ $(BIN): $(VSRCS) $(CSRCS)
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
 	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
-	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) --top-module $(TOPNAME) \
-	--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN)) $^
+	$(VERILATOR) $(CFLAGS) $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^
 	
-
 
 
 run: $(BIN)
 	@echo "$(COLOR_YELLOW)[CPU RUNNING FOR TEST MODULE]$(COLOR_NONE)"
-	$(BIN) $(NPC_ARGS)
+	$(OBJ_DIR)/V$(TOPNAME) $(NPC_ARGS)
 
 
 clean:

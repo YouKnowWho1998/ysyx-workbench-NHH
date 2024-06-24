@@ -12,7 +12,7 @@ extern "C" svBit check_finsih(int ins)
 extern "C" int npc_pmem_read(uint32_t raddr)
 {
     int inst = 0;
-    if (ren && raddr >= PMEM_START && raddr <= PMEM_END)
+    if (raddr >= PMEM_START && raddr <= PMEM_END)
     {
         inst = pmem_read(raddr, 4);
     }

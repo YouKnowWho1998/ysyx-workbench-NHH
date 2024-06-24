@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-21 11:19:38
- * @LastEditTime : 2024-06-24 11:58:53
- * @FilePath     : \ysyxc:\Users\ComradeNie\Desktop\github-npc\npc\csrc\isa\init.c
+ * @LastEditTime : 2024-06-24 12:09:28
+ * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\isa\init.c
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -23,7 +23,7 @@
  ***************************************************************************************/
 
 #include <isa.h>
-#include <paddr.h>
+#include <memory/paddr.h>
 
 // this is not consistent with uint8_t
 // but it is ok since we do not access the array directly

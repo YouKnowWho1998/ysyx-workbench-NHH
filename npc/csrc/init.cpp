@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:49:24
- * @LastEditTime : 2024-06-24 21:47:11
+ * @LastEditTime : 2024-06-25 10:21:51
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : 修改自NEMU
  *
@@ -12,6 +12,8 @@
 
 static char *img_file = NULL;
 static char *diff_so_file = NULL;
+
+
 
 static int parse_args(int argc, char *argv[])
 {

@@ -39,7 +39,7 @@ ysyx_23060191_ADDPC addPC(
 //内存读取指令
 ysyx_23060191_MEM mem(
     .pc(pc),
-    .rd_en(rstn),  //内存读使能
+    .rd_en(1'b1),  //内存读使能
     
     .inst(inst)
 );

@@ -24,11 +24,11 @@ static const uint32_t img[] = {
     0b00110000010100001010001011110011, // csrrs x5 mstatus x1 0x80000024 mstatus=0b111 x1=0b101 x5=0b010
     0b00000000000100000000000001110011  // ebreak              0x80000028
 };
+static uint8_t *pmem = NULL;
 
 uint8_t *guest_to_host(uint32_t paddr) { return pmem + paddr - PMEM_START; }
 uint32_t host_to_guest(uint8_t *haddr) { return haddr - pmem + PMEM_START; }
 
-static uint8_t *pmem = NULL;
 
 void init_mem(size_t size)
 {

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 22:25:47
+ * @LastEditTime : 2024-06-25 22:31:20
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\mem.cpp
  * @Description  : mem
  *
@@ -12,7 +12,7 @@
 static uint8_t pmem[PMEM_MSIZE] = {};
 
 // 内建镜像
-static const uint32_t img[] = {
+static const uint32_t img[] PG_ALIGN = {
     0x800002b7, // lui t0,0x80000
     0x0002a023, // sw  zero,0(t0)
     0x0002a503, // lw  a0,0(t0)

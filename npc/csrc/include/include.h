@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:47:25
- * @LastEditTime : 2024-06-25 13:22:59
+ * @LastEditTime : 2024-06-25 13:37:36
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\include\include.h
  * @Description  :
  *
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #define INST_START 0x80000000
 #define PMEM_START 0x80000000

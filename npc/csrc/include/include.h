@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-06-25 20:29:05
+ * @LastEditTime : 2024-06-25 22:33:33
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\include\include.h
  * @Description  :
  *
@@ -27,7 +27,7 @@
 // typedef struct
 // {
 //   uint32_t x[32];
-//   uint32_t pc;
+//   uint32_t pc
 // } regfile;
 
 uint8_t *guest_to_host(uint32_t paddr);

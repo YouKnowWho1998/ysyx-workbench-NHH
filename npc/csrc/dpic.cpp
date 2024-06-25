@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 22:06:37
- * @LastEditTime : 2024-06-25 22:47:00
+ * @LastEditTime : 2024-06-25 23:05:04
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\dpic.cpp
  * @Description  : DPIC
  *
@@ -18,12 +18,12 @@ extern "C" svBit check_finish(int inst)
         return 0;
 }
 
-extern "C" void npc_pmem_read(uint32_t raddr,uint32_t *rdata,svBit rd_en)
+extern "C" void npc_pmem_read(uint32_t raddr, uint32_t *rdata, svBit rd_en)
 {
     if (rd_en && raddr >= PMEM_LEFT && raddr <= PMEM_RIGHT)
     {
         *rdata = pmem_read(raddr, 4);
     }
-    else 
+    else
         *rdata = 0;
 }

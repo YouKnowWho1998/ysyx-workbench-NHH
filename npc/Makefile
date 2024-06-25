@@ -9,8 +9,6 @@ BIN = $(BUILD_DIR)/$(TOPNAME)
 VERILATOR = verilator
 VERILATOR_FLAGS +=  --trace --cc --build
 
-#ldflags
-LDFLAGS := -LDFLAGS -ldl 
 
 #srcs
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
@@ -19,7 +17,7 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*
 
 #npc_args
 #默认加载dummy镜像
-IMG ?= /mnt/ysyx/ysyx-workbench/am-kernels/tests/cpu-tests/build/dummy-riscv32-nemu.bin
+IMG ?= /mnt/ysyx/ysyx-workbench/am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
 NPC_ARGS := --img $(IMG) 
 
 
@@ -35,7 +33,7 @@ $(BIN): $(VSRCS) $(CSRCS)
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
 	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
-	$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ $(LDFLAGS)
+	$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ 
 	
 
 run: $(BIN)
@@ -43,7 +41,7 @@ run: $(BIN)
 	$(OBJ_DIR)/V$(TOPNAME) $(NPC_ARGS)
 
 wave:
-	gtkwave waves.vcd
+	gtkwave $(BUILD_DIR)/waves.vcd
 
 
 clean:

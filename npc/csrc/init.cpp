@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:49:24
- * @LastEditTime : 2024-06-25 10:21:51
+ * @LastEditTime : 2024-06-25 10:45:16
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : 修改自NEMU
  *
@@ -12,8 +12,6 @@
 
 static char *img_file = NULL;
 static char *diff_so_file = NULL;
-
-
 
 static int parse_args(int argc, char *argv[])
 {
@@ -38,7 +36,16 @@ static int parse_args(int argc, char *argv[])
     return 0;
 }
 
-extern uint8_t pmem[PMEM_MSIZE]; // use for load_img
+static uint8_t *pmem = NULL;
+void init_mem(size_t size)
+{
+    pmem = (uint8_t *)malloc(size);
+    if (pmem == NULL)
+    {
+        exit(0);
+    }
+}
+
 static long load_img(char *img_file)
 {
     if (img_file == NULL)
@@ -57,7 +64,6 @@ static long load_img(char *img_file)
     fseek(fp, 0, SEEK_END); // move cur to end.
     long size = ftell(fp);
 
-
     fseek(fp, 0, SEEK_SET);
     int ret = fread(pmem, size, 1, fp);
     assert(ret == 1);
@@ -73,11 +79,13 @@ void npc_init(int argc, char *argv[])
     /* Parse arguments. */
     parse_args(argc, argv);
 
+    init_mem(PMEM_MSIZE);
+
     /* Load the image to memory. This will overwrite the built-in image. */
     long img_size = load_img(img_file);
 
-// #ifdef DIFFTEST_ON
-//     /* Initialize differential testing. */
-//     difftest_init(diff_so_file, img_size);
-// #endif
+    // #ifdef DIFFTEST_ON
+    //     /* Initialize differential testing. */
+    //     difftest_init(diff_so_file, img_size);
+    // #endif
 }

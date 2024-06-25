@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:48:02
- * @LastEditTime : 2024-06-25 13:24:12
+ * @LastEditTime : 2024-06-25 15:11:02
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\mem.cpp
  * @Description  :
  *
@@ -9,6 +9,7 @@
  */
 
 #include "include/include.h"
+#include <string.h>
 
 static const uint32_t img[] = {
     0b00000000110000000000001011101111, // jal   x5 12         0x80000000
@@ -24,10 +25,10 @@ static const uint32_t img[] = {
     0b00000000000100000000000001110011  // ebreak              0x80000028
 };
 
-static uint8_t *pmem = NULL;
-
 uint8_t *guest_to_host(uint32_t paddr) { return pmem + paddr - PMEM_START; }
 uint32_t host_to_guest(uint8_t *haddr) { return haddr - pmem + PMEM_START; }
+
+static uint8_t *pmem = NULL;
 
 void init_mem(size_t size)
 {
@@ -37,6 +38,7 @@ void init_mem(size_t size)
     {
         exit(0);
     }
+    printf("the memory is [%x]", pmem);
     printf("npc physical memory area [%#x, %#lx]", PMEM_START, PMEM_START + size * sizeof(uint8_t));
 }
 

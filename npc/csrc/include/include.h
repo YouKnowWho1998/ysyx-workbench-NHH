@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <string.h>
 
 #define INST_START 0x80000000
 #define PMEM_START 0x80000000

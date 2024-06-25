@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 22:46:09
+ * @LastEditTime : 2024-06-25 22:51:11
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : npc_init
  *
@@ -36,7 +36,9 @@ static int parse_args(int argc, char *argv[])
     return 0;
 }
 
-static long load_img()
+extern uint8_t pmem[PMEM_MSIZE];
+
+static long load_img(char *img_file)
 {
     if (img_file == NULL)
     {
@@ -48,16 +50,21 @@ static long load_img()
     if (fp == NULL)
     {
         printf("Can not open '%s'\n", img_file);
-        // assert(0);
+        assert(0);
     }
-    fseek(fp, 0, SEEK_END);
+
+    fseek(fp, 0, SEEK_END); // move cur to end.
     long size = ftell(fp);
 
     printf("The image is %s, size = %ld\n", img_file, size);
 
     fseek(fp, 0, SEEK_SET);
-    int ret = fread(guest_to_host(PMEM_LEFT), size, 1, fp);
+    int ret = fread(pmem, size, 1, fp);
     assert(ret == 1);
+
+    //遍历
+    for (uint32_t i = 0; i < size; i = i + 4)
+        printf("0x%08x, 0x%08lx\n", PMEM_LEFT + i, pmem_read(PMEM_LEFT + i, 4));
 
     fclose(fp);
     return size;
@@ -70,13 +77,11 @@ void npc_init(int argc, char *argv[])
     /* Parse arguments. */
     parse_args(argc, argv);
 
-    init_mem();
-
     /* Load the image to memory. This will overwrite the built-in image. */
-    long img_size = load_img();
+    long img_size = load_img(img_file);
 
-// #ifdef DIFFTEST_ON
-//     /* Initialize differential testing. */
-//     difftest_init(diff_so_file, img_size);
-// #endif
+    // #ifdef DIFFTEST_ON
+    //     /* Initialize differential testing. */
+    //     difftest_init(diff_so_file, img_size);
+    // #endif
 }

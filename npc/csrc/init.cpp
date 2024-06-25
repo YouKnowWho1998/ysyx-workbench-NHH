@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 21:55:02
+ * @LastEditTime : 2024-06-25 21:59:31
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : npc_init
  *
@@ -48,7 +48,7 @@ static long load_img()
     if (fp == NULL)
     {
         printf("Can not open '%s'\n", img_file);
-        assert(0);
+        // assert(0);
     }
     fseek(fp, 0, SEEK_END);
     long size = ftell(fp);

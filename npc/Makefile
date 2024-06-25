@@ -8,7 +8,9 @@ BIN = $(BUILD_DIR)/$(TOPNAME)
 #verilator
 VERILATOR = verilator
 VERILATOR_FLAGS +=  --trace --cc --build
-VERILATOR_FLAGS +=  --gdb
+
+#debug
+VERILATOR_FLAGS +=  --gdb -CFLAGS -g
 
 
 #srcs

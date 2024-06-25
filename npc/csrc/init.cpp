@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:49:24
- * @LastEditTime : 2024-06-25 13:21:54
+ * @LastEditTime : 2024-06-25 15:21:23
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : 修改自NEMU
  *
@@ -70,7 +70,7 @@ void npc_init(int argc, char *argv[])
     /* Parse arguments. */
     parse_args(argc, argv);
 
-    init_mem(PMEM_MSIZE);
+    init_mem();
 
     /* Load the image to memory. This will overwrite the built-in image. */
     long img_size = load_img(img_file);

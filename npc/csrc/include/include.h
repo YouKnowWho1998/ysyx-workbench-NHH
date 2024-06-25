@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:47:25
- * @LastEditTime : 2024-06-25 13:37:36
+ * @LastEditTime : 2024-06-25 15:21:16
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\include\include.h
  * @Description  :
  *
@@ -34,7 +34,7 @@ uint8_t *guest_to_host(uint32_t paddr);
 uint32_t host_to_guest(uint8_t *haddr);
 uint32_t pmem_read(uint32_t addr, int len);
 void pmem_write(uint32_t addr, uint32_t data, int len);
-void init_mem(size_t size);
+void init_mem();
 void npc_init(int argc, char *argv[]);
 // void print_regs();
 // bool checkregs(regfile *ref, regfile *dut);

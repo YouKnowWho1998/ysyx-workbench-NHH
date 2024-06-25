@@ -7,9 +7,6 @@
 //funct3:
 `define FUNC3_ADDI 3'b000 //addi的func3
 
-//固定指令
-`define EBREAK 32'b000000000001_00000_000_00000_1110011
-
 //32个GPR寄存器组:
 `define X0 5'b00000 //X0 其值永远为0
 `define X1 5'b00001 //X1 返回地址
@@ -45,10 +42,3 @@
 `define X31 5'b11111 //X31 临时寄存器
 
 
-//ALU控制码
-`define ALU_LUI 3'b001 //imm
-`define ALU_AUIPC 3'b010 // pc+imm
-`define ALU_ADD 3'b011 // rs1+rs2
-`define ALU_SUB 3'b100 // rs1-rs2
-`define ALU_SLL 3'b101 
-`define ALU_SLT 3'b110 

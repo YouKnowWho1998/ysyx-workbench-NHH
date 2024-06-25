@@ -1,15 +1,26 @@
-TOPNAME = ysyx_23060191_top
-NXDC_FILES = constr/top.nxdc
-INC_PATH ?=
+TOPNAME = top
 
-VERILATOR = verilator
-VERILATOR_FLAGS += -MMD -cc -O3 --x-assign fast --x-initial fast --noassert -j 4
-# VERILATOR_FLAGS += --Wno-CASEINCOMPLETE --Wno-WIDTHEXPAND
-VERILATOR_FLAGS += --cc --exe --build --trace 
-
+#build path
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
+
+#verilator
+VERILATOR = verilator
+VERILATOR_FLAGS +=  -MMD -x-assign fast --trace --cc --build 
+VERILATOR_FLAGS +=  -CFLAGS -g
+GCC_LDFLAGS := -LDFLAGS -ldl
+
+
+#srcs
+VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
+CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
+
+
+#npc_args
+IMG ?= ../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
+NPC_ARGS = --img=$(IMG) 
+
 
 # color
 COLOR_RED   		= \033[1;31m
@@ -17,40 +28,25 @@ COLOR_GREEN 		= \033[1;32m
 COLOR_YELLOW 		= \033[33m
 COLOR_NONE  		= \033[0m
 
-# constraint file
-SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
-$(SRC_AUTO_BIND): $(NXDC_FILES)
-	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
-
-# project source
-VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
-CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-# CSRCS += $(SRC_AUTO_BIND)
-
-# rules for NVBoard
-include $(NVBOARD_HOME)/scripts/nvboard.mk
-
-# rules for verilator
-INCFLAGS = $(addprefix -I, $(INC_PATH))
-CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
-
 
 $(BIN): $(VSRCS) $(CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(notdir $(BUILD_DIR))/$(notdir $(BIN))"
+	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
 	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
-	@$(VERILATOR) $(VERILATOR_FLAGS) \
-		--top-module $(TOPNAME) $^ \
-		--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
+	@$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ $(GCC_LDFLAGS)
+	
 
 run: $(BIN)
-	@echo "$(COLOR_YELLOW)[Run CPU]$(COLOR_NONE)"
-	$(BIN) $(IMG)
+	@echo "$(COLOR_YELLOW)[CPU RUNNING FOR TEST MODULE]$(COLOR_NONE)"
+	$(OBJ_DIR)/V$(TOPNAME) $(NPC_ARGS)
+
+wave:
+	gtkwave $(BUILD_DIR)/waves.vcd
 
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: default  clean run
+.PHONY:  clean run  wave
 include ../Makefile

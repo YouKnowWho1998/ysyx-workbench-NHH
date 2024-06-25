@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:48:02
- * @LastEditTime : 2024-06-25 15:11:02
+ * @LastEditTime : 2024-06-25 15:13:23
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\mem.cpp
  * @Description  :
  *
@@ -38,7 +38,7 @@ void init_mem(size_t size)
     {
         exit(0);
     }
-    printf("the memory is [%x]", pmem);
+    printf("the memory is [%hhn]", pmem);
     printf("npc physical memory area [%#x, %#lx]", PMEM_START, PMEM_START + size * sizeof(uint8_t));
 }
 

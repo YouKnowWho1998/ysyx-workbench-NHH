@@ -53,7 +53,7 @@ static long load_img()
     fseek(fp, 0, SEEK_END);
     long size = ftell(fp);
 
-    Log("The image is %s, size = %ld", img_file, size);
+    printf("The image is %s, size = %ld\n", img_file, size);
 
     fseek(fp, 0, SEEK_SET);
     int ret = fread(guest_to_host(PMEM_START), size, 1, fp);

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 22:08:34
+ * @LastEditTime : 2024-06-25 22:16:41
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\mem.cpp
  * @Description  : mem
  *
@@ -9,7 +9,7 @@
  */
 #include "include/include.h"
 
-static uint8_t *pmem = NULL;
+uint8_t *pmem = NULL;
 
 // 内建镜像
 static const uint32_t img[] = {

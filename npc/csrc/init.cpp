@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:49:24
- * @LastEditTime : 2024-06-25 10:45:16
+ * @LastEditTime : 2024-06-25 13:13:03
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : 修改自NEMU
  *
@@ -36,7 +36,6 @@ static int parse_args(int argc, char *argv[])
     return 0;
 }
 
-extern uint8_t pmem[PMEM_MSIZE]; // use for load_img
 
 static long load_img(char *img_file)
 {
@@ -57,7 +56,7 @@ static long load_img(char *img_file)
     long size = ftell(fp);
 
     fseek(fp, 0, SEEK_SET);
-    int ret = fread(pmem, size, 1, fp);
+    int ret = fread(guest_to_host(PMEM_START), size, 1, fp);
     assert(ret == 1);
 
     fclose(fp);
@@ -71,6 +70,7 @@ void npc_init(int argc, char *argv[])
     /* Parse arguments. */
     parse_args(argc, argv);
 
+    init_mem();
 
     /* Load the image to memory. This will overwrite the built-in image. */
     long img_size = load_img(img_file);

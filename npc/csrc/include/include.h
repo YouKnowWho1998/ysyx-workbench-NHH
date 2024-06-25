@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-06-25 22:33:33
+ * @LastEditTime : 2024-06-25 22:43:31
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\include\include.h
  * @Description  :
  *
@@ -15,11 +15,11 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define INST_START 0x80000000
+#define PMEM_MSIZE 0x8000000
 #define PMEM_START 0x80000000
-#define PMEM_END 0x87ffffff
-#define PMEM_MSIZE (PMEM_END + 1 - PMEM_START)
-#define PG_ALIGN __attribute((aligned(4096)))
+#define PMEM_LEFT ((uint32_t)PMEM_START)
+#define PMEM_RIGHT ((uint32_t)PMEM_START + PMEM_MSIZE - 1)
+
 
 
 // #define DIFFTEST_ON  1

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 21:59:31
+ * @LastEditTime : 2024-06-25 22:46:09
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : npc_init
  *
@@ -56,7 +56,7 @@ static long load_img()
     printf("The image is %s, size = %ld\n", img_file, size);
 
     fseek(fp, 0, SEEK_SET);
-    int ret = fread(guest_to_host(PMEM_START), size, 1, fp);
+    int ret = fread(guest_to_host(PMEM_LEFT), size, 1, fp);
     assert(ret == 1);
 
     fclose(fp);

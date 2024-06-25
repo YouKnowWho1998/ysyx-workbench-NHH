@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-06-25 20:25:59
+ * @LastEditTime : 2024-06-25 22:14:12
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  :
  *
@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
 
     step_and_dump_wave(contextp, tfp, top);
 
-    top->final();
     tfp->close();
     delete tfp;
     delete top;

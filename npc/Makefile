@@ -7,7 +7,7 @@ BIN = $(BUILD_DIR)/$(TOPNAME)
 
 #verilator
 VERILATOR = verilator
-VERILATOR_FLAGS +=  --trace --cc --build
+VERILATOR_FLAGS +=  --trace --cc --build --gdb
 VERILATOR_FLAGS +=  -CFLAGS -g
 
 
@@ -19,7 +19,8 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*
 #npc_args
 #默认加载dummy镜像
 IMG ?= /mnt/ysyx/ysyx-workbench/am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
-NPC_ARGS = --img=$(IMG) 
+# NPC_ARGS = --img=$(IMG) 
+NPC_ARGS = s 
 
 
 # color

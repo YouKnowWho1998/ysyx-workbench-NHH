@@ -9,6 +9,7 @@ BIN = $(BUILD_DIR)/$(TOPNAME)
 VERILATOR = verilator
 VERILATOR_FLAGS +=  -MMD -x-assign fast --trace --cc --build 
 VERILATOR_FLAGS +=  -CFLAGS -g
+GCC_LDFLAGS := -LDFLAGS -ldl
 
 
 #srcs
@@ -17,6 +18,7 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*
 
 
 #npc_args
+IMG ?= ../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
 NPC_ARGS = --img=$(IMG) 
 
 
@@ -32,7 +34,7 @@ $(BIN): $(VSRCS) $(CSRCS)
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
 	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
-	$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ 
+	@$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ $(GCC_LDFLAGS)
 	
 
 run: $(BIN)

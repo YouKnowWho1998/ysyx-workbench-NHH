@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 22:51:11
+ * @LastEditTime : 2024-06-25 22:55:50
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : npc_init
  *
@@ -62,9 +62,9 @@ static long load_img(char *img_file)
     int ret = fread(pmem, size, 1, fp);
     assert(ret == 1);
 
-    //遍历
-    for (uint32_t i = 0; i < size; i = i + 4)
-        printf("0x%08x, 0x%08lx\n", PMEM_LEFT + i, pmem_read(PMEM_LEFT + i, 4));
+    // //遍历
+    // for (uint32_t i = 0; i < size; i = i + 4)
+    //     printf("0x%08x, 0x%08lx\n", PMEM_LEFT + i, pmem_read(PMEM_LEFT + i, 4));
 
     fclose(fp);
     return size;

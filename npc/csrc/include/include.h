@@ -15,14 +15,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <string.h>
 
 #define INST_START 0x80000000
 #define PMEM_START 0x80000000
 #define PMEM_END 0x87ffffff
 #define PMEM_MSIZE 0x8000000
 
-#define PG_ALIGN __attribute((aligned(4096)))
 
 // #define DIFFTEST_ON 0
 

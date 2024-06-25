@@ -10,13 +10,14 @@
 
 #include "include/include.h"
 
-uint8_t pmem[PMEM_MSIZE] PG_ALIGN = {};
+static uint8_t *pmem = NULL;
 
 uint8_t *guest_to_host(uint32_t paddr) { return pmem + paddr - PMEM_START; }
 uint32_t host_to_guest(uint8_t *haddr) { return haddr - pmem + PMEM_START; }
 
-void init_mem(){
-    pmem = malloc(PMEM_MSIZE);
+void init_mem(size_t size){
+    pmem = (uint8_t *)malloc(size * sizeof(uint8_t));
+    if(pmem == NULL){exit(0);}
 }
 
 

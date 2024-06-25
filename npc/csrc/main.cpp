@@ -8,7 +8,7 @@
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
 #include "include/include.h"
-#include "Vtop.h"
+#include "Vtop__Dpi.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 

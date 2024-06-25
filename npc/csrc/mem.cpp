@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 22:16:41
+ * @LastEditTime : 2024-06-25 22:25:47
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\mem.cpp
  * @Description  : mem
  *
@@ -9,7 +9,7 @@
  */
 #include "include/include.h"
 
-uint8_t *pmem = NULL;
+static uint8_t pmem[PMEM_MSIZE] = {};
 
 // 内建镜像
 static const uint32_t img[] = {
@@ -25,8 +25,6 @@ uint32_t host_to_guest(uint8_t *haddr) { return haddr - pmem + PMEM_START; }
 
 //内存初始化
 void init_mem() {
-    pmem = (uint8_t *)malloc(PMEM_MSIZE);
-    assert(pmem);
     memcpy(guest_to_host(PMEM_START), img, sizeof(img));
     printf("内存完成初始化\n");
 }

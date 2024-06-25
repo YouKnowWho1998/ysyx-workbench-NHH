@@ -50,7 +50,7 @@ static long load_img(char *img_file)
     if (fp == NULL)
     {
         printf("Can not open '%s'\n", img_file);
-        assert(0);
+        // assert(0);
     }
 
     fseek(fp, 0, SEEK_END); // move cur to end.

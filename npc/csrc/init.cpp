@@ -36,7 +36,7 @@ static int parse_args(int argc, char *argv[])
     return 0;
 }
 
-extern uint8_t pmem[PMEM_MSIZE];
+extern uint8_t pmem[PMEM_MSIZE]; // use for load_img
 
 static long load_img(char *img_file)
 {
@@ -70,6 +70,7 @@ void npc_init(int argc, char *argv[])
 
     /* Parse arguments. */
     parse_args(argc, argv);
+
 
     /* Load the image to memory. This will overwrite the built-in image. */
     long img_size = load_img(img_file);

@@ -10,7 +10,7 @@ VERILATOR = verilator
 VERILATOR_FLAGS +=  --trace --cc --build
 
 #debug
-VERILATOR_FLAGS +=  --gdbbt --debug
+VERILATOR_FLAGS +=  --gdb --debug
 
 
 #srcs

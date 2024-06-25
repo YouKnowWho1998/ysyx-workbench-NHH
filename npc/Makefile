@@ -17,8 +17,7 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*
 
 
 #npc_args
-#默认加载dummy镜像
-NPC_ARGS = --img $(IMG) 
+NPC_ARGS = --img=$(IMG) 
 
 
 # color

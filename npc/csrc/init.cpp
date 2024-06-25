@@ -1,9 +1,9 @@
 /*
  * @Author       : 中北大学-聂怀昊
- * @Date         : 2024-06-24 20:49:24
- * @LastEditTime : 2024-06-25 15:21:23
+ * @Date         : 2024-06-25 16:08:33
+ * @LastEditTime : 2024-06-25 21:13:29
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
- * @Description  : 修改自NEMU
+ * @Description  : npc_init
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
@@ -36,13 +36,12 @@ static int parse_args(int argc, char *argv[])
     return 0;
 }
 
-
-static long load_img(char *img_file)
+static long load_img()
 {
     if (img_file == NULL)
     {
         printf("No image is given. Use the default build-in image.\n");
-        return 72; // built-in image size
+        return 4096; // built-in image size
     }
 
     FILE *fp = fopen(img_file, "rb");
@@ -51,9 +50,10 @@ static long load_img(char *img_file)
         printf("Can not open '%s'\n", img_file);
         assert(0);
     }
-
-    fseek(fp, 0, SEEK_END); // move cur to end.
+    fseek(fp, 0, SEEK_END);
     long size = ftell(fp);
+
+    Log("The image is %s, size = %ld", img_file, size);
 
     fseek(fp, 0, SEEK_SET);
     int ret = fread(guest_to_host(PMEM_START), size, 1, fp);
@@ -75,8 +75,8 @@ void npc_init(int argc, char *argv[])
     /* Load the image to memory. This will overwrite the built-in image. */
     long img_size = load_img(img_file);
 
-    // #ifdef DIFFTEST_ON
-    //     /* Initialize differential testing. */
-    //     difftest_init(diff_so_file, img_size);
-    // #endif
+// #ifdef DIFFTEST_ON
+//     /* Initialize differential testing. */
+//     difftest_init(diff_so_file, img_size);
+// #endif
 }

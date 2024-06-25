@@ -1,14 +1,14 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-06-24 23:12:44
+ * @LastEditTime : 2024-06-25 20:25:59
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
 #include "include/include.h"
-#include "Vtop__Dpi.h"
+#include "Vtop.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 
@@ -41,10 +41,11 @@ int main(int argc, char *argv[])
     }
 
     step_and_dump_wave(contextp, tfp, top);
+
+    top->final();
     tfp->close();
     delete tfp;
     delete top;
     delete contextp;
-
     return 0;
 }

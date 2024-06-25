@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 21:41:40
+ * @LastEditTime : 2024-06-25 21:57:20
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\mem.cpp
  * @Description  : mem
  *
@@ -25,7 +25,7 @@ uint32_t host_to_guest(uint8_t *haddr) { return haddr - pmem + PMEM_START; }
 
 //内存初始化
 void init_mem() {
-    pmem = malloc(PMEM_MSIZE);
+    pmem = (uint8_t *)malloc(PMEM_MSIZE);
     assert(pmem);
     memcpy(guest_to_host(PMEM_START), img, sizeof(img));
     printf("内存完成初始化\n");

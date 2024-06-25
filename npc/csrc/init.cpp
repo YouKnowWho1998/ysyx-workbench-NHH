@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 21:13:29
+ * @LastEditTime : 2024-06-25 21:55:02
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : npc_init
  *
@@ -73,7 +73,7 @@ void npc_init(int argc, char *argv[])
     init_mem();
 
     /* Load the image to memory. This will overwrite the built-in image. */
-    long img_size = load_img(img_file);
+    long img_size = load_img();
 
 // #ifdef DIFFTEST_ON
 //     /* Initialize differential testing. */

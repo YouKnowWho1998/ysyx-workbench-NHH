@@ -4,13 +4,22 @@ module ysyx_23060191_CPU (
     input rstn
 );
 
+wire rstn_sync;
 wire [`CPU_WIDTH-1:0] inst;
+
+
+Rstnreg rstn_reg(
+    .clk(clk),
+    .rstn(rstn),
+
+    .rstn_sync(rstn_sync)
+);
 
 
 //IFU模块
 ysyx_23060191_IFU IFU(
     .clk(clk),
-    .rstn(rstn),
+    .rstn(rstn_sync),
     .jump_addr_from_EXU(32'b0),//JAL(R)跳转指令跳转地址
     .jump_en_from_IDU(1'b0),//JAL(R)跳转指令使能信号
 

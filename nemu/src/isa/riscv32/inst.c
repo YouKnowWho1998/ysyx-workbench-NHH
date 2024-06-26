@@ -1,12 +1,4 @@
-/*
- * @Author       : 中北大学-聂怀昊
- * @Date         : 2024-03-08 17:19:42
- * @LastEditTime : 2024-06-16 14:11:15
- * @FilePath     : \ysyx\ysyx-workbench\nemu\src\isa\riscv32\inst.c
- * @Description  :
- *
- * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
- */
+
 /***************************************************************************************
  * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
  *

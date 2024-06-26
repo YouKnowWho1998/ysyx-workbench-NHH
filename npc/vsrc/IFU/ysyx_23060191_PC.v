@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-06-20 10:42:28
+ * @LastEditTime : 2024-06-26 10:07:04
+ * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\IFU\ysyx_23060191_PC.v
+ * @Description  : PC寄存器
+ * 
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
+ */
 `include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_PC (
     input clk,

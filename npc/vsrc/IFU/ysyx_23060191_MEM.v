@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-06-20 11:04:22
+ * @LastEditTime : 2024-06-26 10:06:34
+ * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\IFU\ysyx_23060191_MEM.v
+ * @Description  : 内存模块 
+ * 
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
+ */
 `include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_MEM (
     input [`CPU_WIDTH-1:0] pc,

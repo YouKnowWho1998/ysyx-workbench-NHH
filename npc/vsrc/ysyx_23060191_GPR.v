@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-27 14:50:08
- * @LastEditTime : 2024-06-28 17:00:54
+ * @LastEditTime : 2024-06-28 21:33:46
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_GPR.v
  * @Description  : GPR寄存器组
  * 

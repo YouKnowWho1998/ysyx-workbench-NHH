@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-27 22:27:11
- * @LastEditTime : 2024-06-28 17:05:33
+ * @LastEditTime : 2024-06-28 22:04:42
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_EXU.v
  * @Description  : EXU指令执行模块
  * 
@@ -19,7 +19,7 @@ module ysyx_23060191_EXU (
     output reg [`CPU_WIDTH-1:0] exu_res
 );
 
-wire [`ALU_OPT_WIDTH-1:0] alu_opt_code;//ALU操作码
+reg [`ALU_OPT_WIDTH-1:0] alu_opt_code;//ALU操作码
 wire [`CPU_WIDTH-1:0] alu_in1,alu_in2;//ALU输入in1和in2
 wire [`CPU_WIDTH-1:0] alu_res;//ALU计算结果
 

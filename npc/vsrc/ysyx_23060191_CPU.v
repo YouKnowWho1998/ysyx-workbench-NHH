@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-06-28 17:16:38
+ * @LastEditTime : 2024-06-28 22:02:05
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -21,9 +21,9 @@ module ysyx_23060191_CPU (
   wire [`CPU_WIDTH-1:0] data_Rs1;  //Rs1寄存器值
   wire [`CPU_WIDTH-1:0] pc;  //pc值
   wire [`CPU_WIDTH-1:0] inst;  //指令
-  wire [`CPU_WIDTH-1:0] addr_Rd;
-  wire [`CPU_WIDTH-1:0] addr_Rs1;
-  wire [`CPU_WIDTH-1:0] addr_Rs2;
+  wire [4:0] addr_Rd;
+  wire [4:0] addr_Rs1;
+  wire [4:0] addr_Rs2;
   wire [`CPU_WIDTH-1:0] data_Rd;
   wire [`CPU_WIDTH-1:0] data_Rs1;
   wire [`CPU_WIDTH-1:0] data_Rs2;

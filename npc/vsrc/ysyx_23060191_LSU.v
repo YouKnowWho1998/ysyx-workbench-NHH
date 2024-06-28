@@ -34,7 +34,7 @@ module ysyx_23060191_LSU (
   RegTemplate #(2 * `CPU_WIDTH + 4, 0) reg_store (
       .clk (clk),
       .rstn(rstn),
-      .din ({addr, data_load, mask}),
+      .din ({addr, data_store, mask}),
       .dout({wr_addr, wr_data, wr_mask}),
       .wen (1'b1)
   );

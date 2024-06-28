@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 22:59:54
+ * @LastEditTime : 2024-06-28 22:22:21
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
  * @Description  : npc_init
  *
@@ -64,7 +64,7 @@ static long load_img(char *img_file)
 
     //遍历
     for (uint32_t i = 0; i < size; i = i + 4)
-        printf("0x%08x, 0x%08lx\n", PMEM_LEFT + i, pmem_read(PMEM_LEFT + i, 4));
+        printf("0x%08x, 0x%08x\n", PMEM_LEFT + i, pmem_read(PMEM_LEFT + i, 4));
 
     fclose(fp);
     return size;

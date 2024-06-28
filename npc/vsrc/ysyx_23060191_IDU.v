@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-26 10:10:46
- * @LastEditTime : 2024-06-28 13:54:12
+ * @LastEditTime : 2024-06-28 22:13:43
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_IDU.v
  * @Description  : IDU指令译码模块
  * 
@@ -25,9 +25,10 @@ module ysyx_23060191_IDU (
 );
 
   wire [6:0] opcode = inst[6:0];  //opcode
-  wire [2:0] fun3 = inst[14:12];  //fun3
+  wire [2:0] func3 = inst[14:12];  //func3
 
   //指令解码 分离出立即数和寄存器地址
+  /* verilator lint_off CASEINCOMPLETE */
   always @(*) begin
     imm = 0;
     addr_Rd = 0;
@@ -37,12 +38,15 @@ module ysyx_23060191_IDU (
     wr_en_Rd = 0;
     exu_opt_code = 0;
     lsu_opt_code = 0;
-    exu_sel_code = `EXU_SEL_WIDTH'b0;
+    exu_sel_code = 0;
     case (opcode)
-      `TYPE_U_LUI: begin  //lui指令:R(rd) = imm
+      `TYPE_U_LUI: begin  //lui指令:R(rd) = X0 + imm
         imm = {inst[31:12], 12'b0};  //U型立即数 加载在寄存器高20位
         addr_Rd = inst[11:7];
+        addr_Rs1 = 0;  //X0寄存器
         wr_en_Rd = 1;
+        exu_opt_code = `EXU_ADD;
+        exu_sel_code = `SEL_RS1_ADD_IMM;
       end
       `TYPE_U_AUIPC: begin  //auipc指令:R(rd) = pc + imm
         imm = {inst[31:12], 12'b0};  //U型立即数 加载在寄存器高20位
@@ -73,7 +77,7 @@ module ysyx_23060191_IDU (
         exu_sel_code = `SEL_PC_ADD_4;
       end
       `TYPE_I_ADDI_SERIES: begin
-        case (fun3)
+        case (func3)
           `FUNC3_ADDI: begin  //addi指令:R(rd) = src1 + imm
             imm = {
               {20{inst[31]}}, inst[31:20]
@@ -85,7 +89,9 @@ module ysyx_23060191_IDU (
             exu_sel_code = `SEL_RS1_ADD_IMM;
           end
         endcase
-        `TYPE_S_SERIES : begin
+      end
+      `TYPE_S_SERIES: begin
+        case (func3)
           `FUNC3_SW : begin  //sw指令:Mw(src1 + imm, 4, src2)) src1+imm是内存写入地址 src2是写入值
             imm = {{20{inst[31]}}, {inst[31:25], inst[11:7]}};
             addr_Rs1 = inst[19:15];
@@ -94,15 +100,10 @@ module ysyx_23060191_IDU (
             exu_sel_code = `SEL_RS1_ADD_IMM;
             lsu_opt_code = `LSU_SW;
           end
-        end
+        endcase
       end
     endcase
   end
-
-
-
-
-
 
 
 

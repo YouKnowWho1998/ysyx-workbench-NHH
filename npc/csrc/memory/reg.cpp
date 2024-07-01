@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-30 11:53:03
- * @LastEditTime : 2024-06-30 21:27:20
+ * @LastEditTime : 2024-07-01 23:10:53
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\memory\reg.cpp
  * @Description  : regs
  *
@@ -11,6 +11,7 @@
 
 uint32_t *dut_reg = NULL;
 uint32_t dut_pc;
+uint32_t dut_inst;
 
 const char *regs[] = {
     "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -22,16 +23,16 @@ bool check_regs(regfile *ref, regfile *dut)
 {
     if (ref->pc != dut->pc)
     {
-        printf("difftest error: ");
-        printf("the next reg pc is different: ref = 0x%x, dut = 0x%x\n", ref->pc, dut->pc);
+        printf("\033[1;36mdifftest error: \033[0m");
+        printf("\033[1;36mthe next reg pc is different: ref = 0x%x, dut = 0x%x\033[0m\n", ref->pc, dut->pc);
         return false;
     }
     for (int i = 0; i < 32; i++)
     {
         if (ref->gpr[i] != dut->gpr[i])
         {
-            printf("difftest error at nextpc = 0x%x, ", dut->pc);
-            printf("reg %s is different: ref = 0x%x, dut = 0x%x\n", regs[i], ref->gpr[i], dut->gpr[i]);
+            printf("\033[1;36mdifftest error at next pc = 0x%x, \033[0m", dut->pc);
+            printf("\033[1;36mreg %s is different: ref = 0x%x, dut = 0x%x\033[0m\n", regs[i], ref->gpr[i], dut->gpr[i]);
             return false;
         }
     }
@@ -40,10 +41,10 @@ bool check_regs(regfile *ref, regfile *dut)
 
 void print_regs()
 {
-    printf("dut pc = 0x%x\n", dut_pc);
+    printf("\033[1;36mdut pc = 0x%x\033[0m\n", dut_pc);
     for (int i = 0; i < 32; i++)
     {
-        printf("dut reg %3s = 0x%x\n", regs[i], dut_reg[i]);
+        printf("\033[1;36mdut reg %3s = 0x%x\033[0m\n", regs[i], dut_reg[i]);
     }
 }
 
@@ -56,4 +57,9 @@ regfile pack_dut_regfile(uint32_t *dut_reg, uint32_t pc)
     }
     dut.pc = pc;
     return dut;
+}
+
+void store_trace_data()
+{
+    trace_inst(dut_pc, dut_inst);
 }

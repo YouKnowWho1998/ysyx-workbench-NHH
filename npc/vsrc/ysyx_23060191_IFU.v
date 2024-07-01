@@ -24,10 +24,13 @@ module ysyx_23060191_IFU (
   );
   //DPIC函数：获取PC值
   import "DPI-C" function void get_dut_pc(input int npc_pc);
+  //DPIC函数：获取inst值
+  import "DPI-C" function void get_dut_inst(input int npc_inst);
   
   always @(*) begin
     npc_pmem_read(pc, inst, rstn);
     get_dut_pc(pc);
+    get_dut_inst(inst);
   end
 
 

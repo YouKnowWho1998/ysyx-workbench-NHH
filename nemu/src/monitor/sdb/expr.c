@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-01-07 12:13:15
- * @LastEditTime : 2024-01-19 22:36:19
+ * @LastEditTime : 2024-07-01 13:25:00
  * @FilePath     : \ysyx\ysyx-workbench\nemu\src\monitor\sdb\expr.c
  * @Description  : 表达式求值
  * 
@@ -156,60 +156,6 @@ static bool make_token(char *e)
         break;
       }
     }
-
-    //     switch (rules[i].token_type)
-    //     {
-    //     case TK_NOTYPE:
-    //       break;
-    //     case '+':
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       break;
-    //     case TK_EQ:
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       break;
-    //     case '-':
-    //     case TK_NEG:
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       break;
-    //     case '*':
-    //     case TK_POINTER:
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       break;
-    //     case '/':
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       break;
-    //     case '(':
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       break;
-    //     case ')':
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       break;
-    //     case TK_NOTEQ:
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       strcpy(tokens[nr_token].str, "!=");
-    //       break;
-    //     case TK_OR:
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       strcpy(tokens[nr_token].str, "||");
-    //       break;
-    //     case TK_AND:
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       strcpy(tokens[nr_token].str, "&&");
-    //       break;
-    //     case TK_HEX:
-    //     case TK_NUM:
-    //     case TK_REG:
-    //       tokens[nr_token].type = rules[i].token_type;
-    //       strncpy(tokens[nr_token].str, &e[position - substr_len], substr_len);
-    //       break;
-    //     default:
-    //       printf("i = %d and No rules is com.\n", i);
-    //       break;
-    //     }
-    //     ++nr_token;
-    //     break;
-    //   }
-    // }
 
     if (i == NR_REGEX)
     {

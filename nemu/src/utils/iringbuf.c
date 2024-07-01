@@ -45,7 +45,7 @@ void display_inst()
     do
     {
         p = buf;
-        p += sprintf(buf, "[IRINGBUF] %s" FMT_WORD ":  %08x\t", (i + 1) % INST_NUM == end ? "-->" : "   ", iringbuf[i].pc, iringbuf[i].inst);
+        p += sprintf(buf, "[ITRACE] %s" FMT_WORD ":  %08x\t", (i + 1) % INST_NUM == end ? "-->" : "   ", iringbuf[i].pc, iringbuf[i].inst);
 
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, buf + sizeof(buf) - p, iringbuf[i].pc, (uint8_t *)&iringbuf[i].inst, 4);

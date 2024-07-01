@@ -20,9 +20,8 @@
 #define PMEM_LEFT ((uint32_t)PMEM_START)
 #define PMEM_RIGHT ((uint32_t)PMEM_START + PMEM_MSIZE - 1)
 
-
-
-#define DIFFTEST_ON  1
+#define DIFFTEST_ON 1
+#define ITRACE_ON 1
 
 typedef struct
 {
@@ -43,6 +42,12 @@ regfile pack_dut_regfile(uint32_t *dut_reg, uint32_t pc);
 void difftest_init(char *ref_so_file, long img_size);
 bool difftest_check();
 void difftest_step();
+#endif
+
+#ifdef ITRACE_ON
+void store_trace_data();
+void trace_inst(uint32_t pc, uint32_t inst);
+void display_inst();
 #endif
 
 #endif

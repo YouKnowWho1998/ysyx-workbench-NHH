@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-06-30 20:22:36
+ * @LastEditTime : 2024-07-01 23:50:52
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  :
  *
@@ -39,6 +39,14 @@ int main(int argc, char *argv[])
     while (!contextp->gotFinish())
     {
         top->clk = !top->clk;
+#ifdef ITRACE_ON
+        top->eval();
+        if (top->clk && rstn_sync)
+        {
+            store_trace_data();
+            display_inst();
+        }
+#endif 
 #ifdef DIFFTEST_ON
         top->eval();
         if (top->clk && rstn_sync)

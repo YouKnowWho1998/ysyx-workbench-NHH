@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-30 22:07:20
+ * @LastEditTime : 2024-07-01 23:49:38
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.cpp
  * @Description  : npc_init
  *
@@ -12,6 +12,10 @@
 
 static char *img_file = NULL;
 static char *diff_so_file = NULL;
+
+#ifdef ITRACE_ON
+extern "C" void init_disasm(const char *triple);
+#endif
 
 static int parse_args(int argc, char *argv[])
 {
@@ -62,10 +66,6 @@ static long load_img(char *img_file)
     int ret = fread(pmem, size, 1, fp);
     assert(ret == 1);
 
-    //遍历
-    for (uint32_t i = 0; i < size; i = i + 4)
-        printf("0x%08x, 0x%08x\n", PMEM_LEFT + i, pmem_read(PMEM_LEFT + i, 4));
-
     fclose(fp);
     return size;
 }
@@ -80,8 +80,13 @@ void npc_init(int argc, char *argv[])
     /* Load the image to memory. This will overwrite the built-in image. */
     long img_size = load_img(img_file);
 
-    #ifdef DIFFTEST_ON
-        /* Initialize differential testing. */
-        difftest_init(diff_so_file, img_size);
-    #endif
+#ifdef ITRACE_ON
+    init_disasm("riscv32-pc-linux-gnu");
+#endif
+
+#ifdef DIFFTEST_ON
+    /* Initialize differential testing. */
+    difftest_init(diff_so_file, img_size);
+#endif
+
 }

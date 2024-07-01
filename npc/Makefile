@@ -6,12 +6,18 @@ OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
 INC_PATH = /mnt/ysyx/ysyx-workbench/npc/csrc/include
 
+#ldflags
+LDFLAGS += $(shell llvm-config --ldflags)
+LIBS += $(shell llvm-config --libs) 
+
 #verilator
 VERILATOR = verilator
 VERILATOR_FLAGS +=  -MMD -x-assign fast --trace --cc --build 
 VERILATOR_FLAGS +=  -CFLAGS -I$(INC_PATH) 
-VERILATOR_FLAGS +=  -CFLAGS -g 
-GCC_LDFLAGS := -LDFLAGS -ldl
+VERILATOR_FLAGS +=  -LDFLAGS "$(LDFLAGS) $(LIBS)"
+VERILATOR_FLAGS +=  -LDFLAGS -lreadline
+# VERILATOR_FLAGS +=  -CFLAGS -g 
+
 
 
 #srcs

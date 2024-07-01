@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-07-01 12:02:21
+ * @LastEditTime : 2024-07-01 20:00:56
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\defines.v
  * @Description  : CPU设计参数宏定义
  * 

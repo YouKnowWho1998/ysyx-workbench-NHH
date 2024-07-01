@@ -1,13 +1,13 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-28 22:22:21
- * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\init.cpp
+ * @LastEditTime : 2024-06-30 22:07:20
+ * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\monitor\monitor.cpp
  * @Description  : npc_init
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
-#include "include/include.h"
+#include "include.h"
 #include <getopt.h>
 
 static char *img_file = NULL;
@@ -80,8 +80,8 @@ void npc_init(int argc, char *argv[])
     /* Load the image to memory. This will overwrite the built-in image. */
     long img_size = load_img(img_file);
 
-    // #ifdef DIFFTEST_ON
-    //     /* Initialize differential testing. */
-    //     difftest_init(diff_so_file, img_size);
-    // #endif
+    #ifdef DIFFTEST_ON
+        /* Initialize differential testing. */
+        difftest_init(diff_so_file, img_size);
+    #endif
 }

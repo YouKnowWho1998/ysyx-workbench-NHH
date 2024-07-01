@@ -1,14 +1,27 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 22:06:37
- * @LastEditTime : 2024-06-28 15:35:07
+ * @LastEditTime : 2024-06-30 20:18:37
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\dpic.cpp
  * @Description  : DPIC
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
-#include "include/include.h"
+#include "include.h"
 #include "verilated_dpi.h"
+
+extern bool rstn_sync;
+extern "C" void check_rstn(svBit rstn_flag)
+{
+    if (rstn_flag)
+    {
+        rstn_sync = true;
+    }
+    else
+    {
+        rstn_sync = false;
+    }
+}
 
 extern "C" svBit check_finish(int inst)
 {
@@ -46,4 +59,16 @@ extern "C" void npc_pmem_write(uint32_t wr_addr, uint32_t wr_data, const svBitVe
     default:
         break;
     }
+}
+
+//获取处理器内部寄存器值和PC值
+extern uint32_t *dut_reg;
+extern uint32_t dut_pc;
+
+extern "C" void get_dut_reg(const svOpenArrayHandle r){
+    dut_reg = (uint32_t *)(((VerilatedDpiOpenVar *)r)->datap());
+}
+
+extern "C" void get_dut_pc(uint32_t npc_pc){
+    dut_pc = npc_pc;
 }

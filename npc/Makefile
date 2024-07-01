@@ -4,11 +4,13 @@ TOPNAME = top
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
+INC_PATH = /mnt/ysyx/ysyx-workbench/npc/csrc/include
 
 #verilator
 VERILATOR = verilator
 VERILATOR_FLAGS +=  -MMD -x-assign fast --trace --cc --build 
-VERILATOR_FLAGS +=  -CFLAGS -g
+VERILATOR_FLAGS +=  -CFLAGS -I$(INC_PATH) 
+VERILATOR_FLAGS +=  -CFLAGS -g 
 GCC_LDFLAGS := -LDFLAGS -ldl
 
 
@@ -18,8 +20,9 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*
 
 
 #npc_args
+DIFFTEST := $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
 IMG ?= ../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
-NPC_ARGS = --img=$(IMG) 
+NPC_ARGS = --img=$(IMG) --diff=$(DIFFTEST)
 
 
 # color

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-20 10:59:34
- * @LastEditTime : 2024-06-28 00:31:42
+ * @LastEditTime : 2024-06-30 13:47:24
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_IFU.v
  * @Description  : IFU取指模块
  * 
@@ -22,8 +22,12 @@ module ysyx_23060191_IFU (
     output int rd_data,
     input  bit rd_en
   );
+  //DPIC函数：获取PC值
+  import "DPI-C" function void get_dut_pc(input int npc_pc);
+  
   always @(*) begin
     npc_pmem_read(pc, inst, rstn);
+    get_dut_pc(pc);
   end
 
 

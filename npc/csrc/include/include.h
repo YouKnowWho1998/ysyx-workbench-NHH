@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-06-25 22:50:12
+ * @LastEditTime : 2024-06-30 22:07:39
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\include\include.h
  * @Description  :
  *
@@ -22,27 +22,27 @@
 
 
 
-// #define DIFFTEST_ON  1
+#define DIFFTEST_ON  1
 
-// typedef struct
-// {
-//   uint32_t x[32];
-//   uint32_t pc
-// } regfile;
+typedef struct
+{
+  uint32_t gpr[32];
+  uint32_t pc;
+} regfile;
 
 uint8_t *guest_to_host(uint32_t paddr);
 uint32_t host_to_guest(uint8_t *haddr);
 uint32_t pmem_read(uint32_t addr, int len);
 void pmem_write(uint32_t addr, uint32_t data, int len);
 void npc_init(int argc, char *argv[]);
-// void print_regs();
-// bool checkregs(regfile *ref, regfile *dut);
-// regfile pack_dut_regfile(uint64_t *dut_reg, uint64_t pc);
+void print_regs();
+bool check_regs(regfile *ref, regfile *dut);
+regfile pack_dut_regfile(uint32_t *dut_reg, uint32_t pc);
 
-// #ifdef DIFFTEST_ON
-// void difftest_init(char *ref_so_file, long img_size);
-// bool difftest_check();
-// void difftest_step();
-// #endif
+#ifdef DIFFTEST_ON
+void difftest_init(char *ref_so_file, long img_size);
+bool difftest_check();
+void difftest_step();
+#endif
 
 #endif

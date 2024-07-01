@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-06-28 12:52:31
+ * @LastEditTime : 2024-07-01 12:02:21
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\defines.v
  * @Description  : CPU设计参数宏定义
  * 
@@ -33,7 +33,7 @@
 `define EXU_SEL_WIDTH 2
 `define SEL_PC_ADD_4 2'b00 //PC+4
 `define SEL_PC_ADD_IMM 2'b01 //PC+imm
-`define SEL_RS1_ADD_IMM 2'b01 //Rs1+imm
+`define SEL_RS1_ADD_IMM 2'b10 //Rs1+imm
 `define SEL_RS1_ADD_RS2 2'b11 //Rs1+Rs2
 
 

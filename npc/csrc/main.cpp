@@ -1,16 +1,18 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-06-25 22:14:12
+ * @LastEditTime : 2024-06-30 20:22:36
  * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
-#include "include/include.h"
+#include "include.h"
 #include "Vtop__Dpi.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
+
+bool rstn_sync = false;
 
 void step_and_dump_wave(VerilatedContext *contextp, VerilatedVcdC *tfp, Vtop *top)
 {
@@ -37,6 +39,18 @@ int main(int argc, char *argv[])
     while (!contextp->gotFinish())
     {
         top->clk = !top->clk;
+#ifdef DIFFTEST_ON
+        top->eval();
+        if (top->clk && rstn_sync)
+        {
+            if (!difftest_check())
+            {
+                print_regs();
+                break;
+            }
+            difftest_step();
+        }
+#endif
         step_and_dump_wave(contextp, tfp, top);
     }
 

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-07-01 23:59:16
+ * @LastEditTime : 2024-07-05 10:37:12
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -17,6 +17,8 @@ module ysyx_23060191_CPU (
   wire jal_jump_en;  //jal跳转使能
   wire jalr_jump_en;  //jalr跳转使能
   wire wr_en_Rd;  //Rd寄存器写使能
+  wire branch_en;
+  wire zero;
   wire [`CPU_WIDTH-1:0] imm;  //立即数
   wire [`CPU_WIDTH-1:0] data_Rs1;  //Rs1寄存器值
   wire [`CPU_WIDTH-1:0] pc;  //pc值
@@ -28,6 +30,7 @@ module ysyx_23060191_CPU (
   wire [`CPU_WIDTH-1:0] data_Rs1;
   wire [`CPU_WIDTH-1:0] data_Rs2;
   wire [`CPU_WIDTH-1:0] exu_res;
+  wire [`CPU_WIDTH-1:0] lsu_res;
   wire [`EXU_OPT_WIDTH-1:0] exu_opt_code;
   wire [`LSU_OPT_WIDTH-1:0] lsu_opt_code;
   wire [`EXU_SEL_WIDTH-1:0] exu_sel_code;
@@ -48,6 +51,8 @@ module ysyx_23060191_CPU (
       .data_Rs1(data_Rs1),  //Rs1寄存器值
       .jal_jump_en(jal_jump_en),  //jal跳转指令使能
       .jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能
+      .branch_en(branch_en),
+      .zero(zero),
 
       .pc(pc)
   );
@@ -71,6 +76,7 @@ module ysyx_23060191_CPU (
       .imm(imm),  //所有立即数统一扩展至32位 高位填充符号位 IDU->EXU IDU->PCU
       .jal_jump_en(jal_jump_en),  //jal跳转指令使能 IDU->PCU
       .jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能 IDU->PCU
+      .branch_en(branch_en),
       .exu_opt_code(exu_opt_code),  //EXU操作码 IDU->EXU
       .lsu_opt_code(lsu_opt_code),  //LSU操作码 IDU->LSU
       .exu_sel_code(exu_sel_code)  //EXU选择码 IDU->EXU
@@ -98,7 +104,8 @@ module ysyx_23060191_CPU (
       .exu_opt_code(exu_opt_code),
       .exu_sel_code(exu_sel_code),
 
-      .exu_res(exu_res)  //EXU->LSU EXU->WBU
+      .exu_res(exu_res),  //EXU->LSU EXU->WBU
+      .zero(zero)
   );
 
   //LSU
@@ -107,14 +114,16 @@ module ysyx_23060191_CPU (
       .rstn(rstn_sync),
       .lsu_opt_code(lsu_opt_code),
       .addr(exu_res),  //EXU->LSU 地址计算结果（读写地址都包括）
-      .data_store(data_Rs2)  //GPR->LSU 写入内存的数据 其值为data_Rs2
+      .data_store(data_Rs2),  //GPR->LSU 写入内存的数据 其值为data_Rs2
 
-      //.data_load() //MEM->LSU 从内存中读出的数据
+      .data_load(lsu_res) //MEM->LSU 从内存中读出的数据
   );
 
   //WBU
   ysyx_23060191_WBU wbu (
       .exu_res(exu_res),  //EXU计算结果(需要回写)
+      .lsu_res(lsu_res),
+      .load_en(~lsu_opt_code[0]),
 
       .data_wr_Rd(data_Rd)
   );

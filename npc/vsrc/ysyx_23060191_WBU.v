@@ -10,10 +10,12 @@
 `include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_WBU (
     input  [`CPU_WIDTH-1:0] exu_res,//EXU计算结果(需要回写)
+    input  [`CPU_WIDTH-1:0] lsu_res,
+    input  load_en, 
 
     output [`CPU_WIDTH-1:0] data_wr_Rd  
 );
 
-assign data_wr_Rd = exu_res;
+assign data_wr_Rd = load_en ? lsu_res : exu_res;
 
 endmodule //ysyx_23060191_WBU

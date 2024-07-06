@@ -14,10 +14,9 @@ LIBS += $(shell llvm-config --libs)
 VERILATOR = verilator
 VERILATOR_FLAGS +=  -MMD -x-assign fast --trace --cc --build 
 VERILATOR_FLAGS +=  -CFLAGS -I$(INC_PATH) 
+# VERILATOR_FLAGS +=  -CFLAGS -g 
 VERILATOR_FLAGS +=  -LDFLAGS "$(LDFLAGS) $(LIBS)"
 VERILATOR_FLAGS +=  -LDFLAGS -lreadline
-# VERILATOR_FLAGS +=  -CFLAGS -g 
-
 
 
 #srcs
@@ -43,7 +42,7 @@ $(BIN): $(VSRCS) $(CSRCS)
 	@echo "$(COLOR_YELLOW)[VERILATE]$(COLOR_NONE) $(TOPNAME)"
 	@rm -rf $(OBJ_DIR)
 	@mkdir -p $(BUILD_DIR)
-	@$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ $(GCC_LDFLAGS)
+	@$(VERILATOR)  $(VERILATOR_FLAGS) --top-module $(TOPNAME) --Mdir $(OBJ_DIR) --exe $^ 
 	
 
 run: $(BIN)

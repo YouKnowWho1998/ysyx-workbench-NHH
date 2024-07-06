@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-26 15:23:13
- * @LastEditTime : 2024-06-28 00:26:16
+ * @LastEditTime : 2024-07-05 10:36:22
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_PCU.v
  * @Description  : PCU产生&控制模块
  * 
@@ -15,6 +15,8 @@ module ysyx_23060191_PCU (
     input [`CPU_WIDTH-1:0] data_Rs1,  //Rs1寄存器值
     input jal_jump_en,  //jal跳转指令使能
     input jalr_jump_en,  //jalr跳转指令使能
+    input branch_en,  //branch指令使能
+    input zero,    //branch非0指示 EXU->PCU 
 
     output [`CPU_WIDTH-1:0] pc
 );
@@ -23,7 +25,7 @@ module ysyx_23060191_PCU (
 
   //跳转指令判断
   always @(*) begin
-    if (jal_jump_en) begin
+    if (~zero && branch_en || jal_jump_en) begin
       pc_next = pc + imm;
     end else if (jalr_jump_en) begin
       pc_next = data_Rs1 + imm;

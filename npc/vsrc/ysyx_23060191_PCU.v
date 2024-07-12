@@ -1,13 +1,13 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-26 15:23:13
- * @LastEditTime : 2024-07-05 10:36:22
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_PCU.v
+ * @LastEditTime : 2024-07-12 13:07:52
+ * @FilePath     : /ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_PCU.v
  * @Description  : PCU产生&控制模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
  */
-`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
+`include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_PCU (
     input clk,
     input rstn,

@@ -1,13 +1,13 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-26 10:10:46
- * @LastEditTime : 2024-07-05 22:58:57
+ * @LastEditTime : 2024-07-06 11:49:25
  * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_IDU.v
  * @Description  : IDU指令译码模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
  */
-`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
+`include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 
 module ysyx_23060191_IDU (
     input [`CPU_WIDTH-1:0] inst,

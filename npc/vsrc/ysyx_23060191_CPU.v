@@ -1,13 +1,13 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-07-05 10:37:12
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_CPU.v
+ * @LastEditTime : 2024-07-12 14:51:25
+ * @FilePath     : /ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
  */
-`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
+`include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_CPU (
     input clk,
     input rstn
@@ -136,7 +136,7 @@ module ysyx_23060191_CPU (
   always @(*) begin
     check_rstn(rstn_sync);
     if (check_finish(inst)) begin
-      $display("\033[1;34m[EBREAK]  CPU STOP RUNNING\033[0m");
+      $display("[EBREAK]  CPU STOP RUNNING");
       $finish;
     end
   end

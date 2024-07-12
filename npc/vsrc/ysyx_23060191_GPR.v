@@ -1,13 +1,13 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-27 14:50:08
- * @LastEditTime : 2024-06-30 13:48:56
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_GPR.v
+ * @LastEditTime : 2024-07-12 13:07:40
+ * @FilePath     : /ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_GPR.v
  * @Description  : GPR寄存器组
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
  */
-`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
+`include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_GPR (
     input clk,
     input wr_en_Rd,  //Rd寄存器写使能

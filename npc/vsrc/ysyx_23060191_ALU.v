@@ -1,13 +1,13 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-28 00:28:13
- * @LastEditTime : 2024-07-06 10:22:52
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_ALU.v
+ * @LastEditTime : 2024-07-12 13:07:25
+ * @FilePath     : /ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_ALU.v
  * @Description  : ALU计算模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
  */
-`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
+`include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_ALU (
     input [`CPU_WIDTH-1:0] alu_in1,
     input [`CPU_WIDTH-1:0] alu_in2,

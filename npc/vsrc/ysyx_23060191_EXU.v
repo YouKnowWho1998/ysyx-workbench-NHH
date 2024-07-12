@@ -1,13 +1,13 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-27 22:27:11
- * @LastEditTime : 2024-07-06 11:09:30
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_EXU.v
+ * @LastEditTime : 2024-07-12 13:07:36
+ * @FilePath     : /ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_EXU.v
  * @Description  : EXU指令执行模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
  */
-`include "/mnt/ysyx/ysyx-workbench/npc/vsrc/defines.v"
+`include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_EXU (
     input [`CPU_WIDTH-1:0] pc,
     input [`CPU_WIDTH-1:0] data_Rs1,

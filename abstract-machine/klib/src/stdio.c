@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-05-26 21:57:18
- * @LastEditTime : 2024-06-11 10:46:18
- * @FilePath     : \ysyx\ysyx-workbench\abstract-machine\klib\src\stdio.c
+ * @LastEditTime : 2024-07-16 17:45:09
+ * @FilePath     : /ysyx/ysyx-workbench/abstract-machine/klib/src/stdio.c
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -14,9 +14,24 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
+char buf[1024];
+void putch(char ch);
+
 int printf(const char *fmt, ...)
 {
-  panic("Not implemented");
+  va_list ap;
+  va_start(ap, fmt);
+
+  int val = vsnprintf(buf, 1024, fmt, ap);
+  char *tmp = buf;
+  while (*tmp != 0)
+  {
+    putch(*tmp);
+    tmp++;
+  }
+
+  va_end(ap);
+  return val;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap)

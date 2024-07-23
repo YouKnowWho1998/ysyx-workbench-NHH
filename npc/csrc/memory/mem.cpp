@@ -1,23 +1,19 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-25 16:08:33
- * @LastEditTime : 2024-06-25 22:49:30
- * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\mem.cpp
+ * @LastEditTime : 2024-07-23 18:35:01
+ * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/memory/mem.cpp
  * @Description  : mem
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
 #include "include.h"
 
-uint8_t pmem[PMEM_MSIZE]  = {};
-
-
+uint8_t pmem[PMEM_MSIZE] = {};
 
 uint8_t *guest_to_host(uint32_t paddr) { return pmem + paddr - PMEM_START; }
 
 uint32_t host_to_guest(uint8_t *haddr) { return haddr - pmem + PMEM_START; }
-
-
 
 uint32_t pmem_read(uint32_t addr, int len)
 {

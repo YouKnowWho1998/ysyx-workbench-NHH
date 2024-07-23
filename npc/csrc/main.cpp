@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-07-05 12:56:17
- * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\main.cpp
+ * @LastEditTime : 2024-07-23 21:07:03
+ * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/main.cpp
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -39,25 +39,25 @@ int main(int argc, char *argv[])
     while (!contextp->gotFinish())
     {
         top->clk = !top->clk;
-#ifdef ITRACE_ON
+#if ITRACE_ON == true
         top->eval();
         if (top->clk && rstn_sync)
         {
             store_trace_data();
             display_inst();
         }
-#endif 
-#ifdef DIFFTEST_ON
-        top->eval();
-        if (top->clk && rstn_sync)
-        {
-            if (!difftest_check())
+#endif
+#if DIFFTEST_ON == true
+            top->eval();
+            if (top->clk && rstn_sync)
             {
-                print_regs();
-                break;
+                if (!difftest_check())
+                {
+                    print_regs();
+                    break;
+                }
+                difftest_step();
             }
-            difftest_step();
-        }
 #endif
         step_and_dump_wave(contextp, tfp, top);
     }

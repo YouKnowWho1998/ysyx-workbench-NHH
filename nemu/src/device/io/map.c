@@ -1,17 +1,26 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-07-21 17:11:54
+ * @LastEditTime : 2024-07-23 21:08:16
+ * @FilePath     : /ysyx/ysyx-workbench/nemu/src/device/io/map.c
+ * @Description  : 
+ * 
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
+ */
 /***************************************************************************************
-* Copyright (c) 2014-2022 Zihao Yu, Nanjing University
-*
-* NEMU is licensed under Mulan PSL v2.
-* You can use this software according to the terms and conditions of the Mulan PSL v2.
-* You may obtain a copy of Mulan PSL v2 at:
-*          http://license.coscl.org.cn/MulanPSL2
-*
-* THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-* EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-* MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-*
-* See the Mulan PSL v2 for more details.
-***************************************************************************************/
+ * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
+ *
+ * NEMU is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ *
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ *
+ * See the Mulan PSL v2 for more details.
+ ***************************************************************************************/
 
 #include <isa.h>
 #include <memory/host.h>
@@ -23,7 +32,8 @@
 static uint8_t *io_space = NULL;
 static uint8_t *p_space = NULL;
 
-uint8_t* new_space(int size) {
+uint8_t *new_space(int size)
+{
   uint8_t *p = p_space;
   // page aligned;
   size = (size + (PAGE_SIZE - 1)) & ~PAGE_MASK;
@@ -32,28 +42,38 @@ uint8_t* new_space(int size) {
   return p;
 }
 
-static void check_bound(IOMap *map, paddr_t addr) {
-  if (map == NULL) {
+static void check_bound(IOMap *map, paddr_t addr)
+{
+  if (map == NULL)
+  {
     Assert(map != NULL, "address (" FMT_PADDR ") is out of bound at pc = " FMT_WORD, addr, cpu.pc);
-  } else {
+  }
+  else
+  {
     Assert(addr <= map->high && addr >= map->low,
-        "address (" FMT_PADDR ") is out of bound {%s} [" FMT_PADDR ", " FMT_PADDR "] at pc = " FMT_WORD,
-        addr, map->name, map->low, map->high, cpu.pc);
+           "address (" FMT_PADDR ") is out of bound {%s} [" FMT_PADDR ", " FMT_PADDR "] at pc = " FMT_WORD,
+           addr, map->name, map->low, map->high, cpu.pc);
   }
 }
 
-static void invoke_callback(io_callback_t c, paddr_t offset, int len, bool is_write) {
-  if (c != NULL) { c(offset, len, is_write); }
+static void invoke_callback(io_callback_t c, paddr_t offset, int len, bool is_write)
+{
+  if (c != NULL)
+  {
+    c(offset, len, is_write);
+  }
 }
 
-void init_map() {
+void init_map()
+{
   io_space = malloc(IO_SPACE_MAX);
   assert(io_space);
   p_space = io_space;
 }
 
-word_t map_read(paddr_t addr, int len, IOMap *map) {
-  IFDEF(CONFIG_DTRACE, Log("read device %s : address in  = " FMT_PADDR ", len = %d\n", map->name, addr, len));
+word_t map_read(paddr_t addr, int len, IOMap *map)
+{
+  // IFDEF(CONFIG_DTRACE, Log("read device %s : address in  = " FMT_PADDR ", len = %d\n", map->name, addr, len));
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
   paddr_t offset = addr - map->low;
@@ -62,8 +82,9 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   return ret;
 }
 
-void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
-  IFDEF(CONFIG_DTRACE, Log("write device %s : address in = " FMT_PADDR ", len = %d\n", addr, len));
+void map_write(paddr_t addr, int len, word_t data, IOMap *map)
+{
+  // IFDEF(CONFIG_DTRACE, Log("write device %s : address in = " FMT_PADDR ", len = %d\n", addr, len));
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
   paddr_t offset = addr - map->low;

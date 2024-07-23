@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 22:06:37
- * @LastEditTime : 2024-07-01 23:06:11
- * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\dpic.cpp
+ * @LastEditTime : 2024-07-23 21:00:14
+ * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/dpic.cpp
  * @Description  : DPIC
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -11,6 +11,7 @@
 #include "verilated_dpi.h"
 
 extern bool rstn_sync;
+
 extern "C" void check_rstn(svBit rstn_flag)
 {
     if (rstn_flag)
@@ -43,8 +44,12 @@ extern "C" void npc_pmem_read(uint32_t rd_addr, uint32_t *rd_data, svBit rd_en)
 
 extern "C" void npc_pmem_write(uint32_t wr_addr, uint32_t wr_data, const svBitVecVal *wr_mask)
 {
-    // printf("wr_addr = 0x%x,wr_data = 0x%x,wr_mask = 0x%x\n",wr_addr,wr_data,*wr_mask);
     // waddr = waddr & ~0x7ull;  //clear low 3bit for 8byte align.
+    if (wr_addr == SERIAL_PORT_ADDR)
+    {
+        putc((char)wr_data, stderr);
+        return;
+    }
     switch (*wr_mask)
     {
     case 1:
@@ -61,19 +66,22 @@ extern "C" void npc_pmem_write(uint32_t wr_addr, uint32_t wr_data, const svBitVe
     }
 }
 
-//获取处理器内部寄存器值,PC值,指令值
+// 获取处理器内部寄存器值,PC值,指令值
 extern uint32_t *dut_reg;
 extern uint32_t dut_pc;
 extern uint32_t dut_inst;
 
-extern "C" void get_dut_reg(const svOpenArrayHandle r){
+extern "C" void get_dut_reg(const svOpenArrayHandle r)
+{
     dut_reg = (uint32_t *)(((VerilatedDpiOpenVar *)r)->datap());
 }
 
-extern "C" void get_dut_pc(uint32_t npc_pc){
+extern "C" void get_dut_pc(uint32_t npc_pc)
+{
     dut_pc = npc_pc;
 }
 
-extern "C" void get_dut_inst(uint32_t npc_inst){
+extern "C" void get_dut_inst(uint32_t npc_inst)
+{
     dut_inst = npc_inst;
 }

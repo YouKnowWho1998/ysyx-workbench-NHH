@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-07-05 12:55:09
- * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\include\include.h
+ * @LastEditTime : 2024-07-23 20:59:22
+ * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/include/include.h
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -20,8 +20,13 @@
 #define PMEM_LEFT ((uint32_t)PMEM_START)
 #define PMEM_RIGHT ((uint32_t)PMEM_START + PMEM_MSIZE - 1)
 
-#define DIFFTEST_ON 1
-#define ITRACE_ON 1
+//device defines
+#define DEVICE_BASE 0xa0000000
+#define SERIAL_PORT_ADDR (DEVICE_BASE + 0x00003f8)
+#define RTC_ADDR (DEVICE_BASE + 0x0000048)
+
+#define DIFFTEST_ON false
+#define ITRACE_ON false
 
 typedef struct
 {

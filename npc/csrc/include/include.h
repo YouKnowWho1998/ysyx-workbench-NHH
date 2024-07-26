@@ -1,9 +1,9 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-07-23 20:59:22
+ * @LastEditTime : 2024-07-25 16:40:17
  * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/include/include.h
- * @Description  :
+ * @Description  : NPC-头文件
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
  */
@@ -25,8 +25,9 @@
 #define SERIAL_PORT_ADDR (DEVICE_BASE + 0x00003f8)
 #define RTC_ADDR (DEVICE_BASE + 0x0000048)
 
-#define DIFFTEST_ON false
-#define ITRACE_ON false
+#define DIFFTEST_ON 1
+#define ITRACE_ON 0
+#define DEVICE_ON 1
 
 typedef struct
 {
@@ -42,11 +43,13 @@ void npc_init(int argc, char *argv[]);
 void print_regs();
 bool check_regs(regfile *ref, regfile *dut);
 regfile pack_dut_regfile(uint32_t *dut_reg, uint32_t pc);
+uint64_t get_time();
 
 #ifdef DIFFTEST_ON
 void difftest_init(char *ref_so_file, long img_size);
 bool difftest_check();
 void difftest_step();
+void difftest_skip_ref();
 #endif
 
 #ifdef ITRACE_ON

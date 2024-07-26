@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-30 11:53:03
- * @LastEditTime : 2024-07-12 14:51:50
+ * @LastEditTime : 2024-07-25 17:01:21
  * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/memory/reg.cpp
  * @Description  : regs
  *
@@ -24,7 +24,7 @@ bool check_regs(regfile *ref, regfile *dut)
     if (ref->pc != dut->pc)
     {
         printf("difftest error:");
-        printf("the next reg pc is different: ref = 0x%x, dut = 0x%x\n", ref->pc, dut->pc);
+        printf("the next pc is different: ref = 0x%x, dut = 0x%x\n", ref->pc, dut->pc);
         return false;
     }
     for (int i = 0; i < 32; i++)

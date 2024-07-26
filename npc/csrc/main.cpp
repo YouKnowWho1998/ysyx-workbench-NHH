@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-07-23 21:07:03
+ * @LastEditTime : 2024-07-26 08:25:36
  * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/main.cpp
  * @Description  :
  *
@@ -12,61 +12,67 @@
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 
-bool rstn_sync = false;
+static VerilatedVcdC *tfp = NULL;
+static VerilatedContext *contextp = NULL;
+static Vtop *top = NULL;
 
-void step_and_dump_wave(VerilatedContext *contextp, VerilatedVcdC *tfp, Vtop *top)
+void init_wave()
 {
-    top->eval();
+    contextp = new VerilatedContext;
+    tfp = new VerilatedVcdC;
+    top = new Vtop;
+    contextp->traceEverOn(true);
+    top->trace(tfp, 0);
+    tfp->open("build/waves.vcd");
+}
+
+void dump_wave()
+{
     contextp->timeInc(1);
     tfp->dump(contextp->time());
 }
 
-int main(int argc, char *argv[])
+void single_cycle()
 {
-    VerilatedContext *contextp = new VerilatedContext;
-    VerilatedVcdC *tfp = new VerilatedVcdC;
-    Vtop *top = new Vtop;
-    contextp->traceEverOn(true);
-    top->trace(tfp, 0);
-    tfp->open("build/waves.vcd");
-
-    top->rstn = !0;
     top->clk = 0;
-    step_and_dump_wave(contextp, tfp, top);
+    top->rstn = 1;
+    top->eval();
+    dump_wave();
+    top->clk = 1;
+    top->eval();
+    dump_wave();
+}
 
-    npc_init(argc, argv);
-
-    while (!contextp->gotFinish())
+void cpu_exec(uint32_t n)
+{
+    while (n > 0)
     {
-        top->clk = !top->clk;
-#if ITRACE_ON == true
-        top->eval();
-        if (top->clk && rstn_sync)
+        single_cycle();
+        difftest_step();
+        if (!difftest_check())
         {
-            store_trace_data();
-            display_inst();
+            print_regs();
+            break;
         }
-#endif
-#if DIFFTEST_ON == true
-            top->eval();
-            if (top->clk && rstn_sync)
-            {
-                if (!difftest_check())
-                {
-                    print_regs();
-                    break;
-                }
-                difftest_step();
-            }
-#endif
-        step_and_dump_wave(contextp, tfp, top);
+        n--;
     }
+}
 
-    step_and_dump_wave(contextp, tfp, top);
-
+void close_wave()
+{
     tfp->close();
     delete tfp;
     delete top;
     delete contextp;
+}
+
+int main(int argc, char *argv[])
+{
+    init_wave();
+    single_cycle();
+    single_cycle();
+    npc_init(argc, argv);
+    cpu_exec(1000);
+    close_wave();
     return 0;
 }

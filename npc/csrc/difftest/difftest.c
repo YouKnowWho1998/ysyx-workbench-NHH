@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-30 09:28:12
- * @LastEditTime : 2024-06-30 20:16:24
- * @FilePath     : \ysyx\ysyx-workbench\npc\csrc\difftest.c
+ * @LastEditTime : 2024-07-25 22:11:50
+ * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/difftest/difftest.c
  * @Description  : difftest模块
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -14,6 +14,7 @@
 
 extern uint32_t *dut_reg;
 extern uint32_t dut_pc;
+bool is_skip_ref = false;
 
 enum
 {
@@ -24,6 +25,11 @@ void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) 
 void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
 void (*ref_difftest_exec)(uint32_t n) = NULL;
 // void (*ref_difftest_raise_intr)(uint32_t NO) = NULL;
+
+void difftest_skip_ref()
+{
+    is_skip_ref = true;
+}
 
 void difftest_init(char *ref_so_file, long img_size)
 {
@@ -65,6 +71,13 @@ bool difftest_check()
 
 void difftest_step()
 {
+    if (is_skip_ref)
+    {
+        regfile dut = pack_dut_regfile(dut_reg, dut_pc);
+        ref_difftest_regcpy(&dut, DIFFTEST_TO_REF);
+        is_skip_ref = false;
+        return;
+    }
     ref_difftest_exec(1);
 }
 

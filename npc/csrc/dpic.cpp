@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 22:06:37
- * @LastEditTime : 2024-07-23 21:00:14
+ * @LastEditTime : 2024-07-26 08:35:51
  * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/dpic.cpp
  * @Description  : DPIC
  *
@@ -12,17 +12,6 @@
 
 extern bool rstn_sync;
 
-extern "C" void check_rstn(svBit rstn_flag)
-{
-    if (rstn_flag)
-    {
-        rstn_sync = true;
-    }
-    else
-    {
-        rstn_sync = false;
-    }
-}
 
 extern "C" svBit check_finish(int inst)
 {
@@ -44,12 +33,16 @@ extern "C" void npc_pmem_read(uint32_t rd_addr, uint32_t *rd_data, svBit rd_en)
 
 extern "C" void npc_pmem_write(uint32_t wr_addr, uint32_t wr_data, const svBitVecVal *wr_mask)
 {
-    // waddr = waddr & ~0x7ull;  //clear low 3bit for 8byte align.
+// waddr = waddr & ~0x7ull;  //clear low 3bit for 8byte align.
+#if DEVICE_ON == 1
     if (wr_addr == SERIAL_PORT_ADDR)
     {
+        difftest_skip_ref();
         putc((char)wr_data, stderr);
         return;
     }
+#endif
+
     switch (*wr_mask)
     {
     case 1:

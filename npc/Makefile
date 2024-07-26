@@ -14,7 +14,7 @@ LIBS += $(shell llvm-config --libs)
 VERILATOR = verilator
 VERILATOR_FLAGS +=  -MMD -x-assign fast --trace --cc --build 
 VERILATOR_FLAGS +=  -CFLAGS -I$(INC_PATH) 
-# VERILATOR_FLAGS +=  -CFLAGS -g 
+VERILATOR_FLAGS +=  -CFLAGS -g 
 VERILATOR_FLAGS +=  -LDFLAGS "$(LDFLAGS) $(LIBS)"
 VERILATOR_FLAGS +=  -LDFLAGS -lreadline
 

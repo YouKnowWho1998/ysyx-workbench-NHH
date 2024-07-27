@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 22:06:37
- * @LastEditTime : 2024-07-27 19:07:13
+ * @LastEditTime : 2024-07-27 22:29:32
  * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/dpic.cpp
  * @Description  : DPIC
  *
@@ -11,6 +11,7 @@
 #include "verilated_dpi.h"
 
 bool npc_stop = false;
+static uint64_t timer = 0;
 
 extern "C" svBit npc_finish(int inst)
 {
@@ -28,8 +29,23 @@ extern "C" svBit npc_finish(int inst)
 extern "C" void npc_pmem_read(uint32_t rd_addr, uint32_t *rd_data, svBit rd_en)
 {
 #if DEVICE_ON == 1
-    
+    if (rd_addr == RTC_ADDR + 4)
+    {
+        difftest_skip_ref();
+        timer = get_time();
+        *rd_data = (uint32_t)(timer >> 32);
+    }
+    if (rd_addr == RTC_ADDR)
+    {
+        difftest_skip_ref();
+        *rd_data = (uint32_t)(timer);
+    }
+    if (rd_addr == SERIAL_PORT_ADDR)
+    {
+        return;
+    }
 #endif
+
     if (rd_en && rd_addr >= PMEM_LEFT && rd_addr <= PMEM_RIGHT)
     {
         *rd_data = pmem_read(rd_addr, 4);

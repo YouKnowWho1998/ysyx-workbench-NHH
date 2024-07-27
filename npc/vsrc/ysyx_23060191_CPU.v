@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-07-26 08:25:48
+ * @LastEditTime : 2024-07-27 17:26:13
  * @FilePath     : /ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -129,10 +129,10 @@ module ysyx_23060191_CPU (
   );
 
   //DPI-C函数：Ebreak指令停止仿真
-  import "DPI-C" function bit check_finish(input int inst);
+  import "DPI-C" function bit npc_finish(input int inst);
 
   always @(*) begin
-    if (check_finish(inst)) begin
+    if (npc_finish(inst)) begin
       $display("[EBREAK]  CPU STOP RUNNING");
       $finish;
     end

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 22:06:37
- * @LastEditTime : 2024-07-26 08:35:51
+ * @LastEditTime : 2024-07-27 19:07:13
  * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/dpic.cpp
  * @Description  : DPIC
  *
@@ -10,19 +10,26 @@
 #include "include.h"
 #include "verilated_dpi.h"
 
-extern bool rstn_sync;
+bool npc_stop = false;
 
-
-extern "C" svBit check_finish(int inst)
+extern "C" svBit npc_finish(int inst)
 {
     if (inst == 0x100073) // ebreak;
+    {
+        npc_stop = true;
         return 1;
+    }
     else
+    {
         return 0;
+    }
 }
 
 extern "C" void npc_pmem_read(uint32_t rd_addr, uint32_t *rd_data, svBit rd_en)
 {
+#if DEVICE_ON == 1
+    
+#endif
     if (rd_en && rd_addr >= PMEM_LEFT && rd_addr <= PMEM_RIGHT)
     {
         *rd_data = pmem_read(rd_addr, 4);

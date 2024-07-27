@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-07-25 16:40:17
+ * @LastEditTime : 2024-07-27 19:20:23
  * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/include/include.h
  * @Description  : NPC-头文件
  *
@@ -26,7 +26,7 @@
 #define RTC_ADDR (DEVICE_BASE + 0x0000048)
 
 #define DIFFTEST_ON 1
-#define ITRACE_ON 0
+#define ITRACE_ON 1
 #define DEVICE_ON 1
 
 typedef struct

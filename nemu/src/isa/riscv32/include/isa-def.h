@@ -19,7 +19,7 @@
 #include <common.h>
 
 typedef struct
-{
+{ 
   word_t mtvec;
   word_t mepc;
   word_t mstatus;

@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-07-21 15:32:03
+ * @LastEditTime : 2024-07-29 17:24:02
+ * @FilePath     : /ysyx-workbench/abstract-machine/am/include/arch/riscv.h
+ * @Description  :
+ *
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
+ */
 #ifndef ARCH_H__
 #define ARCH_H__
 
@@ -7,9 +16,10 @@
 #define NR_REGS 32
 #endif
 
-struct Context {
+struct Context
+{
   // TODO: fix the order of these members to match trap.S
-  uintptr_t mepc, mcause, gpr[NR_REGS], mstatus;
+  uintptr_t gpr[NR_REGS], mcause, mstatus, mepc;
   void *pdir;
 };
 
@@ -19,9 +29,9 @@ struct Context {
 #define GPR1 gpr[17] // a7
 #endif
 
-#define GPR2 gpr[0]
-#define GPR3 gpr[0]
-#define GPR4 gpr[0]
-#define GPRx gpr[0]
+#define GPR2 gpr[10] // a0
+#define GPR3 gpr[11] // a1
+#define GPR4 gpr[12] // a2
+#define GPRx gpr[10] // a0
 
 #endif

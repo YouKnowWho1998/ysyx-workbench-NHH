@@ -21,9 +21,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc)
    * Then return the address of the interrupt/exception vector.
    */
 
-  //把当前PC值写入到mepc寄存器中
+  // 把当前PC值写入到mepc寄存器中
   cpu.csr.mepc = epc;
-  // 事件编号写入到mcause寄存器中
+  // 异常号写入到mcause寄存器中
   cpu.csr.mcause = NO;
   // 自陷入mtvec寄存器中的地址
   // printf("mtvec == 0x%x\n", cpu.csr.mtvec);

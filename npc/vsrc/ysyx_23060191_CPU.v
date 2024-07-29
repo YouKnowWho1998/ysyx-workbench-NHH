@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-07-27 17:26:13
- * @FilePath     : /ysyx/ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
+ * @LastEditTime : 2024-07-29 21:52:20
+ * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
@@ -133,7 +133,7 @@ module ysyx_23060191_CPU (
 
   always @(*) begin
     if (npc_finish(inst)) begin
-      $display("[EBREAK]  CPU STOP RUNNING");
+      $display("\033[1;35m[EBREAK]  CPU STOP RUNNING\033[0m");
       $finish;
     end
   end

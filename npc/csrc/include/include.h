@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-07-27 22:30:09
- * @FilePath     : /ysyx/ysyx-workbench/npc/csrc/include/include.h
+ * @LastEditTime : 2024-07-29 21:47:31
+ * @FilePath     : /ysyx-workbench/npc/csrc/include/include.h
  * @Description  : NPC-头文件
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -15,16 +15,28 @@
 #include <stdlib.h>
 #include <assert.h>
 
+//memory
 #define PMEM_MSIZE 0x8000000
 #define PMEM_START 0x80000000
 #define PMEM_LEFT ((uint32_t)PMEM_START)
 #define PMEM_RIGHT ((uint32_t)PMEM_START + PMEM_MSIZE - 1)
+
+//color
+// #define RED "\33[1;31m"
+// #define GREEN "\33[1;32m"
+// #define YELLOW "\33[1;33m"
+// #define BLUE "\33[1;34m"
+// #define MAGENTA "\33[1;35m"
+// #define CYAN "\33[1;36m"
+// #define WHITE "\33[1;37m"
+// #define NONE "\33[0m"
 
 //device defines
 #define DEVICE_BASE 0xa0000000
 #define SERIAL_PORT_ADDR (DEVICE_BASE + 0x00003f8)
 #define RTC_ADDR (DEVICE_BASE + 0x0000048)
 
+//switch
 #define DIFFTEST_ON 1
 #define ITRACE_ON 0
 #define DEVICE_ON 1
@@ -35,6 +47,7 @@ typedef struct
   uint32_t pc;
 } regfile;
 
+//函数
 uint8_t *guest_to_host(uint32_t paddr);
 uint32_t host_to_guest(uint8_t *haddr);
 uint32_t pmem_read(uint32_t addr, int len);

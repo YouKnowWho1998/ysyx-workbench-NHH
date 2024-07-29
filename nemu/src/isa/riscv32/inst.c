@@ -20,11 +20,37 @@
 #include <cpu/decode.h>
 
 #define R(i) gpr(i)
+#define CSR(i) *csr_reg(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
+#define ECALL(dnpc)                                                  \
+  {                                                                  \
+    bool success;                                                    \
+    dnpc = (isa_raise_intr(isa_reg_str2val("a7", &success), s->pc)); \
+  }
 
 void call_trace(word_t pc, word_t func_addr);
 void ret_trace(word_t pc);
+word_t isa_raise_intr(word_t NO, vaddr_t epc);
+word_t isa_reg_str2val(const char *s, bool *success);
+
+static word_t *csr_reg(word_t imm)
+{
+  switch (imm)
+  {
+  case 0x300: // mstatus
+    return &(cpu.csr.mstatus);
+  case 0x305: // mtvec
+    return &(cpu.csr.mtvec);
+  case 0x341: // mepc
+    return &(cpu.csr.mepc);
+  case 0x342: // mcause
+    return &(cpu.csr.mcause);
+  default:
+    Log("csr error");
+  }
+  return NULL;
+}
 
 enum
 {
@@ -197,7 +223,9 @@ static int decode_exec(Decode *s)
               ret_trace(s->pc);
             }
           }));
-
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, I, R(rd) = CSR(imm); CSR(imm) |= src1);
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I, R(rd) = CSR(imm); CSR(imm) = src1);
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N, ECALL(s->dnpc));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
 

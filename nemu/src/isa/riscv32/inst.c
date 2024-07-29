@@ -34,6 +34,14 @@ void ret_trace(word_t pc);
 word_t isa_raise_intr(word_t NO, vaddr_t epc);
 word_t isa_reg_str2val(const char *s, bool *success);
 
+static void etrace()
+{
+  IFDEF(CONFIG_ETRACE, {
+    printf("\n" ANSI_FMT("[ETRACE]", ANSI_FG_YELLOW) "ecall in mepc = " FMT_WORD ", mcause = " FMT_WORD "\n",
+           cpu.csr.mepc, cpu.csr.mcause);
+  });
+}
+
 static word_t *csr_reg(word_t imm)
 {
   switch (imm)
@@ -225,7 +233,7 @@ static int decode_exec(Decode *s)
           }));
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, I, R(rd) = CSR(imm); CSR(imm) |= src1);
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I, R(rd) = CSR(imm); CSR(imm) = src1);
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N, ECALL(s->dnpc));
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N, etrace(); ECALL(s->dnpc));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, R, s->dnpc = CSR(0x341));//mepc
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));

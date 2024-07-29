@@ -160,6 +160,11 @@ config DTRACE
   depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
   bool "Enable DTRACE"
   default n
+
+config ETRACE
+  depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+  bool "Enable ETRACE"
+  default y  
   
 config ITRACE_COND
   depends on ITRACE

@@ -44,8 +44,9 @@ bool cte_init(Context *(*handler)(Event, Context *))
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
   Context *cp = (Context *)(kstack.end - sizeof(Context)); //设置cp指针指向上下文栈底位置
-  cp->mepc = (uintptr_t)entry;
-  cp->mstatus = 0x1800;
+  cp->mepc = (uintptr_t)entry; //mepc跳转地址为内核线程入口
+  cp->mstatus = 0x1800; //初始化difftest
+  cp->gpr[10] = (uintptr_t)arg; //利用a0寄存器传递参数
   return cp;
 }
 

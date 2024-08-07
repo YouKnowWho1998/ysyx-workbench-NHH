@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-07-05 11:10:50
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\defines.v
+ * @LastEditTime : 2024-08-06 15:58:09
+ * @FilePath     : /ysyx-workbench/npc/vsrc/defines.v
  * @Description  : CPU设计参数宏定义
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
@@ -10,6 +10,7 @@
 
 //处理器位宽:
 `define CPU_WIDTH 32 //32位宽
+
 
 //opcode：
 `define TYPE_U_LUI   7'b0110111 //U型 lui
@@ -25,6 +26,9 @@
 `define TYPE_R_SERIES 7'b0110011 //R型 add sub sll slt sltu xor srl sra or and
 `define TYPE_B_SERIES 7'b1100011 //B型 beq bne bge bgeu bltu blt
 
+//ecall & mret
+`define ECALL 12'b000000000000 
+`define MRET  12'b001100000010 
 
 //func3:
 `define FUNC3_ADDI 3'b000 //func3 addi
@@ -62,6 +66,9 @@
 `define FUNC3_BGEU 3'b111 //func3 bgeu
 `define FUNC3_BLTU 3'b110 //func3 bltu
 `define FUNC3_BLT 3'b100 //func3 blt
+`define FUNC3_CSRRW 3'b001 //func3 csrrw
+`define FUNC3_CSRRS 3'b010 //func3 csrrs
+`define FUNC3_ECALL_AND_MRET 3'b000 //func3 ecall & mret
 
 //func7:
 `define FUNC7_SRLI 7'b0
@@ -119,6 +126,9 @@
 `define EXU_BGEU `EXU_OPT_WIDTH'h24
 `define EXU_BLTU `EXU_OPT_WIDTH'h25
 `define EXU_BLT `EXU_OPT_WIDTH'h26
+`define EXU_ECALL `EXU_OPT_WIDTH'h27
+`define EXU_CSRRS `EXU_OPT_WIDTH'h28
+`define EXU_CSRRW `EXU_OPT_WIDTH'h29
 
 //ALU操作码
 `define ALU_OPT_WIDTH 6
@@ -154,3 +164,9 @@
 `define LSU_LB 4'b0000 // 010 for FUNC3_LB, 0 for load
 `define LSU_LBU 4'b1000 // 100 for FUNC3_LBU, 0 for load
 `define LSU_LHU 4'b1010 // 101 for FUNC3_LHU, 0 for load
+
+//CSR寄存器
+`define MSTATUS 12'h300
+`define MTVEC   12'h305
+`define MCAUSE  12'h342
+`define MEPC    12'h341

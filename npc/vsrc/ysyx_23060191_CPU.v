@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-07-29 21:52:20
+ * @LastEditTime : 2024-08-07 15:19:52
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -34,6 +34,18 @@ module ysyx_23060191_CPU (
   wire [`EXU_OPT_WIDTH-1:0] exu_opt_code;
   wire [`LSU_OPT_WIDTH-1:0] lsu_opt_code;
   wire [`EXU_SEL_WIDTH-1:0] exu_sel_code;
+  wire ecall_en;
+  wire [7:0] ecall_NO;
+  wire mret_en;
+  wire [`CPU_WIDTH-1:0] mtvec;
+  wire [`CPU_WIDTH-1:0] mepc;
+  wire [11:0] addr_wr_csr;
+  wire [11:0] addr_rd_csr;
+  wire [`CPU_WIDTH-1:0] data_rd_csr; 
+  wire [`CPU_WIDTH-1:0] data_wr_csr; 
+  wire [`CPU_WIDTH-1:0] csr_res;
+  wire csr_res_en;
+  wire wr_en_csr; 
 
   //复位信号置0打一拍
   Rstnreg rstn_reg (
@@ -52,6 +64,10 @@ module ysyx_23060191_CPU (
       .jal_jump_en(jal_jump_en),  //jal跳转指令使能
       .jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能
       .branch_en(branch_en),
+      .ecall_en(ecall_en),//IDU->PCU
+      .mret_en(mret_en),//IDU->PCU
+      .mtvec(mtvec), //CSR->PCU
+      .mepc(mepc),//CSR->PCU
       .zero(zero),
 
       .pc(pc)
@@ -77,6 +93,11 @@ module ysyx_23060191_CPU (
       .jal_jump_en(jal_jump_en),  //jal跳转指令使能 IDU->PCU
       .jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能 IDU->PCU
       .branch_en(branch_en),
+      .ecall_en(ecall_en),//IDU->CSR IDU->PCU
+      .ecall_NO(ecall_NO),
+      .mret_en(mret_en), //IDU->PCU
+      .addr_rd_csr(addr_rd_csr),//IDU->CSR
+      .addr_wr_csr(addr_wr_csr),//IDU->CSR
       .exu_opt_code(exu_opt_code),  //EXU操作码 IDU->EXU
       .lsu_opt_code(lsu_opt_code),  //LSU操作码 IDU->LSU
       .exu_sel_code(exu_sel_code)  //EXU选择码 IDU->EXU
@@ -95,6 +116,20 @@ module ysyx_23060191_CPU (
       .data_Rs2(data_Rs2)   //Rs2寄存器读出数据 GPR->EXU GPR->LSU
   );
 
+ysyx_23060191_CSR csr(
+    .clk(clk),
+    .ecall_en(ecall_en),  //中断使能
+    .ecall_NO(ecall_NO),  //中断事件编号
+    .wr_en_csr(wr_en_csr),  //csr寄存器写使能
+    .data_wr_csr(data_wr_csr),  //csr寄存器写数据
+    .addr_wr_csr(addr_wr_csr),  //csr寄存器写地址 
+    .addr_rd_csr(addr_rd_csr),  //csr寄存器读地址
+
+    .data_rd_csr(data_rd_csr),  //csr寄存器读数据 CSR->EXU
+    .mtvec(mtvec),  //mtvec寄存器数据
+    .mepc(mepc)  //mepc寄存器数据
+);
+
   //EXU
   ysyx_23060191_EXU exu (
       .pc(pc),
@@ -103,8 +138,11 @@ module ysyx_23060191_CPU (
       .imm(imm),
       .exu_opt_code(exu_opt_code),
       .exu_sel_code(exu_sel_code),
+      .data_rd_csr(data_rd_csr),
 
       .exu_res(exu_res),  //EXU->LSU EXU->WBU
+      .csr_res(csr_res),
+      .csr_res_en(csr_res_en),//EXU->WBU
       .zero(zero)
   );
 
@@ -124,8 +162,12 @@ module ysyx_23060191_CPU (
       .exu_res(exu_res),  //EXU计算结果(需要回写)
       .lsu_res(lsu_res),
       .load_en(~lsu_opt_code[0]),
+      .csr_res(csr_res),
+      .csr_res_en(csr_res_en),
 
-      .data_wr_Rd(data_Rd)
+      .data_wr_Rd(data_Rd),
+      .data_wr_csr(data_wr_csr),
+      .wr_en_csr(wr_en_csr)
   );
 
   //DPI-C函数：Ebreak指令停止仿真

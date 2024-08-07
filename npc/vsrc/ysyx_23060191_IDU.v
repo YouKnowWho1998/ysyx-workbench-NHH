@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-26 10:10:46
- * @LastEditTime : 2024-07-06 11:49:25
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_IDU.v
+ * @LastEditTime : 2024-08-07 15:21:21
+ * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_IDU.v
  * @Description  : IDU指令译码模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
@@ -20,6 +20,11 @@ module ysyx_23060191_IDU (
     output reg jal_jump_en,  //jal跳转指令使能 IDU->PCU
     output reg jalr_jump_en,  //jalr跳转指令使能 IDU->PCU
     output reg branch_en,  //分支指令使能 IDU->PCU
+    output reg ecall_en, //IDU->PCU
+    output reg mret_en, //IDU->PCU
+    output reg [11:0] addr_rd_csr, //IDU->CSR
+    output reg [11:0] addr_wr_csr, //IDU->CSR
+    output reg [7:0] ecall_NO, //IDU->CSR
     output reg [`EXU_OPT_WIDTH-1:0] exu_opt_code,  //EXU操作码 IDU->EXU
     output reg [`LSU_OPT_WIDTH-1:0] lsu_opt_code,  //LSU操作码 IDU->LSU
     output reg [`EXU_SEL_WIDTH-1:0] exu_sel_code  //EXU选择码 IDU->EXU
@@ -42,7 +47,46 @@ module ysyx_23060191_IDU (
     exu_opt_code = 0;
     lsu_opt_code = `LSU_NOP;
     exu_sel_code = 0;
+    ecall_en = 0;
+    ecall_NO = 0;
+    mret_en = 0;
+    addr_rd_csr = 0;
+    addr_wr_csr = 0;
     case (opcode)
+      `TYPE_I_ECALL_SERIES: begin
+        case (func3)
+          `FUNC3_ECALL_AND_MRET: begin
+            case (inst[31:20])
+              `ECALL:begin
+                ecall_en = 1; //传入CSR和PCU中，控制PCU跳转到mtvec寄存器中的地址
+                ecall_NO = 8'b00001011; //直接写入事件编号11至mcause寄存器中
+                exu_opt_code = `EXU_ECALL;//控制EXU模块将当前PC值写入mepc寄存器中
+              end
+              `MRET:begin
+                mret_en = 1;
+              end
+              default :;
+            endcase
+          end
+          `FUNC3_CSRRS: begin
+            wr_en_Rd = 1;
+            addr_Rd = inst[11:7];
+            addr_Rs1 = inst[19:15];
+            addr_rd_csr = inst[31:20];
+            addr_wr_csr = inst[31:20];
+            exu_opt_code = `EXU_CSRRS;
+          end
+          `FUNC3_CSRRW: begin
+            wr_en_Rd = 1;
+            addr_Rd = inst[11:7];
+            addr_Rs1 = inst[19:15];
+            addr_rd_csr = inst[31:20];
+            addr_wr_csr = inst[31:20];
+            exu_opt_code = `EXU_CSRRW;
+          end
+          default: ;
+        endcase
+      end
       `TYPE_U_LUI: begin  //lui指令:R(rd) = X0 + imm
         imm = {inst[31:12], 12'b0};  //U型立即数 加载在寄存器高20位
         addr_Rd = inst[11:7];

@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-05-26 21:57:18
- * @LastEditTime : 2024-06-13 20:20:32
- * @FilePath     : \ysyx\ysyx-workbench\abstract-machine\klib\include\klib.h
+ * @LastEditTime : 2024-08-07 15:02:45
+ * @FilePath     : /ysyx-workbench/abstract-machine/klib/include/klib.h
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
@@ -19,7 +19,7 @@ extern "C"
 {
 #endif
 
-#define __NATIVE_USE_KLIB__
+  // #define __NATIVE_USE_KLIB__
 
   // string.h
   void *memset(void *s, int c, size_t n);

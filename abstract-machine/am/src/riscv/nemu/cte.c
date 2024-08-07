@@ -1,3 +1,12 @@
+/*
+ * @Author       : 中北大学-聂怀昊
+ * @Date         : 2024-07-31 11:09:31
+ * @LastEditTime : 2024-08-07 11:58:27
+ * @FilePath     : /ysyx-workbench/abstract-machine/am/src/riscv/nemu/cte.c
+ * @Description  :
+ *
+ * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.
+ */
 #include <am.h>
 #include <riscv/riscv.h>
 #include <klib.h>
@@ -22,10 +31,10 @@ Context *__am_irq_handle(Context *c)
       ev.event = EVENT_ERROR;
       break;
     }
-  c = user_handler(ev, c);
-  assert(c != NULL);    
+    c = user_handler(ev, c);
+    assert(c != NULL);
   }
-return c;
+  return c;
 }
 
 extern void __am_asm_trap(void);
@@ -43,10 +52,10 @@ bool cte_init(Context *(*handler)(Event, Context *))
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
-  Context *cp = (Context *)(kstack.end - sizeof(Context)); //设置cp指针指向上下文栈底位置
-  cp->mepc = (uintptr_t)entry; //mepc跳转地址为内核线程入口
-  cp->mstatus = 0x1800; //初始化difftest
-  cp->gpr[10] = (uintptr_t)arg; //利用a0寄存器传递参数
+  Context *cp = (Context *)(kstack.end - sizeof(Context)); // 设置cp指针指向上下文栈底位置
+  cp->mepc = (uintptr_t)entry;                             // mepc跳转地址为内核线程入口
+  cp->mstatus = 0x1800;                                    // 初始化difftest
+  cp->gpr[10] = (uintptr_t)arg;                            // 利用a0寄存器传递参数
   return cp;
 }
 

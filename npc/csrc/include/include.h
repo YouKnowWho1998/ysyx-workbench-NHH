@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-07-29 21:47:31
+ * @LastEditTime : 2024-08-07 15:50:46
  * @FilePath     : /ysyx-workbench/npc/csrc/include/include.h
  * @Description  : NPC-头文件
  *
@@ -29,7 +29,7 @@
 // #define MAGENTA "\33[1;35m"
 // #define CYAN "\33[1;36m"
 // #define WHITE "\33[1;37m"
-// #define NONE "\33[0m"
+// #define NONE "\033[0m"
 
 //device defines
 #define DEVICE_BASE 0xa0000000
@@ -37,7 +37,7 @@
 #define RTC_ADDR (DEVICE_BASE + 0x0000048)
 
 //switch
-#define DIFFTEST_ON 1
+#define DIFFTEST_ON 0
 #define ITRACE_ON 0
 #define DEVICE_ON 1
 

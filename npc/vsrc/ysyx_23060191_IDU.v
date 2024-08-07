@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-26 10:10:46
- * @LastEditTime : 2024-08-07 15:21:21
+ * @LastEditTime : 2024-08-07 18:18:21
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_IDU.v
  * @Description  : IDU指令译码模块
  * 
@@ -24,7 +24,6 @@ module ysyx_23060191_IDU (
     output reg mret_en, //IDU->PCU
     output reg [11:0] addr_rd_csr, //IDU->CSR
     output reg [11:0] addr_wr_csr, //IDU->CSR
-    output reg [7:0] ecall_NO, //IDU->CSR
     output reg [`EXU_OPT_WIDTH-1:0] exu_opt_code,  //EXU操作码 IDU->EXU
     output reg [`LSU_OPT_WIDTH-1:0] lsu_opt_code,  //LSU操作码 IDU->LSU
     output reg [`EXU_SEL_WIDTH-1:0] exu_sel_code  //EXU选择码 IDU->EXU
@@ -48,7 +47,6 @@ module ysyx_23060191_IDU (
     lsu_opt_code = `LSU_NOP;
     exu_sel_code = 0;
     ecall_en = 0;
-    ecall_NO = 0;
     mret_en = 0;
     addr_rd_csr = 0;
     addr_wr_csr = 0;
@@ -59,7 +57,7 @@ module ysyx_23060191_IDU (
             case (inst[31:20])
               `ECALL:begin
                 ecall_en = 1; //传入CSR和PCU中，控制PCU跳转到mtvec寄存器中的地址
-                ecall_NO = 8'b00001011; //直接写入事件编号11至mcause寄存器中
+                addr_Rs1 = 5'd15; //a5寄存器的值写入mcause中
                 exu_opt_code = `EXU_ECALL;//控制EXU模块将当前PC值写入mepc寄存器中
               end
               `MRET:begin

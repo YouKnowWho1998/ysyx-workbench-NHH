@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-08-01 10:46:22
- * @LastEditTime : 2024-08-07 15:45:13
+ * @LastEditTime : 2024-08-07 18:15:02
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CSR.v
  * @Description  : CSR寄存器组
  * 
@@ -11,7 +11,7 @@
 module ysyx_23060191_CSR (
     input clk,
     input ecall_en,  //中断使能
-    input [7:0] ecall_NO,  //中断事件编号(a7寄存器)
+    input [`CPU_WIDTH-1:0] ecall_NO,  //中断事件编号(a5寄存器)
     input wr_en_csr,  //csr寄存器写使能
     input [`CPU_WIDTH-1:0] data_wr_csr,  //csr寄存器写数据
     input [11:0] addr_wr_csr,  //csr寄存器写地址 
@@ -47,7 +47,7 @@ module ysyx_23060191_CSR (
     end
     //ecall
     if (ecall_en) begin
-      csr[3] <= {{24'b0}, ecall_NO};  //mcause寄存器写入事件编号
+      csr[3] <= ecall_NO;  //mcause寄存器写入事件编号
       csr[1] <= data_wr_csr;  //mepc寄存器写入当前PC值
     end
   end

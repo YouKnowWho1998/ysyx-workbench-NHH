@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-07-21 15:32:03
- * @LastEditTime : 2024-08-07 15:59:17
+ * @LastEditTime : 2024-08-07 18:13:25
  * @FilePath     : /ysyx-workbench/abstract-machine/am/src/riscv/npc/cte.c
  * @Description  :
  *
@@ -62,7 +62,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 void yield()
 {
 #ifdef __riscv_e
-  asm volatile("li a5, -1; ecall");
+  asm volatile("li a5, 11; ecall");
 #else
   asm volatile("li a7, 11; ecall");
 #endif

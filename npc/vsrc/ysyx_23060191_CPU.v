@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-08-07 18:15:29
+ * @LastEditTime : 2024-08-08 19:53:29
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -58,18 +58,18 @@ module ysyx_23060191_CPU (
   ysyx_23060191_PCU pcu (
       .clk(clk),
       .rstn(rstn_sync),
-      .imm(imm),  //立即数
-      .data_Rs1(data_Rs1),  //Rs1寄存器值
-      .jal_jump_en(jal_jump_en),  //jal跳转指令使能
-      .jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能
-      .branch_en(branch_en),
-      .ecall_en(ecall_en),//IDU->PCU
-      .mret_en(mret_en),//IDU->PCU
-      .mtvec(mtvec), //CSR->PCU
-      .mepc(mepc),//CSR->PCU
-      .zero(zero),
+      .i_imm(imm),  //立即数
+      .i_data_Rs1(data_Rs1),  //Rs1寄存器值
+      .i_jal_jump_en(jal_jump_en),  //jal跳转指令使能
+      .i_jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能
+      .i_branch_en(branch_en),
+      .i_ecall_en(ecall_en),//IDU->PCU
+      .i_mret_en(mret_en),//IDU->PCU
+      .i_mtvec(mtvec), //CSR->PCU
+      .i_mepc(mepc),//CSR->PCU
+      .i_zero(zero),
 
-      .pc(pc)
+      .o_pc(pc)
   );
 
   //IFU

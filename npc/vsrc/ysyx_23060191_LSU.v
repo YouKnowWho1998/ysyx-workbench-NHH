@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-28 13:18:55
- * @LastEditTime : 2024-08-10 11:08:43
+ * @LastEditTime : 2024-08-10 18:29:59
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_LSU.v
  * @Description  : LSU存储加载模块
  * 
@@ -11,41 +11,32 @@
 module ysyx_23060191_LSU (
     input clk,
     input rstn,
-    input [`LSU_OPT_WIDTH-1:0] lsu_opt_code,
-    input [`CPU_WIDTH-1:0] addr,  //EXU->LSU 地址计算结果（读写地址都包括）
-    input [`CPU_WIDTH-1:0] data_store,  //GPR->LSU 写入内存的数据 其值为data_Rs2
+    input [`LSU_OPT_WIDTH-1:0] i_lsu_opt_code,
+    input [`CPU_WIDTH-1:0] i_addr,  //EXU->LSU 地址计算结果（读写地址都包括）
+    input [`CPU_WIDTH-1:0] i_data_store,  //GPR->LSU 写入内存的数据 其值为data_Rs2
 
-    output reg [`CPU_WIDTH-1:0] data_load  //MEM->LSU 从内存中读出的数据
+    output [`CPU_WIDTH-1:0] o_data_load  //MEM->LSU 从内存中读出的数据
 );
 
-  reg [3:0] mask, wr_mask;  //写入字节长度参数
+  wire [3:0] mask, wr_mask;  //写入字节长度参数
   wire [`CPU_WIDTH-1:0] wr_addr, wr_data;  //写入地址，写入数据
   wire [`CPU_WIDTH-1:0] rd_data;  //读取数据
-  wire [`CPU_WIDTH-1:0] rd_addr = addr;  //读取地址
-  wire rd_en = lsu_opt_code[0];  //读取使能
+  wire [`CPU_WIDTH-1:0] rd_addr = i_addr;  //读取地址
+  wire rd_en = i_lsu_opt_code[0];  //读取使能
  
-  //读出数据长度遮罩
-  always @(*) begin
-    case (lsu_opt_code)
-      `LSU_LW:  data_load = rd_data;
-      `LSU_LH:  data_load = {{16{rd_data[15]}}, rd_data[15:0]};
-      `LSU_LB:  data_load = {{24{rd_data[7]}}, rd_data[7:0]};
-      `LSU_LBU: data_load = {24'b0, rd_data[7:0]};  //无符号数
-      `LSU_LHU: data_load = {16'b0, rd_data[15:0]};  //无符号数
-      default:  data_load = 0;
-    endcase
-  end
+  //读出数据
+  assign o_data_load = ({$bits(o_data_load){(i_lsu_opt_code==`LSU_LW)}}  & rd_data) |
+                       ({$bits(o_data_load){(i_lsu_opt_code==`LSU_LH)}}  & {{16{rd_data[15]}}, rd_data[15:0]}) |
+                       ({$bits(o_data_load){(i_lsu_opt_code==`LSU_LB)}}  & {{24{rd_data[7]}}, rd_data[7:0]})   |
+                       ({$bits(o_data_load){(i_lsu_opt_code==`LSU_LBU)}} & {24'b0, rd_data[7:0]})  |
+                       ({$bits(o_data_load){(i_lsu_opt_code==`LSU_LHU)}} & {16'b0, rd_data[15:0]});
 
 
   //写入数据长度遮罩
-  always @(*) begin
-    case (lsu_opt_code)
-      `LSU_SW: mask = 4'b1111;  //4字节
-      `LSU_SH: mask = 4'b0011;  //2字节
-      `LSU_SB: mask = 4'b0001;  //1字节
-      default: mask = 0;
-    endcase
-  end
+  assign mask = ({$bits(mask){(i_lsu_opt_code==`LSU_SW)}} & 4'b1111) |
+                ({$bits(mask){(i_lsu_opt_code==`LSU_SH)}} & 4'b0011) |
+                ({$bits(mask){(i_lsu_opt_code==`LSU_SB)}} & 4'b0001);
+
 
   // Due to comb logic delay, there must use an reg!!
   // Think about this situation: if waddr and wdata is not ready, but write it to mem immediately. it's wrong! 
@@ -53,7 +44,7 @@ module ysyx_23060191_LSU (
   RegTemplate #(2 * `CPU_WIDTH + 4, 0) reg_store (
       .clk (clk),
       .rstn(rstn),
-      .din ({addr, data_store, mask}),
+      .din ({i_addr, i_data_store, mask}),
       .dout({wr_addr, wr_data, wr_mask}),
       .wen (1'b1)
   );

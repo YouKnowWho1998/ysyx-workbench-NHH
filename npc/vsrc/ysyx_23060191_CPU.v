@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-08-10 10:40:57
+ * @LastEditTime : 2024-08-10 18:12:27
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -104,68 +104,68 @@ module ysyx_23060191_CPU (
   //GPR
   ysyx_23060191_GPR gpr (
       .clk(clk),
-      .wr_en_Rd(wr_en_Rd),  //Rd寄存器写使能
-      .addr_Rd(addr_Rd),  //Rd寄存器写地址 
-      .data_Rd(data_Rd),  //Rd寄存器写入数据 
-      .addr_Rs1(addr_Rs1),  //Rs1寄存器读地址 IDU->GPR  
-      .addr_Rs2(addr_Rs2),  //Rs2寄存器读地址 IDU->GPR
+      .i_wr_en_Rd(wr_en_Rd),  //Rd寄存器写使能
+      .i_addr_Rd(addr_Rd),  //Rd寄存器写地址 
+      .i_data_Rd(data_Rd),  //Rd寄存器写入数据 
+      .i_addr_Rs1(addr_Rs1),  //Rs1寄存器读地址 IDU->GPR  
+      .i_addr_Rs2(addr_Rs2),  //Rs2寄存器读地址 IDU->GPR
 
-      .data_Rs1(data_Rs1),  //Rs1寄存器读出数据 GPR->EXU
-      .data_Rs2(data_Rs2)   //Rs2寄存器读出数据 GPR->EXU GPR->LSU
+      .o_data_Rs1(data_Rs1),  //Rs1寄存器读出数据 GPR->EXU
+      .o_data_Rs2(data_Rs2)   //Rs2寄存器读出数据 GPR->EXU GPR->LSU
   );
 
 ysyx_23060191_CSR csr(
     .clk(clk),
-    .ecall_en(ecall_en),  //中断使能
-    .ecall_NO(data_Rs1),  //中断事件编号
-    .wr_en_csr(wr_en_csr),  //csr寄存器写使能
-    .data_wr_csr(data_wr_csr),  //csr寄存器写数据
-    .addr_wr_csr(addr_wr_csr),  //csr寄存器写地址 
-    .addr_rd_csr(addr_rd_csr),  //csr寄存器读地址
+    .i_ecall_en(ecall_en),  //中断使能
+    .i_ecall_NO(data_Rs1),  //中断事件编号
+    .i_wr_en_csr(wr_en_csr),  //csr寄存器写使能
+    .i_data_wr_csr(data_wr_csr),  //csr寄存器写数据
+    .i_addr_wr_csr(addr_wr_csr),  //csr寄存器写地址 
+    .i_addr_rd_csr(addr_rd_csr),  //csr寄存器读地址
 
-    .data_rd_csr(data_rd_csr),  //csr寄存器读数据 CSR->EXU
-    .mtvec(mtvec),  //mtvec寄存器数据
-    .mepc(mepc)  //mepc寄存器数据
+    .o_data_rd_csr(data_rd_csr),  //csr寄存器读数据 CSR->EXU
+    .o_mtvec(mtvec),  //mtvec寄存器数据
+    .o_mepc(mepc)  //mepc寄存器数据
 );
 
   //EXU
   ysyx_23060191_EXU exu (
-      .pc(pc),
-      .data_Rs1(data_Rs1),
-      .data_Rs2(data_Rs2),
-      .imm(imm),
-      .exu_opt_code(exu_opt_code),
-      .exu_sel_code(exu_sel_code),
-      .data_rd_csr(data_rd_csr),
+      .i_pc(pc),
+      .i_data_Rs1(data_Rs1),
+      .i_data_Rs2(data_Rs2),
+      .i_imm(imm),
+      .i_exu_opt_code(exu_opt_code),
+      .i_exu_sel_code(exu_sel_code),
+      .i_data_rd_csr(data_rd_csr),
 
-      .exu_res(exu_res),  //EXU->LSU EXU->WBU
-      .csr_res(csr_res),
-      .csr_res_en(csr_res_en),//EXU->WBU
-      .zero(zero)
+      .o_exu_res(exu_res),  //EXU->LSU EXU->WBU
+      .o_csr_res(csr_res),
+      .o_csr_res_en(csr_res_en),//EXU->WBU
+      .o_zero(zero)
   );
 
   //LSU
   ysyx_23060191_LSU lsu (
       .clk(clk),
       .rstn(rstn_sync),
-      .lsu_opt_code(lsu_opt_code),
-      .addr(exu_res),  //EXU->LSU 地址计算结果（读写地址都包括）
-      .data_store(data_Rs2),  //GPR->LSU 写入内存的数据 其值为data_Rs2
+      .i_lsu_opt_code(lsu_opt_code),
+      .i_addr(exu_res),  //EXU->LSU 地址计算结果（读写地址都包括）
+      .i_data_store(data_Rs2),  //GPR->LSU 写入内存的数据 其值为data_Rs2
 
-      .data_load(lsu_res) //MEM->LSU 从内存中读出的数据
+      .o_data_load(lsu_res) //MEM->LSU 从内存中读出的数据
   );
 
   //WBU
   ysyx_23060191_WBU wbu (
-      .exu_res(exu_res),  //EXU计算结果(需要回写)
-      .lsu_res(lsu_res),
-      .load_en(lsu_opt_code[0]),
-      .csr_res(csr_res),
-      .csr_res_en(csr_res_en),
+      .i_exu_res(exu_res),  //EXU计算结果(需要回写)
+      .i_lsu_res(lsu_res),
+      .i_load_en(lsu_opt_code[0]),
+      .i_csr_res(csr_res),
+      .i_csr_res_en(csr_res_en),
 
-      .data_wr_Rd(data_Rd),
-      .data_wr_csr(data_wr_csr),
-      .wr_en_csr(wr_en_csr)
+      .o_data_wr_Rd(data_Rd),
+      .o_data_wr_csr(data_wr_csr),
+      .o_wr_en_csr(wr_en_csr)
   );
 
   //DPI-C函数：Ebreak指令停止仿真

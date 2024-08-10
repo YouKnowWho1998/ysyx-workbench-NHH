@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 20:13:08
- * @LastEditTime : 2024-08-08 20:03:01
+ * @LastEditTime : 2024-08-10 18:29:35
  * @FilePath     : /ysyx-workbench/npc/csrc/main.cpp
  * @Description  : main函数 修复difftest逻辑
  *
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     single_cycle();
     single_cycle(); // 推进两个周期校准至开始位置 因为复位信号打了两拍
     npc_init(argc, argv);
-    cpu_exec(1000000); // 控制CPU仿真周期数
+    cpu_exec(10000000); // 控制CPU仿真周期数
     close_wave();
     return 0;
 }

@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-20 10:59:34
- * @LastEditTime : 2024-06-30 13:47:24
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_IFU.v
+ * @LastEditTime : 2024-08-08 20:07:14
+ * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_IFU.v
  * @Description  : IFU取指模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
@@ -10,9 +10,9 @@
 `include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_IFU (
     input rstn,
-    input [`CPU_WIDTH-1:0] pc,
+    input [`CPU_WIDTH-1:0] i_pc,
 
-    output [`CPU_WIDTH-1:0] inst  //取出指令  
+    output [`CPU_WIDTH-1:0] o_inst  //取出指令  
 );
 
 
@@ -28,9 +28,9 @@ module ysyx_23060191_IFU (
   import "DPI-C" function void get_dut_inst(input int npc_inst);
   
   always @(*) begin
-    npc_pmem_read(pc, inst, rstn);
-    get_dut_pc(pc);
-    get_dut_inst(inst);
+    npc_pmem_read(i_pc, o_inst, rstn);
+    get_dut_pc(i_pc);
+    get_dut_inst(o_inst);
   end
 
 

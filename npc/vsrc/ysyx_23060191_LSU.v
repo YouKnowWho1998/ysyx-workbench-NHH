@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-28 13:18:55
- * @LastEditTime : 2024-07-05 12:43:43
- * @FilePath     : \ysyx\ysyx-workbench\npc\vsrc\ysyx_23060191_LSU.v
+ * @LastEditTime : 2024-08-10 11:08:43
+ * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_LSU.v
  * @Description  : LSU存储加载模块
  * 
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved. 
@@ -22,8 +22,8 @@ module ysyx_23060191_LSU (
   wire [`CPU_WIDTH-1:0] wr_addr, wr_data;  //写入地址，写入数据
   wire [`CPU_WIDTH-1:0] rd_data;  //读取数据
   wire [`CPU_WIDTH-1:0] rd_addr = addr;  //读取地址
-  wire rd_en = ~lsu_opt_code[0];  //读取使能
-
+  wire rd_en = lsu_opt_code[0];  //读取使能
+ 
   //读出数据长度遮罩
   always @(*) begin
     case (lsu_opt_code)

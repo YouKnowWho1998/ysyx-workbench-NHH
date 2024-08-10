@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-08-06 15:58:09
+ * @LastEditTime : 2024-08-10 11:05:12
  * @FilePath     : /ysyx-workbench/npc/vsrc/defines.v
  * @Description  : CPU设计参数宏定义
  * 
@@ -155,15 +155,15 @@
 
 //LSU操作码
 `define LSU_OPT_WIDTH 4
-`define LSU_NOP 4'b1111 //空 
-`define LSU_SW 4'b0101 // 010 for FUNC3_SW, 1 for store
-`define LSU_SB 4'b0001 // 000 for FUNC3_SB, 1 for store
-`define LSU_SH 4'b0011 // 001 for FUNC3_SH, 1 for store
-`define LSU_LW 4'b0100 // 010 for FUNC3_LW, 0 for load
-`define LSU_LH 4'b0010 // 010 for FUNC3_LH, 0 for load
-`define LSU_LB 4'b0000 // 010 for FUNC3_LB, 0 for load
-`define LSU_LBU 4'b1000 // 100 for FUNC3_LBU, 0 for load
-`define LSU_LHU 4'b1010 // 101 for FUNC3_LHU, 0 for load
+`define LSU_SW  `LSU_OPT_WIDTH'b0010 // 0 for store
+`define LSU_SB  `LSU_OPT_WIDTH'b0110 // 0 for store
+`define LSU_SH  `LSU_OPT_WIDTH'b0100 // 0 for store
+
+`define LSU_LW  `LSU_OPT_WIDTH'b0001 // 1 for load
+`define LSU_LH  `LSU_OPT_WIDTH'b0011 // 1 for load
+`define LSU_LB  `LSU_OPT_WIDTH'b0111 // 1 for load
+`define LSU_LBU `LSU_OPT_WIDTH'b0101 // 1 for load
+`define LSU_LHU `LSU_OPT_WIDTH'b1101 // 1 for load
 
 //CSR寄存器
 `define MSTATUS 12'h300

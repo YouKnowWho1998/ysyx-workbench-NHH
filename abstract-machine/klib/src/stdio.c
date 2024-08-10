@@ -1,8 +1,8 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-05-26 21:57:18
- * @LastEditTime : 2024-07-16 17:45:09
- * @FilePath     : /ysyx/ysyx-workbench/abstract-machine/klib/src/stdio.c
+ * @LastEditTime : 2024-08-10 11:33:04
+ * @FilePath     : /ysyx-workbench/abstract-machine/klib/src/stdio.c
  * @Description  :
  *
  * Copyright (c) 2024 by 873040830@qq.com, All Rights Reserved.

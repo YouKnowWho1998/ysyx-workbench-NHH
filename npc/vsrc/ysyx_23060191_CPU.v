@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-08-08 19:53:29
+ * @LastEditTime : 2024-08-10 10:40:57
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -75,30 +75,30 @@ module ysyx_23060191_CPU (
   //IFU
   ysyx_23060191_IFU ifu (
       .rstn(rstn_sync),
-      .pc  (pc),
+      .i_pc  (pc),
 
-      .inst(inst)  //取出指令  
+      .o_inst(inst)  //取出指令  
   );
 
   //IDU
   ysyx_23060191_IDU idu (
-      .inst(inst),
+      .i_inst(inst),
 
-      .wr_en_Rd(wr_en_Rd),  //Rd寄存器写使能 IDU->GPR
-      .addr_Rd(addr_Rd),  //目标寄存器地址 IDU->GPR
-      .addr_Rs1(addr_Rs1),  //rs1寄存器地址 IDU->GPR
-      .addr_Rs2(addr_Rs2),  //rs2寄存器地址 IDU->GPR
-      .imm(imm),  //所有立即数统一扩展至32位 高位填充符号位 IDU->EXU IDU->PCU
-      .jal_jump_en(jal_jump_en),  //jal跳转指令使能 IDU->PCU
-      .jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能 IDU->PCU
-      .branch_en(branch_en),
-      .ecall_en(ecall_en),//IDU->CSR IDU->PCU
-      .mret_en(mret_en), //IDU->PCU
-      .addr_rd_csr(addr_rd_csr),//IDU->CSR
-      .addr_wr_csr(addr_wr_csr),//IDU->CSR
-      .exu_opt_code(exu_opt_code),  //EXU操作码 IDU->EXU
-      .lsu_opt_code(lsu_opt_code),  //LSU操作码 IDU->LSU
-      .exu_sel_code(exu_sel_code)  //EXU选择码 IDU->EXU
+      .o_wr_en_Rd(wr_en_Rd),  //Rd寄存器写使能 IDU->GPR
+      .o_addr_Rd(addr_Rd),  //目标寄存器地址 IDU->GPR
+      .o_addr_Rs1(addr_Rs1),  //rs1寄存器地址 IDU->GPR
+      .o_addr_Rs2(addr_Rs2),  //rs2寄存器地址 IDU->GPR
+      .o_imm(imm),  //所有立即数统一扩展至32位 高位填充符号位 IDU->EXU IDU->PCU
+      .o_jal_jump_en(jal_jump_en),  //jal跳转指令使能 IDU->PCU
+      .o_jalr_jump_en(jalr_jump_en),  //jalr跳转指令使能 IDU->PCU
+      .o_branch_en(branch_en),
+      .o_ecall_en(ecall_en),//IDU->CSR IDU->PCU
+      .o_mret_en(mret_en), //IDU->PCU
+      .o_addr_rd_csr(addr_rd_csr),//IDU->CSR
+      .o_addr_wr_csr(addr_wr_csr),//IDU->CSR
+      .o_exu_opt_code(exu_opt_code),  //EXU操作码 IDU->EXU
+      .o_lsu_opt_code(lsu_opt_code),  //LSU操作码 IDU->LSU
+      .o_exu_sel_code(exu_sel_code)  //EXU选择码 IDU->EXU
   );
 
   //GPR
@@ -159,7 +159,7 @@ ysyx_23060191_CSR csr(
   ysyx_23060191_WBU wbu (
       .exu_res(exu_res),  //EXU计算结果(需要回写)
       .lsu_res(lsu_res),
-      .load_en(~lsu_opt_code[0]),
+      .load_en(lsu_opt_code[0]),
       .csr_res(csr_res),
       .csr_res_en(csr_res_en),
 

@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-27 14:50:08
- * @LastEditTime : 2024-08-10 11:41:26
+ * @LastEditTime : 2024-08-11 16:51:37
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_GPR.v
  * @Description  : GPR寄存器组
  * 
@@ -35,9 +35,9 @@ module ysyx_23060191_GPR (
   assign o_data_Rs1 = gpr[i_addr_Rs1];
   assign o_data_Rs2 = gpr[i_addr_Rs2];
 
-//DPI-C函数：获取NPC寄存器值
-import "DPI-C" function void get_dut_reg(input reg [31:0] r[]);
+// //DPI-C函数：获取NPC寄存器值
+// import "DPI-C" function void get_dut_reg(input reg [31:0] r[]);
 
-initial get_dut_reg(gpr);
+// initial get_dut_reg(gpr);
 
 endmodule  //ysyx_23060191_GPR

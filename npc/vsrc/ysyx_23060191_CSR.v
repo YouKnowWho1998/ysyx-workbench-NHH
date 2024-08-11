@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-08-01 10:46:22
- * @LastEditTime : 2024-08-10 11:57:36
+ * @LastEditTime : 2024-08-11 20:19:32
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CSR.v
  * @Description  : CSR寄存器组
  * 
@@ -55,7 +55,10 @@ module ysyx_23060191_CSR (
   //读数据
   assign o_data_rd_csr = csr[raddr];
 
-  assign csr[2]  = 32'h1800;  //初始化mstatus为0x1800
+  always @(*) begin
+    csr[2] = 32'h1800;  //初始化mstatus为0x1800
+  end
+  
   assign o_mtvec = csr[0];
   assign o_mepc  = csr[1];
 

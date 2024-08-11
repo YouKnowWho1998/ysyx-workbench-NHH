@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-28 13:18:55
- * @LastEditTime : 2024-08-10 18:29:59
+ * @LastEditTime : 2024-08-11 20:54:20
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_LSU.v
  * @Description  : LSU存储加载模块
  * 
@@ -49,22 +49,23 @@ module ysyx_23060191_LSU (
       .wen (1'b1)
   );
 
-  //DPI-C函数：内存写入
-  import "DPI-C" function void npc_pmem_write(
-    input int wr_addr,
-    input int wr_data,
-    input reg [3:0] wr_mask
-  );
-  //DPI-C函数：内存读取
-  import "DPI-C" function void npc_pmem_read(
-    input  int rd_addr,
-    output int rd_data,
-    input  bit rd_en
-  );
+  // //DPI-C函数：内存写入
+  // import "DPI-C" function void npc_pmem_write(
+  //   input int wr_addr,
+  //   input int wr_data,
+  //   input reg [3:0] wr_mask
+  // );
+  // //DPI-C函数：内存读取
+  // import "DPI-C" function void npc_pmem_read(
+  //   input  int rd_addr,
+  //   output int rd_data,
+  //   input  bit rd_en
+  // );
 
-  always @(*) begin
-    npc_pmem_write(wr_addr, wr_data, wr_mask);
-    npc_pmem_read(rd_addr, rd_data, rd_en);
-  end
+  // always @(*) begin
+  //   npc_pmem_write(wr_addr, wr_data, wr_mask);
+  //   npc_pmem_read(rd_addr, rd_data, rd_en);
+  // end
+
 
 endmodule  //ysyx_23060191_LSU

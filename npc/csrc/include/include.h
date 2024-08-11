@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-24 13:22:42
- * @LastEditTime : 2024-08-10 18:29:25
+ * @LastEditTime : 2024-08-11 16:51:08
  * @FilePath     : /ysyx-workbench/npc/csrc/include/include.h
  * @Description  : NPC-头文件
  *
@@ -37,7 +37,7 @@
 #define RTC_ADDR (DEVICE_BASE + 0x0000048)
 
 //switch
-#define DIFFTEST_ON 1
+#define DIFFTEST_ON 0
 #define ITRACE_ON 0
 #define DEVICE_ON 1
 

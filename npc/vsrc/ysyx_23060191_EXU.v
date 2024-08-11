@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-27 22:27:11
- * @LastEditTime : 2024-08-10 18:06:09
+ * @LastEditTime : 2024-08-11 10:41:41
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_EXU.v
  * @Description  : EXU指令执行模块
  * 
@@ -82,35 +82,35 @@ module ysyx_23060191_EXU (
   assign alu_opt_code = ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_ADD)}} & `ALU_ADD) |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_SUB || i_exu_opt_code==`EXU_COMPARE || i_exu_opt_code==`EXU_BEQ || i_exu_opt_code==`EXU_BNE || i_exu_opt_code==`EXU_BGE || i_exu_opt_code==`EXU_BLT)}} & `ALU_SUB) |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_COMPARE_U || i_exu_opt_code==`EXU_BGEU || i_exu_opt_code==`EXU_BLTU)}} & `ALU_SUB_U) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_AND)}}   & `ALU_AND) |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_AND)}}   & `ALU_AND)   |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_SRA_I)}} & `ALU_SRA_I) |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_SRA_R)}} & `ALU_SRA_R) |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_SLL_I)}} & `ALU_SLL_I) |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_SLL_R)}} & `ALU_SLL_R) |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_SRL_R)}} & `ALU_SRL_R) |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_SRL_I)}} & `ALU_SRL_I) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_XOR)}}   & `ALU_XOR) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_OR)}}    & `ALU_OR) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_MUL)}}   & `ALU_MUL) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_REM)}}   & `ALU_REM) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_REMU)}}  & `ALU_REMU) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_DIV)}}   & `ALU_DIV) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_DIVU)}}  & `ALU_DIVU) |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_XOR)}}   & `ALU_XOR)   |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_OR)}}    & `ALU_OR)    |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_MUL)}}   & `ALU_MUL)   |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_REM)}}   & `ALU_REM)   |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_REMU)}}  & `ALU_REMU)  |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_DIV)}}   & `ALU_DIV)   |
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_DIVU)}}  & `ALU_DIVU)  |
                         ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_MULHU)}} & `ALU_MULHU) |
-                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_MULH)}}  & `ALU_MULH);
+                        ({$bits(alu_opt_code){(i_exu_opt_code==`EXU_MULH)}}  & `ALU_MULH)  ;
 
 
 //exu_res计算结果
 assign o_exu_res = ({$bits(o_exu_res){(i_exu_opt_code==`EXU_CSRRS || i_exu_opt_code==`EXU_CSRRW)}} & i_data_rd_csr) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_ADD || i_exu_opt_code==`EXU_SUB || i_exu_opt_code==`EXU_AND || i_exu_opt_code==`EXU_SRA_I || i_exu_opt_code==`EXU_SRA_R || i_exu_opt_code==`EXU_SLL_I || i_exu_opt_code==`EXU_SLL_R || i_exu_opt_code==`EXU_SRL_R || i_exu_opt_code==`EXU_SRL_I || i_exu_opt_code==`EXU_XOR   || i_exu_opt_code==`EXU_OR    || i_exu_opt_code==`EXU_MUL   || i_exu_opt_code==`EXU_REM   || i_exu_opt_code==`EXU_REMU  || i_exu_opt_code==`EXU_DIV   || i_exu_opt_code==`EXU_DIVU  || i_exu_opt_code==`EXU_MULHU || i_exu_opt_code==`EXU_MULH)}} & alu_res) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_COMPARE_U)}} & {31'b0,sub_u_bit}) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_COMPARE)}}   & {31'b0,less}) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BEQ)}}  & {31'b0,{~(|alu_res)}}) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BNE)}}  & {31'b0,{|alu_res}}) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BGE)}}  & {31'b0,{~less}}) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BGEU)}} & {31'b0,{~sub_u_bit}}) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BLTU)}} & {31'b0,{sub_u_bit}}) |
-                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BLT)}}  & {31'b0,{less}});
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_ADD || i_exu_opt_code==`EXU_SUB || i_exu_opt_code==`EXU_AND || i_exu_opt_code==`EXU_SRA_I || i_exu_opt_code==`EXU_SRA_R || i_exu_opt_code==`EXU_SLL_I || i_exu_opt_code==`EXU_SLL_R || i_exu_opt_code==`EXU_SRL_R || i_exu_opt_code==`EXU_SRL_I || i_exu_opt_code==`EXU_XOR   || i_exu_opt_code==`EXU_OR    || i_exu_opt_code==`EXU_MUL   || i_exu_opt_code==`EXU_REM   || i_exu_opt_code==`EXU_REMU  || i_exu_opt_code==`EXU_DIV   || i_exu_opt_code==`EXU_DIVU  || i_exu_opt_code==`EXU_MULHU || i_exu_opt_code==`EXU_MULH)}} & alu_res)          |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_COMPARE_U)}} & {31'b0,sub_u_bit})     |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_COMPARE)}}   & {31'b0,less})          |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BEQ)}}       & {31'b0,{~(|alu_res)}}) |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BNE)}}       & {31'b0,{|alu_res}})    |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BGE)}}       & {31'b0,{~less}})       |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BGEU)}}      & {31'b0,{~sub_u_bit}})  |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BLTU)}}      & {31'b0,{sub_u_bit}})   |
+                  ({$bits(o_exu_res){(i_exu_opt_code==`EXU_BLT)}}       & {31'b0,{less}})        ;
 
 
 //csr_res
@@ -121,7 +121,7 @@ assign o_csr_res = ({$bits(o_csr_res){(i_exu_opt_code==`EXU_ECALL)}} & i_pc) |
 
 //csr_res_en
 assign o_csr_res_en = ({$bits(o_csr_res_en){(i_exu_opt_code==`EXU_CSRRS)}} & 1'b1) |
-                      ({$bits(o_csr_res_en){(i_exu_opt_code==`EXU_CSRRW)}} & 1'b1);
+                      ({$bits(o_csr_res_en){(i_exu_opt_code==`EXU_CSRRW)}} & 1'b1) ;
 
 //zero
 assign o_zero = ~(|o_exu_res);

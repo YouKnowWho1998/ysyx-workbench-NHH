@@ -1,7 +1,7 @@
 /*
  * @Author       : 中北大学-聂怀昊
  * @Date         : 2024-06-15 13:00:53
- * @LastEditTime : 2024-08-10 18:12:27
+ * @LastEditTime : 2024-08-11 21:04:37
  * @FilePath     : /ysyx-workbench/npc/vsrc/ysyx_23060191_CPU.v
  * @Description  : CPU顶层模块
  * 
@@ -10,7 +10,8 @@
 `include "/home/nhh/ysyx/ysyx-workbench/npc/vsrc/defines.v"
 module ysyx_23060191_CPU (
     input clk,
-    input rstn
+    input rstn,
+
 );
 
   wire rstn_sync;
@@ -44,7 +45,7 @@ module ysyx_23060191_CPU (
   wire [`CPU_WIDTH-1:0] data_wr_csr; 
   wire [`CPU_WIDTH-1:0] csr_res;
   wire csr_res_en;
-  wire wr_en_csr; 
+  wire wr_en_csr;
 
   //复位信号置0打一拍
   Rstnreg rstn_reg (
@@ -98,7 +99,7 @@ module ysyx_23060191_CPU (
       .o_addr_wr_csr(addr_wr_csr),//IDU->CSR
       .o_exu_opt_code(exu_opt_code),  //EXU操作码 IDU->EXU
       .o_lsu_opt_code(lsu_opt_code),  //LSU操作码 IDU->LSU
-      .o_exu_sel_code(exu_sel_code)  //EXU选择码 IDU->EXU
+      .o_exu_sel_code(exu_sel_code)   //EXU选择码 IDU->EXU
   );
 
   //GPR
@@ -168,14 +169,14 @@ ysyx_23060191_CSR csr(
       .o_wr_en_csr(wr_en_csr)
   );
 
-  //DPI-C函数：Ebreak指令停止仿真
-  import "DPI-C" function bit npc_finish(input int inst);
+//   //DPI-C函数：Ebreak指令停止仿真
+//   import "DPI-C" function bit npc_finish(input int inst);
 
-  always @(*) begin
-    if (npc_finish(inst)) begin
-      $display("\033[1;35m[EBREAK]  CPU STOP RUNNING\033[0m");
-      $finish;
-    end
-  end
+//   always @(*) begin
+//     if (npc_finish(inst)) begin
+//       $display("\033[1;35m[EBREAK]  CPU STOP RUNNING\033[0m");
+//       $finish;
+//     end
+//   end
 
 endmodule  //ysyx_23060191_CPU
